@@ -183,11 +183,11 @@ export function indexDataset(raw: unknown): DatasetModel | null {
     });
   }
   for (const gate of arr(raw.gates)) {
-    const shapes: ShapeModel[] = [];
     const line = points(gate.threshold);
-    if (line.length) shapes.push({ featureId: text(gate.id), kind: "gate", points: line, label: text(gate.kind) });
-    else if (points(gate.position).length === 0 && Array.isArray(gate.position)) shapes.push({ featureId: text(gate.id), kind: "gate", points: [gate.position as number[]], label: text(gate.kind) });
-    else if (Array.isArray(gate.position)) shapes.push({ featureId: text(gate.id), kind: "gate", points: [gate.position as number[]], label: text(gate.kind) });
+    const geometry = line.length ? line : Array.isArray(gate.position) ? [gate.position as number[]] : [];
+    const shapes: ShapeModel[] = geometry.length
+      ? [{ featureId: text(gate.id), kind: "gate", points: geometry, label: text(gate.kind) }]
+      : [];
     push({
       id: text(gate.id),
       type: "gate",
