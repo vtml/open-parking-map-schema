@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/lift.schema.json",
+  "title": "Lift",
+  "description": "A lift on an accessible route.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_ids",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Lift id."
+    },
+    "level_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Levels served.",
+      "minItems": 2
+    },
+    "kind": {
+      "enum": [
+        "passenger",
+        "goods",
+        "platform"
+      ],
+      "description": "Kind."
+    },
+    "car_width_m": {
+      "type": "number",
+      "description": "Car width.",
+      "exclusiveMinimum": 0
+    },
+    "car_depth_m": {
+      "type": "number",
+      "description": "Car depth.",
+      "exclusiveMinimum": 0
+    },
+    "door_width_m": {
+      "type": "number",
+      "description": "Clear door width.",
+      "exclusiveMinimum": 0
+    },
+    "audible_announcements": {
+      "type": "boolean",
+      "description": "Floor announcements."
+    },
+    "braille_buttons": {
+      "type": "boolean",
+      "description": "Braille or tactile buttons."
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Operating hours."
+    },
+    "status_feed_uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "OPTIONAL live status feed; not required."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

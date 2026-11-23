@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/level.schema.json",
+  "title": "Level",
+  "description": "A floor of a facility.",
+  "type": "object",
+  "required": [
+    "id",
+    "ordinal",
+    "label",
+    "elevation_m"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level id."
+    },
+    "ordinal": {
+      "type": "integer",
+      "description": "0 = ground; negative below ground. Ordering only."
+    },
+    "label": {
+      "type": "string",
+      "description": "As signed: G, L1, B2, Roof."
+    },
+    "elevation_m": {
+      "type": "number",
+      "description": "Floor height in the facility frame."
+    },
+    "clearance_m": {
+      "type": "number",
+      "description": "Lowest headroom.",
+      "exclusiveMinimum": 0
+    },
+    "open_air": {
+      "type": "boolean",
+      "description": "Rooftop or surface.",
+      "default": false
+    },
+    "gnss": {
+      "enum": [
+        "good",
+        "degraded",
+        "none"
+      ],
+      "description": "GNSS quality on this level."
+    },
+    "entry_anchor_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "AnchorFeatures that tie this level's local geometry back to a GNSS-visible reference."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

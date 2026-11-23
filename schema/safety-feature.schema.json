@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/safety-feature.schema.json",
+  "title": "SafetyFeature",
+  "description": "Personal-security and safety features.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Feature id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "kind": {
+      "enum": [
+        "help_point",
+        "cctv",
+        "lighting_zone",
+        "duress_button",
+        "staffed_booth",
+        "emergency_exit",
+        "fire_lane",
+        "security_patrol"
+      ],
+      "description": "Kind."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "lighting_level": {
+      "enum": [
+        "poor",
+        "adequate",
+        "good"
+      ],
+      "description": "Lighting quality."
+    },
+    "cctv_present": {
+      "type": "boolean",
+      "description": "Flag only. No camera feeds or footage are described by OPMS."
+    },
+    "staffed_hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Staffed hours."
+    },
+    "contact_ref": {
+      "type": "string",
+      "description": "How to reach help (organisation role or number reference)."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

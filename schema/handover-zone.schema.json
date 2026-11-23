@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/handover-zone.schema.json",
+  "title": "HandoverZone",
+  "description": "Drop-off, pick-up, valet, ride-share or taxi zone.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "location_id"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Zone id."
+    },
+    "kind": {
+      "enum": [
+        "drop_off",
+        "pick_up",
+        "both",
+        "valet",
+        "rideshare",
+        "taxi",
+        "loading"
+      ],
+      "description": "Kind."
+    },
+    "location_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level id for in-facility zones or CurbSegment id for kerbside zones."
+    },
+    "capacity_veh": {
+      "type": "integer",
+      "description": "Vehicles that can stand at once.",
+      "minimum": 1
+    },
+    "max_dwell_s": {
+      "type": "integer",
+      "description": "Allowed standing time.",
+      "minimum": 0
+    },
+    "iso23374_handover": {
+      "type": "boolean",
+      "description": "Valid ISO 23374 AVP handover area."
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Rules."
+    },
+    "accessibility": {
+      "$ref": "common.schema.json#/$defs/HandoverAccessibility"
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

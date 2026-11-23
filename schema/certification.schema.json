@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/certification.schema.json",
+  "title": "Certification",
+  "description": "Certification supporting a quality tier for driverless use.",
+  "type": "object",
+  "required": [
+    "id",
+    "subject_id",
+    "body",
+    "scheme",
+    "tier",
+    "issued_at"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Certification id."
+    },
+    "subject_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Facility, feature set or contributor certified."
+    },
+    "body": {
+      "type": "string",
+      "description": "Certifying body."
+    },
+    "scheme": {
+      "type": "string",
+      "description": "Scheme name."
+    },
+    "tier": {
+      "type": "integer",
+      "description": "Quality tier granted.",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "issued_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "evidence_ref": {
+      "type": "string",
+      "description": "Reference to the audit report."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/alignment-record.schema.json",
+  "title": "AlignmentRecord",
+  "description": "How a contribution was aligned into the facility frame in GNSS-denied areas.",
+  "type": "object",
+  "required": [
+    "id",
+    "contribution_id",
+    "frame_id",
+    "method",
+    "anchor_ids",
+    "residual_rmse_m",
+    "solved_at"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Record id."
+    },
+    "contribution_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Contribution."
+    },
+    "frame_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Target facility frame."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level aligned."
+    },
+    "method": {
+      "enum": [
+        "pose_graph",
+        "landmark_match",
+        "loop_closure",
+        "gnss_at_anchor"
+      ],
+      "description": "Alignment method."
+    },
+    "anchor_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "AnchorFeatures used."
+    },
+    "residual_rmse_m": {
+      "type": "number",
+      "description": "RMS residual after alignment.",
+      "minimum": 0
+    },
+    "loop_closures": {
+      "type": "integer",
+      "description": "Loop closures found.",
+      "minimum": 0
+    },
+    "drift_m_per_100m": {
+      "type": "number",
+      "description": "Estimated residual drift.",
+      "minimum": 0
+    },
+    "solved_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "poor",
+        "failed"
+      ],
+      "description": "Outcome."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

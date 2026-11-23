@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/access-point.schema.json",
+  "title": "AccessPoint",
+  "description": "A vehicle entry, exit or both, tied to a public road.",
+  "type": "object",
+  "required": [
+    "id",
+    "facility_id",
+    "role",
+    "road_link"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Access point id."
+    },
+    "facility_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Complex it serves."
+    },
+    "role": {
+      "enum": [
+        "entry",
+        "exit",
+        "both"
+      ],
+      "description": "Direction of use."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "road_link": {
+      "type": "object",
+      "required": [
+        "road_name"
+      ],
+      "additionalProperties": false,
+      "description": "Public road it connects to.",
+      "properties": {
+        "road_name": {
+          "type": "string"
+        },
+        "intersection_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "approach_bearing_deg": {
+          "type": "number"
+        },
+        "signalised": {
+          "type": "boolean"
+        },
+        "external_refs": {
+          "$ref": "common.schema.json#/$defs/ExternalRefs"
+        }
+      }
+    },
+    "movements_in": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "left_in",
+          "right_in",
+          "straight_in"
+        ],
+        "description": "Movement."
+      },
+      "description": "Allowed entry movements."
+    },
+    "movements_out": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "left_out",
+          "right_out",
+          "straight_out"
+        ],
+        "description": "Movement."
+      },
+      "description": "Allowed exit movements."
+    },
+    "served_level_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Levels reachable without leaving."
+    },
+    "served_zone_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Zones reachable without leaving."
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Opening hours."
+    },
+    "limits": {
+      "$ref": "common.schema.json#/$defs/VehicleLimits"
+    },
+    "credentials": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ticket",
+          "lpr",
+          "app",
+          "tap_card",
+          "rfid",
+          "permit",
+          "intercom",
+          "none"
+        ],
+        "description": "Credential."
+      },
+      "description": "Accepted credentials."
+    },
+    "gate_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "One per lane."
+    },
+    "queue_capacity_veh": {
+      "type": "integer",
+      "description": "Stacking space before blocking the road.",
+      "minimum": 0
+    },
+    "emergency_access": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Emergency vehicle access.",
+      "properties": {
+        "fire_brigade_access": {
+          "type": "boolean"
+        },
+        "ambulance_clearance_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "emergency_override": {
+          "type": "boolean"
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "role": {
+            "const": "entry"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "then": {
+        "required": [
+          "movements_in"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {
+            "const": "exit"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "then": {
+        "required": [
+          "movements_out"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {
+            "const": "both"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "then": {
+        "required": [
+          "movements_in",
+          "movements_out"
+        ]
+      }
+    }
+  ]
+}

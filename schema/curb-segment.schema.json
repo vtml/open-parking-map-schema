@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/curb-segment.schema.json",
+  "title": "CurbSegment",
+  "description": "A length of kerb along a public road, linearly referenced.",
+  "type": "object",
+  "required": [
+    "id",
+    "road_ref",
+    "side",
+    "linear_ref",
+    "rule_ids"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Segment id."
+    },
+    "road_ref": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "external_refs": {
+          "$ref": "common.schema.json#/$defs/ExternalRefs"
+        }
+      }
+    },
+    "side": {
+      "enum": [
+        "left",
+        "right"
+      ],
+      "description": "Side relative to road digitisation."
+    },
+    "linear_ref": {
+      "type": "object",
+      "required": [
+        "from_m",
+        "to_m"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "from_m": {
+          "type": "number"
+        },
+        "to_m": {
+          "type": "number"
+        }
+      }
+    },
+    "orientation": {
+      "enum": [
+        "parallel",
+        "angle",
+        "perpendicular"
+      ],
+      "description": "Bay orientation."
+    },
+    "marked_bays": {
+      "type": "integer",
+      "description": "Count of marked bays.",
+      "minimum": 0
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Regulations along the segment (CDS-style)."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

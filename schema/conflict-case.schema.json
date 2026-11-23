@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/conflict-case.schema.json",
+  "title": "ConflictCase",
+  "description": "A recorded disagreement between observations and how it was resolved.",
+  "type": "object",
+  "required": [
+    "id",
+    "feature_id",
+    "competing_observation_ids",
+    "opened_at",
+    "outcome"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Case id."
+    },
+    "feature_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Feature in dispute."
+    },
+    "competing_observation_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Observations in conflict.",
+      "minItems": 2
+    },
+    "resolution_policy_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Policy applied."
+    },
+    "rule_applied": {
+      "type": "string",
+      "description": "Short name of the rule used."
+    },
+    "resolved_by": {
+      "enum": [
+        "algorithm",
+        "operator",
+        "authority",
+        "auditor"
+      ],
+      "description": "Resolver."
+    },
+    "outcome": {
+      "enum": [
+        "open",
+        "accepted_observation",
+        "merged",
+        "retained_existing",
+        "rejected_all",
+        "escalated"
+      ],
+      "description": "Outcome."
+    },
+    "opened_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "resolved_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

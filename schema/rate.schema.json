@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/rate.schema.json",
+  "title": "Rate",
+  "description": "Tariff (APDS-style).",
+  "type": "object",
+  "required": [
+    "id",
+    "currency",
+    "periods"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Rate id."
+    },
+    "currency": {
+      "type": "string",
+      "description": "ISO 4217 code.",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "periods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "up_to_min",
+          "price"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "up_to_min": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "price": {
+            "type": "string",
+            "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+          }
+        }
+      },
+      "description": "Tariff steps; price is a decimal string.",
+      "minItems": 1
+    },
+    "daily_cap": {
+      "type": "string",
+      "description": "Decimal amount.",
+      "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+    },
+    "grace_min": {
+      "type": "integer",
+      "description": "Free leaving time.",
+      "minimum": 0
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "free_min": {
+            "type": "integer"
+          }
+        }
+      },
+      "description": "Validation schemes."
+    },
+    "dynamic": {
+      "type": "boolean",
+      "description": "Prices may change via a dynamic feed."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

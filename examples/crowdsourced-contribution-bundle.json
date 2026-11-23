@@ -1,0 +1,174 @@
+{
+  "_note": "FICTIONAL EXAMPLE DATA. Contributor, vehicle tokens, hashes and geometry are invented. No real OEM or person is represented.",
+  "opms_version": "0.2.0",
+  "contribution": {
+    "id": "mpsc.c.0001",
+    "contributor_id": "contrib.oem-a",
+    "campaign_id": "camp.mpsc.p2-resurvey",
+    "jurisdiction_id": "jur.au-vic",
+    "repository_id": "repo.au.example",
+    "submitted_at": "2026-11-19T18:05:00+11:00",
+    "trace_window": {
+      "start": "2026-11-19T17:41:00+11:00",
+      "end": "2026-11-19T17:52:30+11:00"
+    },
+    "facility_hint": {
+      "facility_id": "mpsc.p2",
+      "site_id": "mpsc"
+    },
+    "sensor_profile": {
+      "sensors": [
+        "camera",
+        "radar",
+        "ultrasonic",
+        "imu",
+        "wheel_odometry",
+        "gnss"
+      ],
+      "calibration_class": "fleet_calibrated",
+      "odometry_drift_m_per_100m": 0.4
+    },
+    "pseudonym": {
+      "vehicle_token": "v-7f3a9c21d04be861",
+      "session_token": "s-19ac44e7b2d05f30",
+      "pseudonym_epoch": "2026-11",
+      "k_anonymity_group": 12
+    },
+    "redaction_attestation": {
+      "policy_id": "red.au.default",
+      "performed_on_board": true,
+      "imagery_included": false,
+      "trajectories_included": false,
+      "trim_start_m": 200,
+      "trim_end_m": 200,
+      "time_jitter_applied": true,
+      "attested_at": "2026-11-19T18:04:10+11:00",
+      "signature_ref": "sig:example-0001"
+    },
+    "payload_ref": {
+      "uri": "https://uploads.example.org/contrib/mpsc.c.0001.pb",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+      "media_type": "application/x-protobuf"
+    },
+    "licence": {
+      "spdx_id": "CC-BY-4.0",
+      "commercial_use": true,
+      "attribution_required": true,
+      "ai_training_use": "allowed",
+      "retention_days": 365
+    },
+    "status": "accepted"
+  },
+  "feature_observations": [
+    {
+      "id": "mpsc.o.0001",
+      "contribution_id": "mpsc.c.0001",
+      "target_feature_id": "mpsc.p2.b1.b0012",
+      "feature_type": "bay",
+      "frame_id": "mpsc.frame",
+      "geometry_local": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            12.02,
+            4.01,
+            -3.4
+          ],
+          [
+            15.81,
+            4.0,
+            -3.4
+          ],
+          [
+            15.8,
+            9.41,
+            -3.4
+          ],
+          [
+            12.0,
+            9.39,
+            -3.4
+          ]
+        ],
+        "sigma_m": 0.09
+      },
+      "attributes": {
+        "orientation": "perpendicular",
+        "painted_label": "A-12",
+        "bay_types": [
+          "accessible"
+        ]
+      },
+      "observed_at": "2026-11-19T17:44:12+11:00",
+      "confidence": 0.9
+    },
+    {
+      "id": "mpsc.o.0002",
+      "contribution_id": "mpsc.c.0001",
+      "target_feature_id": null,
+      "feature_type": "pillar",
+      "frame_id": "mpsc.frame",
+      "geometry_local": {
+        "type": "Point",
+        "coordinates": [
+          [
+            18.1,
+            2.0,
+            -3.4
+          ]
+        ],
+        "sigma_m": 0.07
+      },
+      "attributes": {
+        "shape": "rect",
+        "width_m": 0.6,
+        "depth_m": 0.6,
+        "painted_label": "B1"
+      },
+      "observed_at": "2026-11-19T17:44:40+11:00",
+      "confidence": 0.85
+    },
+    {
+      "id": "mpsc.o.0003",
+      "contribution_id": "mpsc.c.0001",
+      "target_feature_id": "mpsc.g5",
+      "feature_type": "height_limit",
+      "frame_id": "mpsc.frame",
+      "geometry_local": {
+        "type": "Point",
+        "coordinates": [
+          [
+            98.0,
+            44.0,
+            -3.4
+          ]
+        ],
+        "sigma_m": 0.2
+      },
+      "attributes": {
+        "max_height_m": 2.1,
+        "source": "painted_bar_sign"
+      },
+      "observed_at": "2026-11-19T17:50:02+11:00",
+      "confidence": 0.8
+    }
+  ],
+  "alignment_records": [
+    {
+      "id": "mpsc.al.0001",
+      "contribution_id": "mpsc.c.0001",
+      "frame_id": "mpsc.frame",
+      "level_id": "mpsc.p2.b1",
+      "method": "pose_graph",
+      "anchor_ids": [
+        "mpsc.p2.b1.anc.gate-line",
+        "mpsc.p2.b2.anc.ramp-head"
+      ],
+      "residual_rmse_m": 0.07,
+      "loop_closures": 3,
+      "drift_m_per_100m": 0.4,
+      "solved_at": "2026-11-19T18:03:00+11:00",
+      "status": "ok"
+    }
+  ]
+}

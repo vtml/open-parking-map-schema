@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/drive-edge.schema.json",
+  "title": "DriveEdge",
+  "description": "A directed drivable segment: aisle, ramp, level transition or internal road.",
+  "type": "object",
+  "required": [
+    "id",
+    "from_node",
+    "to_node",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Edge id."
+    },
+    "from_node": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Start node."
+    },
+    "to_node": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "End node. Two-way aisles are two edges."
+    },
+    "kind": {
+      "enum": [
+        "aisle",
+        "ramp",
+        "level_transition",
+        "access_lane",
+        "internal_road",
+        "inter_facility",
+        "lift",
+        "turntable"
+      ],
+      "description": "Edge kind."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level the edge lies on (start level for ramps)."
+    },
+    "centreline": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "description": "Polyline in the facility frame."
+    },
+    "width_m": {
+      "type": "number",
+      "description": "Drivable width.",
+      "exclusiveMinimum": 0
+    },
+    "speed_limit_kmh": {
+      "type": "number",
+      "description": "Signed speed limit.",
+      "exclusiveMinimum": 0
+    },
+    "limits": {
+      "$ref": "common.schema.json#/$defs/VehicleLimits"
+    },
+    "ramp": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Ramp geometry.",
+      "properties": {
+        "form": {
+          "enum": [
+            "straight",
+            "helical",
+            "split_level",
+            "spiral_double"
+          ]
+        },
+        "gradient_pct": {
+          "type": "number"
+        },
+        "inner_radius_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "turn_restrictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "banned_next_edge"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "banned_next_edge": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "when": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/TimeWindow"
+            },
+            "description": "When."
+          }
+        }
+      },
+      "description": "Banned next edges."
+    },
+    "bay_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Bays reachable from this edge."
+    },
+    "shared_with_pedestrians": {
+      "type": "boolean",
+      "description": "Pedestrian priority area."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

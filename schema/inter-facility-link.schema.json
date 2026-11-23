@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/inter-facility-link.schema.json",
+  "title": "InterFacilityLink",
+  "description": "A tunnel, bridge, ramp or internal road between two facilities.",
+  "type": "object",
+  "required": [
+    "id",
+    "from",
+    "to",
+    "kind",
+    "direction",
+    "ticket_transfer"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Link id."
+    },
+    "from": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "DriveNode in the first facility."
+    },
+    "to": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "DriveNode in the second facility."
+    },
+    "kind": {
+      "enum": [
+        "tunnel",
+        "bridge",
+        "internal_ramp",
+        "internal_road",
+        "public_road"
+      ],
+      "description": "Link kind."
+    },
+    "direction": {
+      "enum": [
+        "one_way_forward",
+        "one_way_reverse",
+        "two_way"
+      ],
+      "description": "Direction."
+    },
+    "ticket_transfer": {
+      "type": "object",
+      "required": [
+        "allowed"
+      ],
+      "additionalProperties": false,
+      "description": "Whether a ticket or session carries across.",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "conditions": {
+          "type": "string"
+        },
+        "gate_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        }
+      }
+    },
+    "limits": {
+      "$ref": "common.schema.json#/$defs/VehicleLimits"
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Hours."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

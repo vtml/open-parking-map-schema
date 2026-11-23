@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/destination-access.schema.json",
+  "title": "DestinationAccess",
+  "description": "Link between a destination and where a car can leave the passenger or park.",
+  "type": "object",
+  "required": [
+    "destination_id",
+    "via",
+    "target_id",
+    "walk_time_s"
+  ],
+  "properties": {
+    "destination_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Destination."
+    },
+    "via": {
+      "enum": [
+        "handover_zone",
+        "zone",
+        "portal"
+      ],
+      "description": "What target_id refers to."
+    },
+    "target_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Zone, handover zone or portal."
+    },
+    "walk_time_s": {
+      "type": "number",
+      "description": "Typical walking time.",
+      "minimum": 0
+    },
+    "walk_distance_m": {
+      "type": "number",
+      "description": "Walking distance.",
+      "minimum": 0
+    },
+    "step_free": {
+      "type": "boolean",
+      "description": "Step-free."
+    },
+    "covered": {
+      "type": "boolean",
+      "description": "Covered from weather."
+    },
+    "accessible_path_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "AccessiblePath describing the step-free route, if one exists."
+    },
+    "assistance_available": {
+      "type": "boolean",
+      "description": "Staff or an assistance point can help at the handover."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

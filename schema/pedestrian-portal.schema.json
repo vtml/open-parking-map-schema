@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/pedestrian-portal.schema.json",
+  "title": "PedestrianPortal",
+  "description": "A door, lift lobby or stair a person walks through.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "level_label"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Portal id."
+    },
+    "kind": {
+      "enum": [
+        "mall_door",
+        "lift_lobby",
+        "stairs",
+        "escalator",
+        "bridge",
+        "terminal_door",
+        "ward_entrance"
+      ],
+      "description": "Portal kind."
+    },
+    "level_label": {
+      "type": "string",
+      "description": "Level as signed on the pedestrian side."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "step_free": {
+      "type": "boolean",
+      "description": "Step-free."
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Hours."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

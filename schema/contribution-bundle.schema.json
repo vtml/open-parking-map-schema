@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/contribution-bundle.schema.json",
+  "title": "OPMS contribution bundle",
+  "description": "A contribution with its feature observations and alignment records, as submitted to a repository.",
+  "type": "object",
+  "required": [
+    "opms_version",
+    "contribution",
+    "feature_observations"
+  ],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x_": {}
+  },
+  "properties": {
+    "_note": {
+      "type": "string"
+    },
+    "opms_version": {
+      "type": "string",
+      "pattern": "^0[.]2[.][0-9]+$"
+    },
+    "contribution": {
+      "$ref": "contribution.schema.json"
+    },
+    "feature_observations": {
+      "type": "array",
+      "items": {
+        "$ref": "feature-observation.schema.json"
+      },
+      "description": "Observations.",
+      "minItems": 1
+    },
+    "alignment_records": {
+      "type": "array",
+      "items": {
+        "$ref": "alignment-record.schema.json"
+      },
+      "description": "Alignment records."
+    },
+    "anchor_observations": {
+      "type": "array",
+      "items": {
+        "$ref": "anchor-feature.schema.json"
+      },
+      "description": "Anchors proposed by the contributor."
+    }
+  }
+}

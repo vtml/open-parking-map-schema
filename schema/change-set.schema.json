@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/change-set.schema.json",
+  "title": "ChangeSet",
+  "description": "A diff between two dataset versions; the unit of the change feed.",
+  "type": "object",
+  "required": [
+    "id",
+    "site_id",
+    "from_version",
+    "to_version",
+    "created_at",
+    "reason_codes"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Change set id."
+    },
+    "site_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Site."
+    },
+    "from_version": {
+      "$ref": "common.schema.json#/$defs/Version"
+    },
+    "to_version": {
+      "$ref": "common.schema.json#/$defs/Version"
+    },
+    "created_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "new_survey",
+          "re_survey",
+          "operator_update",
+          "conflict_resolved",
+          "retirement",
+          "correction"
+        ],
+        "description": "Reason."
+      },
+      "description": "Why the change was made.",
+      "minItems": 1
+    },
+    "added": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Feature ids added."
+    },
+    "modified": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Feature ids modified."
+    },
+    "removed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "feature_id",
+          "feature_type",
+          "removed_at",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "description": "Tombstone.",
+        "properties": {
+          "feature_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "feature_type": {
+            "type": "string"
+          },
+          "removed_at": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "superseded_by": {
+            "$ref": "common.schema.json#/$defs/Id"
+          }
+        }
+      },
+      "description": "Tombstones for removed features."
+    },
+    "contribution_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Contributions that drove the change."
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Operator, authority or algorithm version that approved it."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

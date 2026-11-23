@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/dynamic-feed.schema.json",
+  "title": "DynamicFeed",
+  "description": "OPTIONAL dynamic layer feed (stream or document).",
+  "type": "object",
+  "required": [
+    "site_id",
+    "as_of"
+  ],
+  "properties": {
+    "site_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Site."
+    },
+    "as_of": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "occupancy": {
+      "type": "array",
+      "items": {
+        "$ref": "occupancy-update.schema.json"
+      },
+      "description": "Occupancy updates."
+    },
+    "closures": {
+      "type": "array",
+      "items": {
+        "$ref": "closure.schema.json"
+      },
+      "description": "Closures."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

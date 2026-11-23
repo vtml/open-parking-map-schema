@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/localization-aid.schema.json",
+  "title": "LocalizationAid",
+  "description": "Fiducial, beacon or landmark for GNSS-denied localisation.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "kind",
+    "pose"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Aid id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "kind": {
+      "enum": [
+        "apriltag",
+        "aruco",
+        "ble_beacon",
+        "uwb_anchor",
+        "pillar_label",
+        "painted_marker",
+        "surveyed_landmark"
+      ],
+      "description": "Aid kind."
+    },
+    "code": {
+      "type": "string",
+      "description": "Tag ID, beacon UUID/major/minor or label text."
+    },
+    "pose": {
+      "type": "object",
+      "required": [
+        "position"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "yaw_deg": {
+          "type": "number"
+        }
+      }
+    },
+    "accuracy_m": {
+      "type": "number",
+      "description": "1-sigma accuracy.",
+      "minimum": 0
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

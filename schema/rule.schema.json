@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/rule.schema.json",
+  "title": "Rule",
+  "description": "Time-conditioned permission or ban (CDS-style regulation).",
+  "type": "object",
+  "required": [
+    "id",
+    "applies_to",
+    "activity"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Rule id."
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Bays, zones, curb segments, access points, edges, handover zones.",
+      "minItems": 1
+    },
+    "activity": {
+      "enum": [
+        "park",
+        "stop",
+        "load",
+        "pick_up_drop_off",
+        "no_parking",
+        "no_stopping",
+        "clearway"
+      ],
+      "description": "Permitted or banned activity."
+    },
+    "when": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "Time windows."
+    },
+    "max_stay_min": {
+      "type": "integer",
+      "description": "Maximum stay, 2P = 120.",
+      "minimum": 1
+    },
+    "user_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "any",
+          "permit_area",
+          "disability_permit",
+          "motorcycle",
+          "loading_vehicle",
+          "taxi",
+          "tenant",
+          "ev_charging",
+          "family",
+          "community_transport",
+          "ndis_transport",
+          "patient_transport",
+          "courier",
+          "emergency",
+          "carer"
+        ],
+        "description": "User class."
+      },
+      "description": "Eligible users."
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "rate_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sign": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Sign as shown (Melbourne style).",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "symbol": {
+          "enum": [
+            "P",
+            "no_parking_P",
+            "no_stopping_S",
+            "clearway",
+            "loading_zone",
+            "disabled",
+            "permit",
+            "meter",
+            "ticket"
+          ]
+        }
+      }
+    },
+    "priority": {
+      "type": "integer",
+      "default": 0,
+      "description": "Higher wins when windows overlap."
+    },
+    "authority": {
+      "type": "string",
+      "description": "Council, road authority or operator."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

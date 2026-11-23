@@ -1,0 +1,691 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/common.schema.json",
+  "title": "OPMS common definitions",
+  "description": "Shared definitions reused by every OPMS object schema.",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:+-]{0,127}$",
+      "description": "Stable, dotted, lower-case, never reused."
+    },
+    "Version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$",
+      "description": "Dataset or change-set version label, e.g. 2026-11-23.1."
+    },
+    "DateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 / ISO 8601 with offset."
+    },
+    "LocalPoint": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "description": "[x, y, z] metres in the facility frame (x east, y north, z up)."
+    },
+    "Geometry": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "additionalProperties": false,
+      "description": "Geometry in a local frame. Coordinates are LocalPoints.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Point",
+            "LineString",
+            "Polygon"
+          ]
+        },
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LocalPoint"
+          },
+          "minItems": 1
+        },
+        "sigma_m": {
+          "type": "number",
+          "minimum": 0,
+          "description": "1-sigma horizontal position uncertainty."
+        }
+      }
+    },
+    "TimeWindow": {
+      "type": "object",
+      "required": [
+        "days",
+        "start",
+        "end"
+      ],
+      "additionalProperties": false,
+      "description": "Local-time window in the site's IANA timezone.",
+      "properties": {
+        "days": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "mo",
+              "tu",
+              "we",
+              "th",
+              "fr",
+              "sa",
+              "su",
+              "ph"
+            ]
+          }
+        },
+        "start": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^(([01][0-9]|2[0-3]):[0-5][0-9]|24:00)$"
+        }
+      }
+    },
+    "VehicleLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Physical limits. The lowest value along a route wins.",
+      "properties": {
+        "max_height_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_width_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_length_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_mass_kg": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "vehicle_classes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "car",
+              "motorcycle",
+              "van",
+              "light_truck",
+              "bus"
+            ]
+          }
+        }
+      }
+    },
+    "ExternalRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Links to other standards' identifiers instead of copying their geometry.",
+      "properties": {
+        "lanelet2_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "opendrive": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "road": {
+              "type": "string"
+            },
+            "lane": {
+              "type": "integer"
+            },
+            "object": {
+              "type": "string"
+            }
+          }
+        },
+        "osm": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(node|way|relation)/[0-9]+$"
+          }
+        },
+        "indoorgml_cell": {
+          "type": "string"
+        },
+        "nds_live_id": {
+          "type": "string"
+        },
+        "cds_zone_id": {
+          "type": "string"
+        },
+        "apds_id": {
+          "type": "string"
+        },
+        "apds_place_id": {
+          "type": "string",
+          "description": "APDS Place id (Place > SubplaceElement > IdentifiedArea > Space hierarchy is reused, not duplicated)."
+        },
+        "apds_subplace_id": {
+          "type": "string"
+        },
+        "apds_identified_area_id": {
+          "type": "string"
+        },
+        "apds_space_id": {
+          "type": "string"
+        },
+        "maze_id": {
+          "type": "string",
+          "description": "Reserved: identifier in a MAZE facility map (interoperability is an open question)."
+        },
+        "iso5206_id": {
+          "type": "string",
+          "description": "Identifier in an ISO/TS 5206-1 core data model instance."
+        }
+      }
+    },
+    "Provenance": {
+      "type": "object",
+      "required": [
+        "source",
+        "observed_at"
+      ],
+      "additionalProperties": false,
+      "description": "Where a fact came from and when it was last confirmed.",
+      "properties": {
+        "source": {
+          "enum": [
+            "survey",
+            "operator",
+            "authority",
+            "vehicle_crowd",
+            "sensor",
+            "import",
+            "consolidation"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "contribution_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "description": "Contributions that support this record (crowdsourced features)."
+        },
+        "change_set_id": {
+          "$ref": "#/$defs/Id",
+          "description": "Change set that last touched this record."
+        }
+      }
+    },
+    "Evidence": {
+      "type": "object",
+      "required": [
+        "n_observations",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "Per-feature multi-source evidence kept by the consolidating repository.",
+      "properties": {
+        "n_observations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_distinct_contributors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_distinct_vehicles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_seen": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "last_seen": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "agreement_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weighted share of observations consistent with the consensus."
+        },
+        "positional_sigma_m": {
+          "type": "number",
+          "minimum": 0
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "provisional",
+            "verified",
+            "disputed",
+            "retired"
+          ]
+        }
+      }
+    },
+    "Lifecycle": {
+      "enum": [
+        "active",
+        "superseded",
+        "retired"
+      ],
+      "description": "Feature lifecycle. Retired features are announced by a tombstone in a ChangeSet."
+    },
+    "LicenceTerms": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Usage terms for a dataset, feature or contribution.",
+      "anyOf": [
+        {
+          "required": [
+            "spdx_id"
+          ]
+        },
+        {
+          "required": [
+            "custom_terms_uri"
+          ]
+        }
+      ],
+      "properties": {
+        "spdx_id": {
+          "type": "string",
+          "description": "SPDX identifier, e.g. CC-BY-4.0."
+        },
+        "custom_terms_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "commercial_use": {
+          "type": "boolean"
+        },
+        "attribution_required": {
+          "type": "boolean"
+        },
+        "redistribution": {
+          "enum": [
+            "allowed",
+            "restricted",
+            "prohibited"
+          ]
+        },
+        "derivative_works": {
+          "enum": [
+            "allowed",
+            "restricted",
+            "prohibited"
+          ]
+        },
+        "ai_training_use": {
+          "enum": [
+            "allowed",
+            "restricted",
+            "prohibited",
+            "unspecified"
+          ]
+        },
+        "retention_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sublicensable": {
+          "type": "boolean"
+        },
+        "sublicence_chain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          }
+        }
+      }
+    },
+    "QualityTier": {
+      "type": "object",
+      "required": [
+        "tier"
+      ],
+      "additionalProperties": false,
+      "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier.",
+      "properties": {
+        "tier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "0 indicative, 1 ADAS-grade, 2 supervised self-park, 3 driverless."
+        },
+        "accuracy_class": {
+          "enum": [
+            "indicative",
+            "adas",
+            "supervised_self_park",
+            "driverless"
+          ]
+        },
+        "completeness_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "last_audit": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "certification_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          }
+        }
+      }
+    },
+    "ApprovalStatus": {
+      "type": "object",
+      "required": [
+        "owner_consent"
+      ],
+      "additionalProperties": false,
+      "description": "Facility owner or operator consent for mapping and use.",
+      "properties": {
+        "owner_consent": {
+          "enum": [
+            "unknown",
+            "granted",
+            "denied",
+            "conditional"
+          ]
+        },
+        "granted_by": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "geometry_only",
+              "publish",
+              "driverless_use",
+              "commercial_use"
+            ]
+          }
+        },
+        "valid_to": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "signage": {
+          "type": "boolean",
+          "description": "Mapping or AVP signage is posted on site."
+        },
+        "dispute_contact": {
+          "type": "string",
+          "description": "Public contact for corrections or takedown (organisation role or URL)."
+        }
+      }
+    },
+    "Profile": {
+      "enum": [
+        "static-core",
+        "static-rules",
+        "dynamic",
+        "services"
+      ],
+      "default": "static-core",
+      "description": "Cumulative dataset profile. static-core is the default and requires no live data."
+    },
+    "BayAccessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Accessible-bay attributes. Dimensions are as built; standard_ref says what the facility was designed or audited against.",
+      "properties": {
+        "standard_ref": {
+          "type": "string",
+          "description": "e.g. AS 2890.6:2022 (verify the edition in force)."
+        },
+        "bay_width_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "bay_length_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "shared_zone": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "side": {
+              "enum": [
+                "none",
+                "left",
+                "right",
+                "both"
+              ]
+            },
+            "width_m": {
+              "type": "number",
+              "minimum": 0
+            },
+            "length_m": {
+              "type": "number",
+              "minimum": 0
+            },
+            "rear_length_m": {
+              "type": "number",
+              "minimum": 0
+            },
+            "shared_between_bays": {
+              "type": "boolean"
+            }
+          }
+        },
+        "kerb_ramp": {
+          "type": "boolean"
+        },
+        "surface": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "material": {
+              "enum": [
+                "asphalt",
+                "concrete",
+                "pavers",
+                "gravel",
+                "other"
+              ]
+            },
+            "slip_resistant": {
+              "type": "boolean"
+            }
+          }
+        },
+        "gradient_pct": {
+          "type": "number",
+          "description": "Maximum gradient across the bay and shared zone."
+        },
+        "headroom_m": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Minimum headroom over the bay and its approach."
+        },
+        "high_roof_van_ok": {
+          "type": "boolean",
+          "description": "Headroom and approach suit high-roof wheelchair vans."
+        },
+        "loading": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Clear space for ramps and lifts.",
+          "properties": {
+            "rear_ramp_clearance_m": {
+              "type": "number",
+              "minimum": 0
+            },
+            "side_lift_clearance_m": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "distance_to_accessible_entrance_m": {
+          "type": "number",
+          "minimum": 0
+        },
+        "rest_point_on_path": {
+          "type": "boolean"
+        },
+        "permit_scheme": {
+          "enum": [
+            "none",
+            "adps",
+            "organisation",
+            "any_accessible"
+          ],
+          "description": "adps = Australian Disability Parking Scheme permit."
+        },
+        "bollard": {
+          "type": "boolean",
+          "description": "Bollard in the shared zone to keep it clear."
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "last_audited": {
+              "$ref": "#/$defs/DateTime"
+            },
+            "method": {
+              "enum": [
+                "survey",
+                "self_report",
+                "crowd"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "HandoverAccessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Accessibility of a drop-off or pick-up zone.",
+      "properties": {
+        "kerbside_transfer_space_m": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Clear width beside the vehicle for a wheelchair transfer or ramp."
+        },
+        "kerb_ramp": {
+          "type": "boolean"
+        },
+        "step_free_to_destination": {
+          "type": "boolean"
+        },
+        "sheltered": {
+          "type": "boolean"
+        },
+        "seating": {
+          "type": "boolean"
+        },
+        "assistance_point": {
+          "type": "boolean"
+        },
+        "tactile_marking": {
+          "type": "boolean"
+        },
+        "lighting": {
+          "enum": [
+            "none",
+            "partial",
+            "good"
+          ]
+        },
+        "wait_time_allowance_s": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Extra standing time allowed when a passenger needs assistance."
+        }
+      }
+    },
+    "PublicationTerms": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How openly the dataset is published so councils, disability organisations and non-AV apps can use it.",
+      "properties": {
+        "public_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "api_endpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "json",
+              "geojson",
+              "opendrive",
+              "lanelet2",
+              "indoorgml",
+              "apds"
+            ]
+          }
+        },
+        "bulk_download": {
+          "type": "boolean"
+        },
+        "non_av_use_allowed": {
+          "type": "boolean",
+          "description": "Usable by people driving themselves or being driven, not only by automated vehicles."
+        },
+        "accessible_documentation": {
+          "type": "boolean"
+        },
+        "update_frequency": {
+          "enum": [
+            "realtime",
+            "daily",
+            "weekly",
+            "monthly",
+            "on_change"
+          ]
+        },
+        "accessibility_contact": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

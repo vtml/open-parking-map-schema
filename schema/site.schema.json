@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/site.schema.json",
+  "title": "Site",
+  "description": "A precinct containing facilities, destinations and handover zones.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "kind",
+    "timezone",
+    "facility_ids"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Site id."
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name."
+    },
+    "kind": {
+      "enum": [
+        "shopping_centre",
+        "airport",
+        "hospital",
+        "campus",
+        "residential",
+        "office",
+        "event_venue",
+        "street_precinct"
+      ],
+      "description": "Precinct type."
+    },
+    "timezone": {
+      "type": "string",
+      "description": "IANA timezone; all time windows are local to it."
+    },
+    "ticket_scope": {
+      "enum": [
+        "facility",
+        "site"
+      ],
+      "description": "Whether one ticket works across complexes by default.",
+      "default": "facility"
+    },
+    "facility_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Complexes in the precinct."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction whose repository and rules govern this site."
+    },
+    "locality_class": {
+      "enum": [
+        "metro_premium",
+        "metro_suburban",
+        "regional",
+        "rural"
+      ],
+      "description": "Used to measure equity of coverage across suburbs and regions, not only premium sites."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

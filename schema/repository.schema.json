@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/repository.schema.json",
+  "title": "Repository",
+  "description": "Central repository (or licensed-unit gateway) for a jurisdiction.",
+  "type": "object",
+  "required": [
+    "id",
+    "operator",
+    "jurisdiction_id",
+    "role",
+    "endpoint",
+    "storage_region"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Repository id."
+    },
+    "operator": {
+      "type": "string",
+      "description": "Operating organisation."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction."
+    },
+    "role": {
+      "enum": [
+        "repository",
+        "licensed_unit_gateway",
+        "consortium"
+      ],
+      "description": "Role."
+    },
+    "endpoint": {
+      "type": "string",
+      "format": "uri"
+    },
+    "storage_region": {
+      "type": "string",
+      "description": "Where data is stored, e.g. AU or CN."
+    },
+    "signing_key_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Keys used to sign datasets and change sets."
+    },
+    "default_licence": {
+      "$ref": "common.schema.json#/$defs/LicenceTerms"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

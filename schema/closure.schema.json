@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/closure.schema.json",
+  "title": "Closure",
+  "description": "OPTIONAL temporary change. Not part of the static-core profile.",
+  "type": "object",
+  "required": [
+    "id",
+    "target_ids",
+    "effect",
+    "reason",
+    "window"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Closure id."
+    },
+    "target_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Edges, levels, access points, links."
+    },
+    "effect": {
+      "enum": [
+        "closed",
+        "restricted",
+        "reversed_direction",
+        "reduced_clearance",
+        "event_only"
+      ],
+      "description": "Effect."
+    },
+    "reason": {
+      "enum": [
+        "event",
+        "maintenance",
+        "flooding",
+        "incident",
+        "security"
+      ],
+      "description": "Reason."
+    },
+    "window": {
+      "type": "object",
+      "required": [
+        "start"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        },
+        "end": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        }
+      }
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

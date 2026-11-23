@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/redaction-policy.schema.json",
+  "title": "RedactionPolicy",
+  "description": "Privacy redaction requirements for contributions.",
+  "type": "object",
+  "required": [
+    "id",
+    "imagery",
+    "trajectories",
+    "on_board_required"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Policy id."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction it applies to."
+    },
+    "imagery": {
+      "enum": [
+        "none",
+        "redacted_only",
+        "raw_to_licensed_unit_only"
+      ],
+      "description": "Imagery allowed in contributions."
+    },
+    "blur_faces": {
+      "type": "boolean",
+      "description": "Faces blurred."
+    },
+    "blur_plates": {
+      "type": "boolean",
+      "description": "Plates blurred."
+    },
+    "on_board_required": {
+      "type": "boolean",
+      "description": "Redaction must happen on the vehicle."
+    },
+    "trajectories": {
+      "enum": [
+        "none",
+        "derived_geometry_only"
+      ],
+      "description": "Whether raw vehicle trajectories may be uploaded."
+    },
+    "trim_start_m": {
+      "type": "number",
+      "description": "Trim this much of the start of each trace.",
+      "minimum": 0
+    },
+    "trim_end_m": {
+      "type": "number",
+      "description": "Trim this much of the end of each trace.",
+      "minimum": 0
+    },
+    "time_jitter_s": {
+      "type": "number",
+      "description": "Random time offset applied.",
+      "minimum": 0
+    },
+    "location_jitter_m": {
+      "type": "number",
+      "description": "Random offset for coarse locations.",
+      "minimum": 0
+    },
+    "min_contributors_before_release": {
+      "type": "integer",
+      "description": "Minimum distinct contributors before a feature is published.",
+      "minimum": 1
+    },
+    "retention_days": {
+      "type": "integer",
+      "description": "Retention of raw contributions.",
+      "minimum": 0
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

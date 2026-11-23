@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/occupancy-update.schema.json",
+  "title": "OccupancyUpdate",
+  "description": "OPTIONAL live state. Not part of the static-core profile.",
+  "type": "object",
+  "required": [
+    "target_id",
+    "observed_at",
+    "ttl_s",
+    "source"
+  ],
+  "properties": {
+    "target_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Bay, zone, level or facility."
+    },
+    "state": {
+      "enum": [
+        "free",
+        "occupied",
+        "reserved",
+        "blocked",
+        "unknown"
+      ],
+      "description": "Bay-level state."
+    },
+    "free": {
+      "type": "integer",
+      "description": "Free count.",
+      "minimum": 0
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total count.",
+      "minimum": 0
+    },
+    "observed_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "ttl_s": {
+      "type": "integer",
+      "description": "Treat as unknown after this many seconds.",
+      "minimum": 1
+    },
+    "source": {
+      "enum": [
+        "bay_sensor",
+        "camera",
+        "gate_count",
+        "vehicle",
+        "operator"
+      ],
+      "description": "Source."
+    },
+    "confidence": {
+      "type": "number",
+      "description": "0-1.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "required": [
+        "state"
+      ]
+    },
+    {
+      "required": [
+        "free",
+        "total"
+      ]
+    }
+  ]
+}

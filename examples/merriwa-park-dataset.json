@@ -1,0 +1,1939 @@
+{
+  "_note": "FICTIONAL EXAMPLE DATA. Merriwa Park Shopping Centre, its roads, IDs, prices, coordinates and organisations are invented for illustration.",
+  "opms_version": "0.2.0",
+  "dataset_version": "2026-11-23.1",
+  "profile": "static-rules",
+  "site": {
+    "id": "mpsc",
+    "name": "Merriwa Park Shopping Centre (fictional)",
+    "kind": "shopping_centre",
+    "timezone": "Australia/Melbourne",
+    "ticket_scope": "facility",
+    "jurisdiction_id": "jur.au-vic",
+    "facility_ids": [
+      "mpsc.p1",
+      "mpsc.p2",
+      "mpsc.p3"
+    ],
+    "locality_class": "metro_suburban"
+  },
+  "frames": [
+    {
+      "id": "mpsc.frame",
+      "origin_wgs84": {
+        "lat": -37.9,
+        "lon": 145.1,
+        "h_ellipsoid_m": 62.0
+      },
+      "x_axis_bearing_deg": 90,
+      "anchor_accuracy_m": 0.05
+    }
+  ],
+  "facilities": [
+    {
+      "id": "mpsc.p1",
+      "site_id": "mpsc",
+      "name": "North Multi-deck",
+      "type": "multi_storey",
+      "frame_id": "mpsc.frame",
+      "gnss": "degraded",
+      "capacity": 1200,
+      "levels": [
+        {
+          "id": "mpsc.p1.g",
+          "ordinal": 0,
+          "label": "G",
+          "elevation_m": 0,
+          "clearance_m": 2.2,
+          "gnss": "degraded",
+          "entry_anchor_ids": [
+            "mpsc.p1.g.anc.ramp-mouth"
+          ]
+        },
+        {
+          "id": "mpsc.p1.l1",
+          "ordinal": 1,
+          "label": "L1",
+          "elevation_m": 3.2,
+          "clearance_m": 2.2,
+          "gnss": "none",
+          "entry_anchor_ids": [
+            "mpsc.p1.l1.anc.ramp-head"
+          ]
+        },
+        {
+          "id": "mpsc.p1.l2",
+          "ordinal": 2,
+          "label": "L2",
+          "elevation_m": 6.4,
+          "clearance_m": 2.2,
+          "gnss": "none",
+          "entry_anchor_ids": [
+            "mpsc.p1.l2.anc.ramp-head"
+          ]
+        },
+        {
+          "id": "mpsc.p1.roof",
+          "ordinal": 3,
+          "label": "Roof",
+          "elevation_m": 9.6,
+          "open_air": true,
+          "gnss": "good"
+        }
+      ],
+      "operating_hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "06:00",
+          "end": "24:00"
+        }
+      ],
+      "rate_id": "mpsc.rate.std",
+      "approval": {
+        "owner_consent": "granted",
+        "granted_by": "Fictional Centre Management (example)",
+        "scope": [
+          "geometry_only",
+          "publish",
+          "driverless_use"
+        ],
+        "signage": true,
+        "dispute_contact": "Centre operations desk (example)"
+      },
+      "quality_tier": {
+        "tier": 3,
+        "accuracy_class": "driverless",
+        "completeness_pct": 98,
+        "last_audit": "2026-10-30T10:00:00+11:00",
+        "certification_ids": [
+          "mpsc.cert.p1"
+        ]
+      },
+      "licence": {
+        "spdx_id": "CC-BY-4.0",
+        "commercial_use": true,
+        "attribution_required": true,
+        "ai_training_use": "allowed"
+      },
+      "avp": {
+        "iso23374_type": 3,
+        "handover_zone_ids": [
+          "mpsc.hz.north"
+        ],
+        "capabilities": [
+          "bay_assignment",
+          "remote_gate_open",
+          "remote_assist"
+        ],
+        "endpoint": "https://avp.example.org/mpsc"
+      },
+      "evidence": {
+        "n_observations": 412,
+        "n_distinct_contributors": 3,
+        "n_distinct_vehicles": 57,
+        "first_seen": "2026-09-02T08:00:00+10:00",
+        "last_seen": "2026-11-19T17:30:00+11:00",
+        "agreement_score": 0.97,
+        "positional_sigma_m": 0.08,
+        "status": "verified"
+      },
+      "provenance": {
+        "source": "consolidation",
+        "observed_at": "2026-11-20T09:00:00+11:00",
+        "confidence": 0.97,
+        "contribution_ids": [
+          "mpsc.c.0001",
+          "mpsc.c.0002"
+        ],
+        "change_set_id": "mpsc.cs.2026-11-23.1"
+      }
+    },
+    {
+      "id": "mpsc.p2",
+      "site_id": "mpsc",
+      "name": "Basement under the mall",
+      "type": "underground",
+      "frame_id": "mpsc.frame",
+      "gnss": "none",
+      "capacity": 850,
+      "levels": [
+        {
+          "id": "mpsc.p2.b1",
+          "ordinal": -1,
+          "label": "B1",
+          "elevation_m": -3.4,
+          "clearance_m": 2.1,
+          "gnss": "none",
+          "entry_anchor_ids": [
+            "mpsc.p2.b1.anc.gate-line"
+          ]
+        },
+        {
+          "id": "mpsc.p2.b2",
+          "ordinal": -2,
+          "label": "B2",
+          "elevation_m": -6.8,
+          "clearance_m": 2.1,
+          "gnss": "none",
+          "entry_anchor_ids": [
+            "mpsc.p2.b2.anc.ramp-head"
+          ]
+        }
+      ],
+      "operating_hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "22:30"
+        }
+      ],
+      "rate_id": "mpsc.rate.std",
+      "approval": {
+        "owner_consent": "conditional",
+        "granted_by": "Fictional Centre Management (example)",
+        "scope": [
+          "geometry_only",
+          "publish"
+        ],
+        "signage": false
+      },
+      "quality_tier": {
+        "tier": 2,
+        "accuracy_class": "supervised_self_park",
+        "completeness_pct": 91,
+        "last_audit": "2026-10-30T10:00:00+11:00"
+      },
+      "avp": {
+        "iso23374_type": 1,
+        "capabilities": [
+          "occupancy_feed"
+        ]
+      },
+      "provenance": {
+        "source": "vehicle_crowd",
+        "observed_at": "2026-11-20T09:00:00+11:00",
+        "confidence": 0.88,
+        "contribution_ids": [
+          "mpsc.c.0001"
+        ]
+      }
+    },
+    {
+      "id": "mpsc.p3",
+      "site_id": "mpsc",
+      "name": "East surface lot",
+      "type": "surface_lot",
+      "frame_id": "mpsc.frame",
+      "gnss": "good",
+      "capacity": 380,
+      "levels": [
+        {
+          "id": "mpsc.p3.g",
+          "ordinal": 0,
+          "label": "G",
+          "elevation_m": 0,
+          "open_air": true,
+          "gnss": "good"
+        }
+      ],
+      "operating_hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "rate_id": "mpsc.rate.p3",
+      "approval": {
+        "owner_consent": "granted",
+        "scope": [
+          "geometry_only",
+          "publish"
+        ],
+        "signage": false
+      },
+      "quality_tier": {
+        "tier": 1,
+        "accuracy_class": "adas",
+        "completeness_pct": 100
+      },
+      "provenance": {
+        "source": "survey",
+        "observed_at": "2026-11-20T09:00:00+11:00",
+        "confidence": 0.99
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "mpsc.p1.l2.zone-c",
+      "level_id": "mpsc.p1.l2",
+      "name": "Zone C"
+    },
+    {
+      "id": "mpsc.p2.b1.zone-a",
+      "level_id": "mpsc.p2.b1",
+      "name": "Zone A (supermarket)"
+    },
+    {
+      "id": "mpsc.p3.g.zone-e",
+      "level_id": "mpsc.p3.g",
+      "name": "East lot"
+    }
+  ],
+  "bays": [
+    {
+      "id": "mpsc.p1.l2.b0231",
+      "zone_id": "mpsc.p1.l2.zone-c",
+      "polygon": [
+        [
+          41.2,
+          18.0,
+          6.4
+        ],
+        [
+          43.6,
+          18.0,
+          6.4
+        ],
+        [
+          43.6,
+          23.4,
+          6.4
+        ],
+        [
+          41.2,
+          23.4,
+          6.4
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 0,
+      "bay_types": [
+        "ev"
+      ],
+      "ev": {
+        "connector": "ccs2",
+        "power_kw": 50,
+        "charger_id": "mpsc-ev-07"
+      },
+      "painted_label": "C-231",
+      "rule_ids": [
+        "mpsc.rule.ev-only"
+      ],
+      "evidence": {
+        "n_observations": 19,
+        "n_distinct_contributors": 2,
+        "n_distinct_vehicles": 11,
+        "agreement_score": 0.95,
+        "positional_sigma_m": 0.06,
+        "status": "verified"
+      },
+      "provenance": {
+        "source": "consolidation",
+        "observed_at": "2026-11-20T09:00:00+11:00",
+        "confidence": 0.95,
+        "contribution_ids": [
+          "mpsc.c.0001",
+          "mpsc.c.0002"
+        ]
+      }
+    },
+    {
+      "id": "mpsc.p2.b1.b0012",
+      "zone_id": "mpsc.p2.b1.zone-a",
+      "polygon": [
+        [
+          12.0,
+          4.0,
+          -3.4
+        ],
+        [
+          15.8,
+          4.0,
+          -3.4
+        ],
+        [
+          15.8,
+          9.4,
+          -3.4
+        ],
+        [
+          12.0,
+          9.4,
+          -3.4
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 0,
+      "bay_types": [
+        "accessible"
+      ],
+      "painted_label": "A-12",
+      "rule_ids": [
+        "mpsc.rule.accessible"
+      ],
+      "external_refs": {
+        "lanelet2_ids": [
+          100412
+        ]
+      },
+      "accessibility": {
+        "standard_ref": "AS 2890.6:2022 (design reference, example)",
+        "bay_width_m": 2.7,
+        "bay_length_m": 5.5,
+        "shared_zone": {
+          "side": "both",
+          "width_m": 2.7,
+          "length_m": 5.5,
+          "rear_length_m": 2.4,
+          "shared_between_bays": false
+        },
+        "kerb_ramp": true,
+        "surface": {
+          "material": "concrete",
+          "slip_resistant": true
+        },
+        "gradient_pct": 1.5,
+        "headroom_m": 2.5,
+        "high_roof_van_ok": true,
+        "loading": {
+          "rear_ramp_clearance_m": 2.4,
+          "side_lift_clearance_m": 2.7
+        },
+        "distance_to_accessible_entrance_m": 24,
+        "rest_point_on_path": false,
+        "permit_scheme": "adps",
+        "bollard": true,
+        "audit": {
+          "last_audited": "2026-10-30T10:00:00+11:00",
+          "method": "survey"
+        }
+      }
+    },
+    {
+      "id": "mpsc.p2.b1.b0013",
+      "zone_id": "mpsc.p2.b1.zone-a",
+      "polygon": [
+        [
+          16.0,
+          4.0,
+          -3.4
+        ],
+        [
+          19.8,
+          4.0,
+          -3.4
+        ],
+        [
+          19.8,
+          9.4,
+          -3.4
+        ],
+        [
+          16.0,
+          9.4,
+          -3.4
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 0,
+      "bay_types": [
+        "accessible"
+      ],
+      "painted_label": "A-13",
+      "rule_ids": [
+        "mpsc.rule.accessible"
+      ],
+      "accessibility": {
+        "standard_ref": "AS 2890.6:2022 (design reference, example)",
+        "bay_width_m": 2.7,
+        "bay_length_m": 5.5,
+        "shared_zone": {
+          "side": "left",
+          "width_m": 2.7,
+          "length_m": 5.5,
+          "rear_length_m": 2.4,
+          "shared_between_bays": true
+        },
+        "kerb_ramp": true,
+        "headroom_m": 2.1,
+        "high_roof_van_ok": false,
+        "permit_scheme": "adps",
+        "distance_to_accessible_entrance_m": 26
+      }
+    },
+    {
+      "id": "mpsc.p2.b1.b0020",
+      "zone_id": "mpsc.p2.b1.zone-a",
+      "polygon": [
+        [
+          30.0,
+          4.0,
+          -3.4
+        ],
+        [
+          32.7,
+          4.0,
+          -3.4
+        ],
+        [
+          32.7,
+          9.4,
+          -3.4
+        ],
+        [
+          30.0,
+          9.4,
+          -3.4
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "bay_types": [
+        "family"
+      ],
+      "painted_label": "F-20"
+    },
+    {
+      "id": "mpsc.p3.g.b0301",
+      "zone_id": "mpsc.p3.g.zone-e",
+      "polygon": [
+        [
+          160.0,
+          40.0,
+          0.0
+        ],
+        [
+          163.0,
+          40.0,
+          0.0
+        ],
+        [
+          163.0,
+          48.0,
+          0.0
+        ],
+        [
+          160.0,
+          48.0,
+          0.0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "bay_types": [
+        "community_transport",
+        "ndis_transport",
+        "patient_transport"
+      ],
+      "painted_label": "CT-1",
+      "rule_ids": [
+        "mpsc.rule.ct"
+      ],
+      "accessibility": {
+        "bay_width_m": 3.0,
+        "bay_length_m": 8.0,
+        "shared_zone": {
+          "side": "both",
+          "width_m": 3.0
+        },
+        "kerb_ramp": true,
+        "headroom_m": 3.0,
+        "high_roof_van_ok": true,
+        "loading": {
+          "rear_ramp_clearance_m": 3.5,
+          "side_lift_clearance_m": 3.0
+        },
+        "permit_scheme": "organisation"
+      }
+    },
+    {
+      "id": "mpsc.p3.g.b0302",
+      "zone_id": "mpsc.p3.g.zone-e",
+      "polygon": [
+        [
+          165.0,
+          40.0,
+          0.0
+        ],
+        [
+          168.0,
+          40.0,
+          0.0
+        ],
+        [
+          168.0,
+          47.0,
+          0.0
+        ],
+        [
+          165.0,
+          47.0,
+          0.0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "bay_types": [
+        "taxi"
+      ],
+      "painted_label": "TX-1"
+    },
+    {
+      "id": "mpsc.p3.g.b0303",
+      "zone_id": "mpsc.p3.g.zone-e",
+      "polygon": [
+        [
+          170.0,
+          40.0,
+          0.0
+        ],
+        [
+          173.2,
+          40.0,
+          0.0
+        ],
+        [
+          173.2,
+          47.5,
+          0.0
+        ],
+        [
+          170.0,
+          47.5,
+          0.0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "bay_types": [
+        "courier",
+        "oversize_van"
+      ],
+      "painted_label": "L-1"
+    }
+  ],
+  "drive_nodes": [
+    {
+      "id": "mpsc.p1.g.n01",
+      "level_id": "mpsc.p1.g",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "mpsc.p1.g.n12",
+      "level_id": "mpsc.p1.g",
+      "position": [
+        60.0,
+        10.0,
+        0.0
+      ]
+    },
+    {
+      "id": "mpsc.p1.l1.n01",
+      "level_id": "mpsc.p1.l1",
+      "position": [
+        62.0,
+        14.0,
+        3.2
+      ]
+    },
+    {
+      "id": "mpsc.p2.b1.n03",
+      "level_id": "mpsc.p2.b1",
+      "position": [
+        64.0,
+        12.0,
+        -3.4
+      ]
+    },
+    {
+      "id": "mpsc.p2.b1.n20",
+      "level_id": "mpsc.p2.b1",
+      "position": [
+        140.0,
+        30.0,
+        -3.4
+      ]
+    },
+    {
+      "id": "mpsc.p3.g.n01",
+      "level_id": "mpsc.p3.g",
+      "position": [
+        150.0,
+        32.0,
+        0.0
+      ]
+    }
+  ],
+  "drive_edges": [
+    {
+      "id": "mpsc.e.p1.g.001",
+      "from_node": "mpsc.p1.g.n01",
+      "to_node": "mpsc.p1.g.n12",
+      "kind": "aisle",
+      "level_id": "mpsc.p1.g",
+      "width_m": 6.0,
+      "speed_limit_kmh": 10,
+      "centreline": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          60.0,
+          10.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "id": "mpsc.e.p1.ramp.g-l1",
+      "from_node": "mpsc.p1.g.n12",
+      "to_node": "mpsc.p1.l1.n01",
+      "kind": "ramp",
+      "level_id": "mpsc.p1.g",
+      "width_m": 5.5,
+      "speed_limit_kmh": 5,
+      "ramp": {
+        "form": "helical",
+        "gradient_pct": 12.5,
+        "inner_radius_m": 6.5
+      },
+      "limits": {
+        "max_height_m": 2.2
+      },
+      "turn_restrictions": [
+        {
+          "banned_next_edge": "mpsc.e.p1.g.001"
+        }
+      ]
+    }
+  ],
+  "access_points": [
+    {
+      "id": "mpsc.ap1",
+      "facility_id": "mpsc.p1",
+      "role": "both",
+      "road_link": {
+        "road_name": "Merriwa Rd (fictional)",
+        "intersection_id": "int.merriwa-banksia",
+        "approach_bearing_deg": 0,
+        "signalised": true
+      },
+      "movements_in": [
+        "left_in",
+        "right_in"
+      ],
+      "movements_out": [
+        "left_out",
+        "right_out"
+      ],
+      "served_level_ids": [
+        "mpsc.p1.g"
+      ],
+      "limits": {
+        "max_height_m": 2.2
+      },
+      "credentials": [
+        "ticket",
+        "lpr",
+        "app",
+        "tap_card"
+      ],
+      "gate_ids": [
+        "mpsc.g1.in",
+        "mpsc.g1.out"
+      ],
+      "queue_capacity_veh": 12,
+      "emergency_access": {
+        "fire_brigade_access": true,
+        "ambulance_clearance_m": 2.2,
+        "emergency_override": true
+      }
+    },
+    {
+      "id": "mpsc.ap2",
+      "facility_id": "mpsc.p1",
+      "role": "entry",
+      "road_link": {
+        "road_name": "Banksia St (fictional)",
+        "signalised": false
+      },
+      "movements_in": [
+        "left_in"
+      ],
+      "served_level_ids": [
+        "mpsc.p1.l1"
+      ],
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "08:00",
+          "end": "21:00"
+        }
+      ],
+      "limits": {
+        "max_height_m": 2.2
+      },
+      "credentials": [
+        "ticket",
+        "lpr",
+        "app"
+      ],
+      "gate_ids": [
+        "mpsc.g2"
+      ],
+      "queue_capacity_veh": 6
+    },
+    {
+      "id": "mpsc.ap3",
+      "facility_id": "mpsc.p1",
+      "role": "exit",
+      "road_link": {
+        "road_name": "Banksia St (fictional)",
+        "signalised": false
+      },
+      "movements_out": [
+        "left_out"
+      ],
+      "served_level_ids": [
+        "mpsc.p1.l1",
+        "mpsc.p1.l2",
+        "mpsc.p1.roof"
+      ],
+      "limits": {
+        "max_height_m": 2.2
+      },
+      "credentials": [
+        "ticket",
+        "lpr",
+        "app",
+        "tap_card"
+      ],
+      "gate_ids": [
+        "mpsc.g3"
+      ]
+    },
+    {
+      "id": "mpsc.ap4",
+      "facility_id": "mpsc.p2",
+      "role": "both",
+      "road_link": {
+        "road_name": "Merriwa Rd (fictional)",
+        "intersection_id": "int.merriwa-ring",
+        "signalised": true
+      },
+      "movements_in": [
+        "left_in",
+        "right_in"
+      ],
+      "movements_out": [
+        "left_out",
+        "right_out"
+      ],
+      "served_level_ids": [
+        "mpsc.p2.b1"
+      ],
+      "limits": {
+        "max_height_m": 2.1,
+        "vehicle_classes": [
+          "car",
+          "motorcycle"
+        ]
+      },
+      "credentials": [
+        "ticket",
+        "lpr",
+        "app"
+      ],
+      "gate_ids": [
+        "mpsc.g4.in",
+        "mpsc.g4.out"
+      ],
+      "queue_capacity_veh": 8,
+      "emergency_access": {
+        "fire_brigade_access": true,
+        "ambulance_clearance_m": 2.1,
+        "emergency_override": true
+      }
+    },
+    {
+      "id": "mpsc.ap5",
+      "facility_id": "mpsc.p2",
+      "role": "exit",
+      "road_link": {
+        "road_name": "Wattle Ave (fictional)",
+        "signalised": false
+      },
+      "movements_out": [
+        "left_out"
+      ],
+      "served_level_ids": [
+        "mpsc.p2.b2"
+      ],
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "21:00"
+        }
+      ],
+      "limits": {
+        "max_height_m": 2.1
+      },
+      "credentials": [
+        "ticket",
+        "lpr",
+        "app"
+      ],
+      "gate_ids": [
+        "mpsc.g5"
+      ]
+    },
+    {
+      "id": "mpsc.ap6",
+      "facility_id": "mpsc.p3",
+      "role": "both",
+      "road_link": {
+        "road_name": "Wattle Ave (fictional)",
+        "intersection_id": "int.wattle-ring",
+        "signalised": true
+      },
+      "movements_in": [
+        "left_in",
+        "right_in"
+      ],
+      "movements_out": [
+        "left_out",
+        "right_out"
+      ],
+      "served_level_ids": [
+        "mpsc.p3.g"
+      ],
+      "credentials": [
+        "lpr"
+      ],
+      "gate_ids": []
+    },
+    {
+      "id": "mpsc.ap7",
+      "facility_id": "mpsc.p3",
+      "role": "entry",
+      "road_link": {
+        "road_name": "Merriwa Rd (fictional)",
+        "signalised": false
+      },
+      "movements_in": [
+        "left_in"
+      ],
+      "served_level_ids": [
+        "mpsc.p3.g"
+      ],
+      "credentials": [
+        "lpr"
+      ],
+      "gate_ids": []
+    }
+  ],
+  "gates": [
+    {
+      "id": "mpsc.g1.in",
+      "host_id": "mpsc.ap1",
+      "kind": "boom_gate",
+      "direction": "in",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app",
+        "tap_card"
+      ]
+    },
+    {
+      "id": "mpsc.g1.out",
+      "host_id": "mpsc.ap1",
+      "kind": "boom_gate",
+      "direction": "out",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app",
+        "tap_card",
+        "remote_open"
+      ]
+    },
+    {
+      "id": "mpsc.g2",
+      "host_id": "mpsc.ap2",
+      "kind": "boom_gate",
+      "direction": "in",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app"
+      ]
+    },
+    {
+      "id": "mpsc.g3",
+      "host_id": "mpsc.ap3",
+      "kind": "boom_gate",
+      "direction": "out",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app",
+        "tap_card"
+      ]
+    },
+    {
+      "id": "mpsc.g4.in",
+      "host_id": "mpsc.ap4",
+      "kind": "roller_door",
+      "direction": "in",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app"
+      ]
+    },
+    {
+      "id": "mpsc.g4.out",
+      "host_id": "mpsc.ap4",
+      "kind": "roller_door",
+      "direction": "out",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app"
+      ]
+    },
+    {
+      "id": "mpsc.g5",
+      "host_id": "mpsc.ap5",
+      "kind": "boom_gate",
+      "direction": "out",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app"
+      ]
+    },
+    {
+      "id": "mpsc.g6",
+      "host_id": "mpsc.link.p2-p3",
+      "kind": "boom_gate",
+      "direction": "out",
+      "actuation": [
+        "ticket",
+        "lpr",
+        "app"
+      ]
+    }
+  ],
+  "inter_facility_links": [
+    {
+      "id": "mpsc.link.p1-p2",
+      "from": "mpsc.p1.g.n12",
+      "to": "mpsc.p2.b1.n03",
+      "kind": "internal_ramp",
+      "direction": "two_way",
+      "ticket_transfer": {
+        "allowed": true,
+        "conditions": "Same ticket or LPR session; no extra gate"
+      },
+      "limits": {
+        "max_height_m": 2.1
+      },
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "22:30"
+        }
+      ]
+    },
+    {
+      "id": "mpsc.link.p2-p3",
+      "from": "mpsc.p2.b1.n20",
+      "to": "mpsc.p3.g.n01",
+      "kind": "internal_road",
+      "direction": "one_way_forward",
+      "ticket_transfer": {
+        "allowed": false,
+        "conditions": "P3 is ticketless LPR with its own tariff; the P2 session must be paid at gate mpsc.g6",
+        "gate_id": "mpsc.g6"
+      }
+    }
+  ],
+  "anchor_features": [
+    {
+      "id": "mpsc.p1.g.anc.ramp-mouth",
+      "level_id": "mpsc.p1.g",
+      "kind": "ramp_head",
+      "anchor_class": "surveyed",
+      "position": [
+        60.0,
+        10.0,
+        0.0
+      ],
+      "accuracy_m": 0.03,
+      "gnss_visible": true
+    },
+    {
+      "id": "mpsc.p1.l1.anc.ramp-head",
+      "level_id": "mpsc.p1.l1",
+      "kind": "ramp_head",
+      "anchor_class": "surveyed",
+      "position": [
+        62.0,
+        14.0,
+        3.2
+      ],
+      "accuracy_m": 0.03
+    },
+    {
+      "id": "mpsc.p1.l2.anc.ramp-head",
+      "level_id": "mpsc.p1.l2",
+      "kind": "ramp_head",
+      "anchor_class": "crowd_derived",
+      "position": [
+        62.1,
+        14.1,
+        6.4
+      ],
+      "accuracy_m": 0.1
+    },
+    {
+      "id": "mpsc.p2.b1.anc.gate-line",
+      "level_id": "mpsc.p2.b1",
+      "kind": "gate_line",
+      "anchor_class": "surveyed",
+      "position": [
+        64.0,
+        12.0,
+        -3.4
+      ],
+      "accuracy_m": 0.03
+    },
+    {
+      "id": "mpsc.p2.b2.anc.ramp-head",
+      "level_id": "mpsc.p2.b2",
+      "kind": "ramp_head",
+      "anchor_class": "crowd_derived",
+      "position": [
+        70.0,
+        18.0,
+        -6.8
+      ],
+      "accuracy_m": 0.12
+    }
+  ],
+  "pillar_grids": [
+    {
+      "id": "mpsc.p2.b1.grid",
+      "level_id": "mpsc.p2.b1",
+      "origin": [
+        10.0,
+        2.0,
+        -3.4
+      ],
+      "spacing_x_m": 8.1,
+      "spacing_y_m": 8.1,
+      "bearing_deg": 0,
+      "x_labels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "y_labels": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  ],
+  "pillars": [
+    {
+      "id": "mpsc.p2.b1.pil.a1",
+      "level_id": "mpsc.p2.b1",
+      "grid_id": "mpsc.p2.b1.grid",
+      "grid_ref": {
+        "col": 0,
+        "row": 0
+      },
+      "position": [
+        10.0,
+        2.0,
+        -3.4
+      ],
+      "shape": "rect",
+      "width_m": 0.6,
+      "depth_m": 0.6,
+      "painted_label": "A1"
+    }
+  ],
+  "localization_aids": [
+    {
+      "id": "mpsc.p2.b1.aid.001",
+      "level_id": "mpsc.p2.b1",
+      "kind": "apriltag",
+      "code": "tag36h11:117",
+      "pose": {
+        "position": [
+          10.0,
+          2.3,
+          -1.5
+        ],
+        "yaw_deg": 90
+      },
+      "accuracy_m": 0.02
+    }
+  ],
+  "pedestrian_portals": [
+    {
+      "id": "mpsc.pp.p1l2-bridge",
+      "kind": "bridge",
+      "level_label": "Mall L2",
+      "step_free": true
+    },
+    {
+      "id": "mpsc.pp.p1l1-door",
+      "kind": "mall_door",
+      "level_label": "Mall L1",
+      "step_free": true
+    },
+    {
+      "id": "mpsc.pp.p2b1-lift",
+      "kind": "lift_lobby",
+      "level_label": "Mall G",
+      "step_free": true
+    },
+    {
+      "id": "mpsc.pp.east-door",
+      "kind": "mall_door",
+      "level_label": "Mall G",
+      "step_free": true
+    }
+  ],
+  "destinations": [
+    {
+      "id": "mpsc.d.cinema",
+      "kind": "cinema",
+      "name": "Cinema (Level 2)",
+      "level_label": "Mall L2",
+      "portal_ids": [
+        "mpsc.pp.p1l2-bridge"
+      ],
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "10:00",
+          "end": "24:00"
+        }
+      ]
+    },
+    {
+      "id": "mpsc.d.foodcourt",
+      "kind": "food_court",
+      "name": "Food court",
+      "level_label": "Mall L1",
+      "portal_ids": [
+        "mpsc.pp.p1l1-door",
+        "mpsc.pp.p2b1-lift"
+      ]
+    },
+    {
+      "id": "mpsc.d.supermarket",
+      "kind": "supermarket",
+      "name": "Supermarket",
+      "level_label": "Mall G",
+      "portal_ids": [
+        "mpsc.pp.p2b1-lift",
+        "mpsc.pp.east-door"
+      ],
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "22:00"
+        }
+      ]
+    },
+    {
+      "id": "mpsc.d.eastdoor",
+      "kind": "mall_door",
+      "name": "East entrance",
+      "level_label": "Mall G",
+      "portal_ids": [
+        "mpsc.pp.east-door"
+      ]
+    }
+  ],
+  "handover_zones": [
+    {
+      "id": "mpsc.hz.north",
+      "kind": "both",
+      "location_id": "mpsc.p1.g",
+      "capacity_veh": 6,
+      "max_dwell_s": 180,
+      "iso23374_handover": true,
+      "accessibility": {
+        "kerbside_transfer_space_m": 2.7,
+        "kerb_ramp": true,
+        "step_free_to_destination": true,
+        "sheltered": true,
+        "seating": true,
+        "assistance_point": true,
+        "tactile_marking": true,
+        "lighting": "good",
+        "wait_time_allowance_s": 300
+      }
+    },
+    {
+      "id": "mpsc.hz.east",
+      "kind": "both",
+      "location_id": "mpsc.p3.g",
+      "capacity_veh": 4,
+      "max_dwell_s": 120,
+      "iso23374_handover": false,
+      "rule_ids": [
+        "mpsc.rule.hz-east"
+      ],
+      "accessibility": {
+        "kerbside_transfer_space_m": 1.2,
+        "kerb_ramp": true,
+        "step_free_to_destination": true,
+        "sheltered": false,
+        "seating": false,
+        "assistance_point": false,
+        "lighting": "partial",
+        "wait_time_allowance_s": 120
+      }
+    },
+    {
+      "id": "mpsc.hz.rideshare",
+      "kind": "rideshare",
+      "location_id": "cs.wattle-ave.n.0-40",
+      "capacity_veh": 3,
+      "max_dwell_s": 120,
+      "iso23374_handover": false,
+      "rule_ids": [
+        "r.cs2.rideshare"
+      ]
+    }
+  ],
+  "destination_access": [
+    {
+      "destination_id": "mpsc.d.cinema",
+      "via": "handover_zone",
+      "target_id": "mpsc.hz.north",
+      "walk_time_s": 150,
+      "walk_distance_m": 160,
+      "step_free": true,
+      "covered": true,
+      "accessible_path_id": "mpsc.path.hz-north-cinema",
+      "assistance_available": true
+    },
+    {
+      "destination_id": "mpsc.d.cinema",
+      "via": "handover_zone",
+      "target_id": "mpsc.hz.east",
+      "walk_time_s": 420,
+      "walk_distance_m": 430,
+      "step_free": true,
+      "covered": false
+    },
+    {
+      "destination_id": "mpsc.d.supermarket",
+      "via": "handover_zone",
+      "target_id": "mpsc.hz.east",
+      "walk_time_s": 90,
+      "walk_distance_m": 80,
+      "step_free": true,
+      "covered": false
+    },
+    {
+      "destination_id": "mpsc.d.supermarket",
+      "via": "zone",
+      "target_id": "mpsc.p2.b1.zone-a",
+      "walk_time_s": 60,
+      "walk_distance_m": 45,
+      "step_free": true,
+      "covered": true,
+      "accessible_path_id": "mpsc.path.zone-a-supermarket"
+    }
+  ],
+  "curb_segments": [
+    {
+      "id": "cs.merriwa-rd.w.120-210",
+      "road_ref": {
+        "name": "Merriwa Rd (fictional)"
+      },
+      "side": "left",
+      "linear_ref": {
+        "from_m": 120,
+        "to_m": 210
+      },
+      "orientation": "parallel",
+      "marked_bays": 12,
+      "rule_ids": [
+        "r.cs1.no-stop-corner",
+        "r.cs1.clearway",
+        "r.cs1.loading",
+        "r.cs1.2p-meter"
+      ]
+    },
+    {
+      "id": "cs.wattle-ave.n.0-40",
+      "road_ref": {
+        "name": "Wattle Ave (fictional)"
+      },
+      "side": "right",
+      "linear_ref": {
+        "from_m": 0,
+        "to_m": 40
+      },
+      "orientation": "parallel",
+      "marked_bays": 0,
+      "rule_ids": [
+        "r.cs2.rideshare"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "r.cs1.no-stop-corner",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "no_stopping",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "sign": {
+        "text": "S (no stopping), first 10 m",
+        "symbol": "no_stopping_S"
+      },
+      "priority": 30,
+      "authority": "Fictional City Council"
+    },
+    {
+      "id": "r.cs1.clearway",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "clearway",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "07:00",
+          "end": "09:30"
+        },
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "16:00",
+          "end": "18:30"
+        }
+      ],
+      "sign": {
+        "text": "Clearway 7-9.30am 4-6.30pm Mon-Fri",
+        "symbol": "clearway"
+      },
+      "priority": 20,
+      "authority": "Road authority (example)"
+    },
+    {
+      "id": "r.cs1.loading",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "load",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "09:30",
+          "end": "16:00"
+        }
+      ],
+      "max_stay_min": 30,
+      "user_classes": [
+        "loading_vehicle"
+      ],
+      "sign": {
+        "text": "Loading Zone 30 min 9.30am-4pm Mon-Fri",
+        "symbol": "loading_zone"
+      },
+      "priority": 15
+    },
+    {
+      "id": "r.cs1.2p-meter",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "park",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "09:30",
+          "end": "16:00"
+        },
+        {
+          "days": [
+            "sa"
+          ],
+          "start": "08:00",
+          "end": "13:00"
+        }
+      ],
+      "max_stay_min": 120,
+      "user_classes": [
+        "any"
+      ],
+      "payment": {
+        "required": true,
+        "rate_id": "rate.council.zone2",
+        "methods": [
+          "meter",
+          "app"
+        ]
+      },
+      "sign": {
+        "text": "2P Meter 9.30am-4pm Mon-Fri, 8am-1pm Sat",
+        "symbol": "meter"
+      },
+      "priority": 10
+    },
+    {
+      "id": "r.cs2.rideshare",
+      "applies_to": [
+        "cs.wattle-ave.n.0-40"
+      ],
+      "activity": "pick_up_drop_off",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "max_stay_min": 2,
+      "user_classes": [
+        "any"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "mpsc.rule.ev-only",
+      "applies_to": [
+        "mpsc.p1.l2.b0231"
+      ],
+      "activity": "park",
+      "max_stay_min": 120,
+      "user_classes": [
+        "ev_charging"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "mpsc.rule.accessible",
+      "applies_to": [
+        "mpsc.p2.b1.b0012"
+      ],
+      "activity": "park",
+      "user_classes": [
+        "disability_permit"
+      ],
+      "sign": {
+        "text": "Disabled only",
+        "symbol": "disabled"
+      },
+      "priority": 10
+    },
+    {
+      "id": "mpsc.rule.hz-east",
+      "applies_to": [
+        "mpsc.hz.east"
+      ],
+      "activity": "pick_up_drop_off",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "22:00"
+        }
+      ],
+      "max_stay_min": 2,
+      "user_classes": [
+        "any"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "mpsc.rule.ct",
+      "applies_to": [
+        "mpsc.p3.g.b0301"
+      ],
+      "activity": "park",
+      "user_classes": [
+        "community_transport",
+        "ndis_transport",
+        "patient_transport"
+      ],
+      "priority": 10,
+      "sign": {
+        "text": "Community and patient transport only",
+        "symbol": "permit"
+      }
+    }
+  ],
+  "rates": [
+    {
+      "id": "mpsc.rate.std",
+      "currency": "AUD",
+      "periods": [
+        {
+          "up_to_min": 120,
+          "price": "0.00"
+        },
+        {
+          "up_to_min": 240,
+          "price": "6.00"
+        },
+        {
+          "up_to_min": 1440,
+          "price": "18.00"
+        }
+      ],
+      "daily_cap": "18.00",
+      "grace_min": 10,
+      "validation": [
+        {
+          "description": "First 3 h free with cinema ticket (example)",
+          "free_min": 180
+        }
+      ]
+    },
+    {
+      "id": "mpsc.rate.p3",
+      "currency": "AUD",
+      "periods": [
+        {
+          "up_to_min": 60,
+          "price": "0.00"
+        },
+        {
+          "up_to_min": 1440,
+          "price": "8.00"
+        }
+      ],
+      "daily_cap": "8.00"
+    },
+    {
+      "id": "rate.council.zone2",
+      "currency": "AUD",
+      "periods": [
+        {
+          "up_to_min": 120,
+          "price": "5.60"
+        }
+      ],
+      "dynamic": false
+    }
+  ],
+  "certifications": [
+    {
+      "id": "mpsc.cert.p1",
+      "subject_id": "mpsc.p1",
+      "body": "Fictional Mapping Auditor Pty Ltd",
+      "scheme": "OPMS driverless tier audit (example)",
+      "tier": 3,
+      "issued_at": "2026-10-30T10:00:00+11:00",
+      "valid_to": "2027-10-30T10:00:00+11:00"
+    }
+  ],
+  "lifts": [
+    {
+      "id": "mpsc.lift.p2-a",
+      "level_ids": [
+        "mpsc.p2.b1",
+        "mpsc.p2.b2"
+      ],
+      "kind": "passenger",
+      "car_width_m": 1.4,
+      "car_depth_m": 2.0,
+      "door_width_m": 1.1,
+      "audible_announcements": true,
+      "braille_buttons": true,
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "07:00",
+          "end": "22:30"
+        }
+      ]
+    }
+  ],
+  "wayfinding_aids": [
+    {
+      "id": "mpsc.wf.p2b1.orange",
+      "level_id": "mpsc.p2.b1",
+      "kind": "level_colour",
+      "label": "B1",
+      "colour": "Orange",
+      "description": "Orange walls and the supermarket trolley bay"
+    },
+    {
+      "id": "mpsc.wf.p2b1.lift",
+      "level_id": "mpsc.p2.b1",
+      "kind": "landmark",
+      "label": "Lift lobby",
+      "description": "Next to the red pillar A1 and the lift",
+      "audible": true,
+      "tactile": true
+    },
+    {
+      "id": "mpsc.wf.p1l2.sign",
+      "level_id": "mpsc.p1.l2",
+      "kind": "sign",
+      "label": "Zone C, EV bays",
+      "colour": "Blue"
+    }
+  ],
+  "safety_features": [
+    {
+      "id": "mpsc.sf.p2b1.help",
+      "level_id": "mpsc.p2.b1",
+      "kind": "help_point",
+      "position": [
+        20.0,
+        3.0,
+        -3.4
+      ],
+      "lighting_level": "good",
+      "contact_ref": "Centre security desk (example)"
+    },
+    {
+      "id": "mpsc.sf.p2b1.cctv",
+      "level_id": "mpsc.p2.b1",
+      "kind": "cctv",
+      "cctv_present": true
+    },
+    {
+      "id": "mpsc.sf.p3.light",
+      "level_id": "mpsc.p3.g",
+      "kind": "lighting_zone",
+      "lighting_level": "adequate"
+    }
+  ],
+  "accessible_paths": [
+    {
+      "id": "mpsc.path.hz-north-cinema",
+      "from_id": "mpsc.hz.north",
+      "to_id": "mpsc.pp.p1l2-bridge",
+      "step_free": true,
+      "distance_m": 160,
+      "walk_time_s": 260,
+      "max_gradient_pct": 4.0,
+      "min_width_m": 1.5,
+      "surface": "smooth",
+      "tactile_indicators": true,
+      "lighting": "good",
+      "sheltered": "full",
+      "rest_points": 2,
+      "seating_points": 3,
+      "lift_ids": [],
+      "crossings": 0,
+      "hazards": [],
+      "low_stimulation_rating": "moderate",
+      "wayfinding_ids": [
+        "mpsc.wf.p1l2.sign"
+      ],
+      "standard_ref": "AS 1428.1:2021 (design reference, example)"
+    },
+    {
+      "id": "mpsc.path.zone-a-supermarket",
+      "from_id": "mpsc.p2.b1.zone-a",
+      "to_id": "mpsc.pp.p2b1-lift",
+      "step_free": true,
+      "distance_m": 45,
+      "walk_time_s": 80,
+      "max_gradient_pct": 1.5,
+      "min_width_m": 1.8,
+      "surface": "smooth",
+      "tactile_indicators": false,
+      "lighting": "good",
+      "sheltered": "full",
+      "rest_points": 0,
+      "seating_points": 0,
+      "lift_ids": [
+        "mpsc.lift.p2-a"
+      ],
+      "crossings": 1,
+      "hazards": [
+        "vehicle_crossing"
+      ],
+      "low_stimulation_rating": "quiet",
+      "wayfinding_ids": [
+        "mpsc.wf.p2b1.orange",
+        "mpsc.wf.p2b1.lift"
+      ]
+    }
+  ],
+  "publication": {
+    "public_url": "https://opms.example.org/data/mpsc",
+    "formats": [
+      "json",
+      "geojson"
+    ],
+    "bulk_download": true,
+    "non_av_use_allowed": true,
+    "accessible_documentation": true,
+    "update_frequency": "on_change",
+    "accessibility_contact": "Centre accessibility officer (example)"
+  }
+}

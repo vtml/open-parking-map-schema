@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/feature-observation.schema.json",
+  "title": "FeatureObservation",
+  "description": "One observed feature in one contribution. Raw observations never appear in the published map.",
+  "type": "object",
+  "required": [
+    "id",
+    "contribution_id",
+    "feature_type",
+    "geometry_local",
+    "frame_id",
+    "observed_at",
+    "confidence"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Observation id."
+    },
+    "contribution_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Parent contribution."
+    },
+    "target_feature_id": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing feature this observes, or null for a candidate new feature."
+    },
+    "feature_type": {
+      "enum": [
+        "level",
+        "zone",
+        "bay",
+        "drive_node",
+        "drive_edge",
+        "ramp",
+        "pillar",
+        "access_point",
+        "gate",
+        "anchor_feature",
+        "pedestrian_portal",
+        "sign",
+        "localization_aid",
+        "height_limit",
+        "lift",
+        "kerb_ramp",
+        "wayfinding_aid",
+        "safety_feature",
+        "other"
+      ],
+      "description": "Observed feature type."
+    },
+    "geometry_local": {
+      "$ref": "common.schema.json#/$defs/Geometry"
+    },
+    "frame_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Frame the geometry is expressed in (before alignment)."
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Type-specific attributes, e.g. orientation, width_m, painted_label."
+    },
+    "observed_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "0-1.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_ref": {
+      "type": "string",
+      "description": "Opaque reference to supporting evidence held under the redaction policy."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

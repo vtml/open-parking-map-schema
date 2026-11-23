@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/pillar.schema.json",
+  "title": "Pillar",
+  "description": "A structural pillar: obstacle and alignment landmark.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "position",
+    "shape"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Pillar id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "grid_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Parent grid, if regular."
+    },
+    "grid_ref": {
+      "type": "object",
+      "required": [
+        "col",
+        "row"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "col": {
+          "type": "integer"
+        },
+        "row": {
+          "type": "integer"
+        }
+      }
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "shape": {
+      "enum": [
+        "rect",
+        "round"
+      ],
+      "description": "Shape."
+    },
+    "width_m": {
+      "type": "number",
+      "description": "Width or diameter.",
+      "exclusiveMinimum": 0
+    },
+    "depth_m": {
+      "type": "number",
+      "description": "Depth for rectangular pillars.",
+      "exclusiveMinimum": 0
+    },
+    "painted_label": {
+      "type": "string",
+      "description": "Label on the pillar."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

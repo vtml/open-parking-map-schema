@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/anchor-feature.schema.json",
+  "title": "AnchorFeature",
+  "description": "A distinctive feature used to align contributions and tie levels to the global frame.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "kind",
+    "anchor_class",
+    "position"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Anchor id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "kind": {
+      "enum": [
+        "ramp_head",
+        "gate_line",
+        "pillar_corner",
+        "level_transition",
+        "wall_corner",
+        "surveyed_target",
+        "lift_door"
+      ],
+      "description": "Anchor kind."
+    },
+    "anchor_class": {
+      "enum": [
+        "surveyed",
+        "crowd_derived"
+      ],
+      "description": "How the anchor position was obtained."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "accuracy_m": {
+      "type": "number",
+      "description": "1-sigma accuracy.",
+      "minimum": 0
+    },
+    "gnss_visible": {
+      "type": "boolean",
+      "description": "Anchor is reachable by GNSS (for example at a ramp mouth)."
+    },
+    "localization_aid_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Optional fiducial co-located with the anchor."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

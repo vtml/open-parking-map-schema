@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/contribution.schema.json",
+  "title": "Contribution",
+  "description": "A batch of static-feature observations from one contributor, kept separate from the consolidated map.",
+  "type": "object",
+  "required": [
+    "id",
+    "contributor_id",
+    "submitted_at",
+    "trace_window",
+    "pseudonym",
+    "redaction_attestation",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Contribution id."
+    },
+    "contributor_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Organisation that collected the data."
+    },
+    "submitted_via_contributor_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Licensed unit or gateway that received it, if routed."
+    },
+    "campaign_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Campaign it responds to, if any."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction it was routed under."
+    },
+    "repository_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Receiving repository."
+    },
+    "submitted_at": {
+      "$ref": "common.schema.json#/$defs/DateTime"
+    },
+    "trace_window": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        },
+        "end": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        }
+      }
+    },
+    "facility_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where the trace was collected.",
+      "properties": {
+        "facility_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "site_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "bbox_wgs84": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "sensor_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Declared sensing capability.",
+      "properties": {
+        "sensors": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "camera",
+              "lidar",
+              "radar",
+              "ultrasonic",
+              "imu",
+              "wheel_odometry",
+              "gnss"
+            ]
+          }
+        },
+        "calibration_class": {
+          "enum": [
+            "uncalibrated",
+            "factory",
+            "fleet_calibrated",
+            "survey_grade"
+          ]
+        },
+        "odometry_drift_m_per_100m": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "pseudonym": {
+      "type": "object",
+      "required": [
+        "vehicle_token",
+        "session_token",
+        "pseudonym_epoch"
+      ],
+      "additionalProperties": false,
+      "description": "Rotating tokens. No VIN or plate.",
+      "properties": {
+        "vehicle_token": {
+          "type": "string",
+          "minLength": 16
+        },
+        "session_token": {
+          "type": "string",
+          "minLength": 16
+        },
+        "pseudonym_epoch": {
+          "type": "string",
+          "description": "Rotation period label, e.g. 2026-11."
+        },
+        "k_anonymity_group": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "redaction_attestation": {
+      "type": "object",
+      "required": [
+        "policy_id",
+        "performed_on_board",
+        "imagery_included",
+        "trajectories_included",
+        "attested_at"
+      ],
+      "additionalProperties": false,
+      "description": "Contributor's signed statement of what was removed.",
+      "properties": {
+        "policy_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "performed_on_board": {
+          "type": "boolean"
+        },
+        "imagery_included": {
+          "type": "boolean"
+        },
+        "trajectories_included": {
+          "type": "boolean"
+        },
+        "trim_start_m": {
+          "type": "number",
+          "minimum": 0
+        },
+        "trim_end_m": {
+          "type": "number",
+          "minimum": 0
+        },
+        "time_jitter_applied": {
+          "type": "boolean"
+        },
+        "attested_at": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        },
+        "signature_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_ref": {
+      "type": "object",
+      "required": [
+        "uri",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "description": "Optional bulk payload (e.g. a SENSORIS message set) held separately.",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "media_type": {
+          "type": "string"
+        }
+      }
+    },
+    "licence": {
+      "$ref": "common.schema.json#/$defs/LicenceTerms"
+    },
+    "status": {
+      "enum": [
+        "received",
+        "rejected",
+        "accepted"
+      ],
+      "description": "Processing status."
+    },
+    "rejection_reason": {
+      "type": "string",
+      "description": "Reason when rejected."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

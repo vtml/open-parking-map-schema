@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/dataset.schema.json",
+  "title": "OPMS dataset (consolidated map)",
+  "description": "Root of a consolidated OPMS map for one site. Raw contributions are separate (contribution-bundle).",
+  "type": "object",
+  "required": [
+    "opms_version",
+    "dataset_version",
+    "profile",
+    "site",
+    "frames"
+  ],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x_": {}
+  },
+  "anyOf": [
+    {
+      "required": [
+        "facilities"
+      ]
+    },
+    {
+      "required": [
+        "curb_segments"
+      ]
+    }
+  ],
+  "properties": {
+    "_note": {
+      "type": "string"
+    },
+    "opms_version": {
+      "type": "string",
+      "pattern": "^0[.]2[.][0-9]+$"
+    },
+    "dataset_version": {
+      "$ref": "common.schema.json#/$defs/Version"
+    },
+    "profile": {
+      "$ref": "common.schema.json#/$defs/Profile"
+    },
+    "site": {
+      "$ref": "site.schema.json"
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "$ref": "frame.schema.json"
+      },
+      "description": "Local frames."
+    },
+    "facilities": {
+      "type": "array",
+      "items": {
+        "$ref": "facility.schema.json"
+      },
+      "description": "Complexes."
+    },
+    "zones": {
+      "type": "array",
+      "items": {
+        "$ref": "zone.schema.json"
+      },
+      "description": "Zones."
+    },
+    "bays": {
+      "type": "array",
+      "items": {
+        "$ref": "bay.schema.json"
+      },
+      "description": "Bays."
+    },
+    "drive_nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "drive-node.schema.json"
+      },
+      "description": "Drive graph nodes."
+    },
+    "drive_edges": {
+      "type": "array",
+      "items": {
+        "$ref": "drive-edge.schema.json"
+      },
+      "description": "Drive graph edges."
+    },
+    "access_points": {
+      "type": "array",
+      "items": {
+        "$ref": "access-point.schema.json"
+      },
+      "description": "Entries and exits."
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "$ref": "gate.schema.json"
+      },
+      "description": "Gates."
+    },
+    "inter_facility_links": {
+      "type": "array",
+      "items": {
+        "$ref": "inter-facility-link.schema.json"
+      },
+      "description": "Links between complexes."
+    },
+    "anchor_features": {
+      "type": "array",
+      "items": {
+        "$ref": "anchor-feature.schema.json"
+      },
+      "description": "Alignment anchors."
+    },
+    "pillar_grids": {
+      "type": "array",
+      "items": {
+        "$ref": "pillar-grid.schema.json"
+      },
+      "description": "Pillar grids."
+    },
+    "pillars": {
+      "type": "array",
+      "items": {
+        "$ref": "pillar.schema.json"
+      },
+      "description": "Pillars."
+    },
+    "localization_aids": {
+      "type": "array",
+      "items": {
+        "$ref": "localization-aid.schema.json"
+      },
+      "description": "Fiducials and beacons."
+    },
+    "destinations": {
+      "type": "array",
+      "items": {
+        "$ref": "destination.schema.json"
+      },
+      "description": "[static-rules] Destinations."
+    },
+    "pedestrian_portals": {
+      "type": "array",
+      "items": {
+        "$ref": "pedestrian-portal.schema.json"
+      },
+      "description": "[static-rules] Portals."
+    },
+    "destination_access": {
+      "type": "array",
+      "items": {
+        "$ref": "destination-access.schema.json"
+      },
+      "description": "[static-rules] Destination links."
+    },
+    "handover_zones": {
+      "type": "array",
+      "items": {
+        "$ref": "handover-zone.schema.json"
+      },
+      "description": "[static-rules] Handover zones."
+    },
+    "curb_segments": {
+      "type": "array",
+      "items": {
+        "$ref": "curb-segment.schema.json"
+      },
+      "description": "[static-rules] Kerb segments."
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "rule.schema.json"
+      },
+      "description": "[static-rules] Rules."
+    },
+    "rates": {
+      "type": "array",
+      "items": {
+        "$ref": "rate.schema.json"
+      },
+      "description": "[static-rules] Tariffs."
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "$ref": "certification.schema.json"
+      },
+      "description": "Certifications."
+    },
+    "lifts": {
+      "type": "array",
+      "items": {
+        "$ref": "lift.schema.json"
+      },
+      "description": "Lifts used on accessible routes."
+    },
+    "wayfinding_aids": {
+      "type": "array",
+      "items": {
+        "$ref": "wayfinding-aid.schema.json"
+      },
+      "description": "Signs, colours and landmarks people use."
+    },
+    "safety_features": {
+      "type": "array",
+      "items": {
+        "$ref": "safety-feature.schema.json"
+      },
+      "description": "Lighting, help points and CCTV presence flags."
+    },
+    "accessible_paths": {
+      "type": "array",
+      "items": {
+        "$ref": "accessible-path.schema.json"
+      },
+      "description": "[static-rules] Step-free routes from bays or drop-offs to portals and destinations."
+    },
+    "publication": {
+      "$ref": "common.schema.json#/$defs/PublicationTerms"
+    },
+    "dynamic": {
+      "$ref": "dynamic-feed.schema.json",
+      "description": "[dynamic profile] Optional live layer."
+    },
+    "services": {
+      "type": "object",
+      "description": "[services profile] Reservations, sessions and missions. Not yet schematised in v0.2."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "static-core"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "destinations": false,
+          "pedestrian_portals": false,
+          "destination_access": false,
+          "handover_zones": false,
+          "curb_segments": false,
+          "rules": false,
+          "rates": false,
+          "accessible_paths": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "enum": [
+              "static-core",
+              "static-rules"
+            ]
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dynamic": false,
+          "services": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "dynamic"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "services": false
+        }
+      }
+    }
+  ]
+}

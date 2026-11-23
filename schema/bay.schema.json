@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/bay.schema.json",
+  "title": "Bay",
+  "description": "A single parking space.",
+  "type": "object",
+  "required": [
+    "id",
+    "zone_id",
+    "polygon",
+    "orientation",
+    "bay_types"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Bay id."
+    },
+    "zone_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Parent zone."
+    },
+    "polygon": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "description": "Four corners, counter-clockwise, in the facility frame.",
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "orientation": {
+      "enum": [
+        "parallel",
+        "angle",
+        "perpendicular",
+        "stacker_platform",
+        "robot_pallet"
+      ],
+      "description": "Bay orientation."
+    },
+    "angle_deg": {
+      "type": "number",
+      "description": "Angle for angle parking; 90 for perpendicular.",
+      "minimum": 0,
+      "maximum": 90
+    },
+    "approach_edge": {
+      "type": "integer",
+      "description": "Polygon edge the vehicle enters through.",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "bay_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "general",
+          "accessible",
+          "ambulant",
+          "carer",
+          "ev",
+          "family",
+          "pregnancy",
+          "motorcycle",
+          "compact",
+          "reserved",
+          "tenant",
+          "permit",
+          "loading",
+          "rideshare",
+          "taxi",
+          "community_transport",
+          "ndis_transport",
+          "patient_transport",
+          "coach",
+          "courier",
+          "oversize_van",
+          "emergency_services",
+          "valet",
+          "staff"
+        ],
+        "description": "Bay class."
+      },
+      "description": "Bay classes.",
+      "minItems": 1
+    },
+    "ev": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "EV charging details.",
+      "properties": {
+        "connector": {
+          "enum": [
+            "ccs2",
+            "type2",
+            "chademo",
+            "nacs"
+          ]
+        },
+        "power_kw": {
+          "type": "number"
+        },
+        "charger_id": {
+          "type": "string"
+        }
+      }
+    },
+    "painted_label": {
+      "type": "string",
+      "description": "Text on the ground."
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Eligibility and time limits (static-rules profile)."
+    },
+    "accessibility": {
+      "$ref": "common.schema.json#/$defs/BayAccessibility"
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

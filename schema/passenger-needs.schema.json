@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/passenger-needs.schema.json",
+  "title": "PassengerNeeds",
+  "description": "On-device passenger needs profile for a Banish-style mission. Never part of a map dataset.",
+  "type": "object",
+  "required": [
+    "storage",
+    "consent"
+  ],
+  "properties": {
+    "storage": {
+      "const": "on_device",
+      "description": "Needs are stored and processed on the device only."
+    },
+    "mobility_aid": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "none",
+          "manual_wheelchair",
+          "power_wheelchair",
+          "scooter",
+          "walking_frame",
+          "cane",
+          "pram"
+        ],
+        "description": "Aid."
+      },
+      "description": "Aids travelling with the passenger."
+    },
+    "step_free_door_to_door": {
+      "type": "boolean",
+      "description": "Needs step-free door-to-door drop-off and pick-up."
+    },
+    "assistance_animal": {
+      "type": "boolean",
+      "description": "Travels with an assistance animal."
+    },
+    "extra_time_factor": {
+      "type": "number",
+      "description": "Multiplier on walking and standing time.",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "low_stimulation_route": {
+      "type": "boolean",
+      "description": "Prefers quiet, uncrowded routes."
+    },
+    "wants_assistance_at_handover": {
+      "type": "boolean",
+      "description": "Wants help at drop-off or pick-up."
+    },
+    "carer_travelling": {
+      "type": "boolean",
+      "description": "A carer travels with the passenger."
+    },
+    "sensory_support": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "audible_guidance",
+          "large_text",
+          "visual_alerts",
+          "tactile_cues"
+        ],
+        "description": "Support."
+      },
+      "description": "Interface support needed."
+    },
+    "consent": {
+      "type": "object",
+      "required": [
+        "scope",
+        "granted_at"
+      ],
+      "additionalProperties": false,
+      "description": "Passenger's consent. Revocable at any time.",
+      "properties": {
+        "scope": {
+          "enum": [
+            "on_device_only",
+            "derived_requirements_only"
+          ]
+        },
+        "granted_at": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        },
+        "expires_at": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        }
+      }
+    },
+    "derived_requirements": {
+      "$ref": "handover-requirements.schema.json",
+      "description": "The only part that may leave the device, and only if consent.scope allows it."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

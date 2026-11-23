@@ -1,0 +1,38 @@
+{
+  "_note": "FICTIONAL EXAMPLE DATA. OPTIONAL dynamic layer. Not required by the static-core or static-rules profiles.",
+  "site_id": "mpsc",
+  "as_of": "2026-11-23T14:59:50+11:00",
+  "occupancy": [
+    {
+      "target_id": "mpsc.p1.l2.zone-c",
+      "free": 14,
+      "total": 120,
+      "observed_at": "2026-11-23T14:58:10+11:00",
+      "ttl_s": 120,
+      "source": "camera",
+      "confidence": 0.9
+    },
+    {
+      "target_id": "mpsc.p2.b1.b0012",
+      "state": "free",
+      "observed_at": "2026-11-23T14:59:42+11:00",
+      "ttl_s": 60,
+      "source": "bay_sensor",
+      "confidence": 0.98
+    }
+  ],
+  "closures": [
+    {
+      "id": "mpsc.closure.ap5-event",
+      "target_ids": [
+        "mpsc.ap5"
+      ],
+      "effect": "closed",
+      "reason": "event",
+      "window": {
+        "start": "2026-11-28T17:00:00+11:00",
+        "end": "2026-11-28T23:00:00+11:00"
+      }
+    }
+  ]
+}

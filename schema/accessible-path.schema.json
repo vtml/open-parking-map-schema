@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/accessible-path.schema.json",
+  "title": "AccessiblePath",
+  "description": "A step-free route from a bay or drop-off to a door or destination.",
+  "type": "object",
+  "required": [
+    "id",
+    "from_id",
+    "to_id",
+    "step_free",
+    "distance_m"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Path id."
+    },
+    "from_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Bay, zone or handover zone."
+    },
+    "to_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Pedestrian portal, destination or handover zone."
+    },
+    "step_free": {
+      "type": "boolean",
+      "description": "No steps or kerbs on the route."
+    },
+    "distance_m": {
+      "type": "number",
+      "description": "Route length.",
+      "minimum": 0
+    },
+    "walk_time_s": {
+      "type": "number",
+      "description": "Typical time for a slow or wheelchair pace.",
+      "minimum": 0
+    },
+    "max_gradient_pct": {
+      "type": "number",
+      "description": "Steepest gradient on the route."
+    },
+    "min_width_m": {
+      "type": "number",
+      "description": "Narrowest clear width.",
+      "exclusiveMinimum": 0
+    },
+    "surface": {
+      "enum": [
+        "smooth",
+        "textured",
+        "loose",
+        "mixed"
+      ],
+      "description": "Surface."
+    },
+    "tactile_indicators": {
+      "type": "boolean",
+      "description": "Tactile ground surface indicators on the route."
+    },
+    "lighting": {
+      "enum": [
+        "none",
+        "partial",
+        "good"
+      ],
+      "description": "Lighting."
+    },
+    "sheltered": {
+      "enum": [
+        "none",
+        "partial",
+        "full"
+      ],
+      "description": "Weather cover."
+    },
+    "rest_points": {
+      "type": "integer",
+      "description": "Places to rest.",
+      "minimum": 0
+    },
+    "seating_points": {
+      "type": "integer",
+      "description": "Seats along the route.",
+      "minimum": 0
+    },
+    "lift_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Lifts used."
+    },
+    "crossings": {
+      "type": "integer",
+      "description": "Vehicle aisle or road crossings.",
+      "minimum": 0
+    },
+    "hazards": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "speed_hump",
+          "vehicle_crossing",
+          "steep_ramp",
+          "narrow_door",
+          "heavy_door",
+          "loose_surface",
+          "blocked_often"
+        ],
+        "description": "Hazard."
+      },
+      "description": "Known hazards."
+    },
+    "low_stimulation_rating": {
+      "enum": [
+        "unknown",
+        "quiet",
+        "moderate",
+        "busy"
+      ],
+      "description": "Typical noise and crowding."
+    },
+    "wayfinding_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Wayfinding aids along the route."
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "When the route is usable (e.g. lift hours)."
+    },
+    "standard_ref": {
+      "type": "string",
+      "description": "e.g. AS 1428.1:2021 (verify the edition in force)."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

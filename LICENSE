@@ -1,0 +1,11 @@
+OPMS licensing
+
+This repository uses two licences:
+
+1. Specification text and documentation: Creative Commons Attribution 4.0 International (CC BY 4.0). Applies to: README.md, SPEC.md, CONTRIBUTING.md, CHANGELOG.md. Full text: LICENSE-CC-BY-4.0.
+
+2. JSON Schemas, examples and code: Apache License 2.0. Applies to: schema/, examples/, tools/. Full text: LICENSE-APACHE-2.0.
+
+Copyright 2026 OPMS contributors.
+
+Example data is fictional and carries no rights claims beyond the licences above.

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/registry.schema.json",
+  "title": "OPMS registry",
+  "description": "Jurisdictions, repositories, contributors and policies. Published by repositories or authorities, separate from site datasets.",
+  "type": "object",
+  "required": [
+    "opms_version",
+    "jurisdictions",
+    "repositories"
+  ],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x_": {}
+  },
+  "properties": {
+    "_note": {
+      "type": "string"
+    },
+    "opms_version": {
+      "type": "string",
+      "pattern": "^0[.]2[.][0-9]+$"
+    },
+    "jurisdictions": {
+      "type": "array",
+      "items": {
+        "$ref": "jurisdiction.schema.json"
+      },
+      "description": "Jurisdictions."
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "repository.schema.json"
+      },
+      "description": "Repositories."
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "$ref": "contributor.schema.json"
+      },
+      "description": "Contributors."
+    },
+    "resolution_policies": {
+      "type": "array",
+      "items": {
+        "$ref": "resolution-policy.schema.json"
+      },
+      "description": "Policies."
+    },
+    "redaction_policies": {
+      "type": "array",
+      "items": {
+        "$ref": "redaction-policy.schema.json"
+      },
+      "description": "Policies."
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "$ref": "campaign.schema.json"
+      },
+      "description": "Open campaigns."
+    }
+  }
+}

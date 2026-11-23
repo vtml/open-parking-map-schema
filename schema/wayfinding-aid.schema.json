@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/wayfinding-aid.schema.json",
+  "title": "WayfindingAid",
+  "description": "Signs, level colours and landmarks people use to find their car and the way out.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Aid id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "kind": {
+      "enum": [
+        "sign",
+        "level_colour",
+        "level_name",
+        "zone_colour",
+        "landmark",
+        "floor_marking",
+        "audio_beacon",
+        "tactile_map"
+      ],
+      "description": "Kind."
+    },
+    "label": {
+      "type": "string",
+      "description": "As signed."
+    },
+    "colour": {
+      "type": "string",
+      "description": "Colour name used by the facility, e.g. Orange."
+    },
+    "description": {
+      "type": "string",
+      "description": "Plain-language description people actually use, e.g. next to the red lift."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "audible": {
+      "type": "boolean",
+      "description": "Audio cue."
+    },
+    "braille": {
+      "type": "boolean",
+      "description": "Braille."
+    },
+    "tactile": {
+      "type": "boolean",
+      "description": "Tactile."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

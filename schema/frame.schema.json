@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/frame.schema.json",
+  "title": "Frame",
+  "description": "Local Cartesian facility frame anchored to WGS84.",
+  "type": "object",
+  "required": [
+    "id",
+    "origin_wgs84",
+    "x_axis_bearing_deg"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Frame id."
+    },
+    "origin_wgs84": {
+      "type": "object",
+      "required": [
+        "lat",
+        "lon",
+        "h_ellipsoid_m"
+      ],
+      "additionalProperties": false,
+      "description": "Frame origin on WGS84.",
+      "properties": {
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lon": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "h_ellipsoid_m": {
+          "type": "number"
+        }
+      }
+    },
+    "x_axis_bearing_deg": {
+      "type": "number",
+      "description": "Bearing of the local x axis, clockwise from true north.",
+      "minimum": 0,
+      "exclusiveMaximum": 360
+    },
+    "anchor_accuracy_m": {
+      "type": "number",
+      "description": "1-sigma accuracy of the anchoring.",
+      "minimum": 0
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/facility.schema.json",
+  "title": "Facility",
+  "description": "A parking complex.",
+  "type": "object",
+  "required": [
+    "id",
+    "site_id",
+    "type",
+    "frame_id",
+    "levels"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Facility id."
+    },
+    "site_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Parent site."
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name."
+    },
+    "type": {
+      "enum": [
+        "surface_lot",
+        "multi_storey",
+        "underground",
+        "rooftop",
+        "mechanical_stacker",
+        "robotic",
+        "private_garage",
+        "driveway",
+        "on_street_block"
+      ],
+      "description": "Facility type."
+    },
+    "frame_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Local frame used by all geometry in the facility."
+    },
+    "levels": {
+      "type": "array",
+      "items": {
+        "$ref": "level.schema.json"
+      },
+      "description": "Levels ordered by ordinal.",
+      "minItems": 1
+    },
+    "gnss": {
+      "enum": [
+        "good",
+        "degraded",
+        "none"
+      ],
+      "description": "Worst GNSS quality across levels."
+    },
+    "capacity": {
+      "type": "integer",
+      "description": "Total bays.",
+      "minimum": 0
+    },
+    "operating_hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "When vehicles may enter."
+    },
+    "exit_hours": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/TimeWindow"
+      },
+      "description": "When vehicles may leave, if different."
+    },
+    "rate_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Default tariff (static-rules profile)."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction; overrides the site's if set."
+    },
+    "approval": {
+      "$ref": "common.schema.json#/$defs/ApprovalStatus"
+    },
+    "quality_tier": {
+      "$ref": "common.schema.json#/$defs/QualityTier"
+    },
+    "licence": {
+      "$ref": "common.schema.json#/$defs/LicenceTerms"
+    },
+    "release_restrictions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "no_public_release",
+          "authority_only",
+          "tier_gated",
+          "licensed_unit_only"
+        ],
+        "description": "Restriction on releasing this facility's data."
+      },
+      "description": "Release restrictions."
+    },
+    "avp": {
+      "type": "object",
+      "required": [
+        "iso23374_type"
+      ],
+      "additionalProperties": false,
+      "description": "Optional AVP service description (services profile; advisory otherwise).",
+      "properties": {
+        "iso23374_type": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "handover_zone_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "description": "Handover zones."
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "bay_assignment",
+              "remote_gate_open",
+              "infra_perception",
+              "occupancy_feed",
+              "reservation",
+              "remote_assist"
+            ],
+            "description": "Capability."
+          },
+          "description": "Capabilities."
+        },
+        "endpoint": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

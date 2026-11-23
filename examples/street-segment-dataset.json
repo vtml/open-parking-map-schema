@@ -1,0 +1,200 @@
+{
+  "_note": "FICTIONAL EXAMPLE DATA. A street segment with stacked Melbourne-style signs. Roads, rules and IDs are invented.",
+  "opms_version": "0.2.0",
+  "dataset_version": "2026-11-23.1",
+  "profile": "static-rules",
+  "site": {
+    "id": "merriwa-st-precinct",
+    "name": "Merriwa Rd kerbside (fictional)",
+    "kind": "street_precinct",
+    "timezone": "Australia/Melbourne",
+    "jurisdiction_id": "jur.au-vic",
+    "facility_ids": []
+  },
+  "frames": [
+    {
+      "id": "merriwa-st.frame",
+      "origin_wgs84": {
+        "lat": -37.9,
+        "lon": 145.1,
+        "h_ellipsoid_m": 62.0
+      },
+      "x_axis_bearing_deg": 0
+    }
+  ],
+  "curb_segments": [
+    {
+      "id": "cs.merriwa-rd.w.120-210",
+      "road_ref": {
+        "name": "Merriwa Rd (fictional)"
+      },
+      "side": "left",
+      "linear_ref": {
+        "from_m": 120,
+        "to_m": 210
+      },
+      "orientation": "parallel",
+      "marked_bays": 12,
+      "rule_ids": [
+        "r.cs1.no-stop-corner",
+        "r.cs1.clearway",
+        "r.cs1.loading",
+        "r.cs1.2p-meter"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "r.cs1.no-stop-corner",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "no_stopping",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "sign": {
+        "text": "S (no stopping), first 10 m",
+        "symbol": "no_stopping_S"
+      },
+      "priority": 30,
+      "authority": "Fictional City Council"
+    },
+    {
+      "id": "r.cs1.clearway",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "clearway",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "07:00",
+          "end": "09:30"
+        },
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "16:00",
+          "end": "18:30"
+        }
+      ],
+      "sign": {
+        "text": "Clearway 7-9.30am 4-6.30pm Mon-Fri",
+        "symbol": "clearway"
+      },
+      "priority": 20,
+      "authority": "Road authority (example)"
+    },
+    {
+      "id": "r.cs1.loading",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "load",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "09:30",
+          "end": "16:00"
+        }
+      ],
+      "max_stay_min": 30,
+      "user_classes": [
+        "loading_vehicle"
+      ],
+      "sign": {
+        "text": "Loading Zone 30 min 9.30am-4pm Mon-Fri",
+        "symbol": "loading_zone"
+      },
+      "priority": 15
+    },
+    {
+      "id": "r.cs1.2p-meter",
+      "applies_to": [
+        "cs.merriwa-rd.w.120-210"
+      ],
+      "activity": "park",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr"
+          ],
+          "start": "09:30",
+          "end": "16:00"
+        },
+        {
+          "days": [
+            "sa"
+          ],
+          "start": "08:00",
+          "end": "13:00"
+        }
+      ],
+      "max_stay_min": 120,
+      "user_classes": [
+        "any"
+      ],
+      "payment": {
+        "required": true,
+        "rate_id": "rate.council.zone2",
+        "methods": [
+          "meter",
+          "app"
+        ]
+      },
+      "sign": {
+        "text": "2P Meter 9.30am-4pm Mon-Fri, 8am-1pm Sat",
+        "symbol": "meter"
+      },
+      "priority": 10
+    }
+  ],
+  "rates": [
+    {
+      "id": "rate.council.zone2",
+      "currency": "AUD",
+      "periods": [
+        {
+          "up_to_min": 120,
+          "price": "5.60"
+        }
+      ],
+      "dynamic": false
+    }
+  ]
+}

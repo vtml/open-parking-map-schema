@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/jurisdiction.schema.json",
+  "title": "Jurisdiction",
+  "description": "Rules for where contributions go, who may handle them and where they are stored.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "country",
+    "repository_id",
+    "routing_mode",
+    "residency",
+    "approval_regime"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction id."
+    },
+    "name": {
+      "type": "string",
+      "description": "Name."
+    },
+    "country": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2.",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "repository_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Default repository."
+    },
+    "routing_mode": {
+      "enum": [
+        "direct_to_repository",
+        "via_licensed_unit",
+        "authority_only"
+      ],
+      "description": "How contributions reach the repository. via_licensed_unit is the China-style mode."
+    },
+    "licensed_unit_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Contributors (survey_firm) licensed to receive raw data in via_licensed_unit mode."
+    },
+    "accepted_contributor_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "oem",
+          "survey_firm",
+          "authority",
+          "operator",
+          "research"
+        ],
+        "description": "Type."
+      },
+      "description": "Who may submit directly."
+    },
+    "raw_data_access": {
+      "enum": [
+        "repository_only",
+        "licensed_unit_only",
+        "contributor_retains"
+      ],
+      "description": "Who may touch raw contributions."
+    },
+    "residency": {
+      "enum": [
+        "unrestricted",
+        "in_country_only",
+        "cross_border_with_approval"
+      ],
+      "description": "Data residency."
+    },
+    "approval_regime": {
+      "enum": [
+        "none",
+        "operator_consent",
+        "authority_approval",
+        "licensed_unit_only",
+        "map_review"
+      ],
+      "description": "Approvals needed before data is used."
+    },
+    "redaction_policy_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Default redaction policy."
+    },
+    "resolution_policy_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Default conflict resolution policy."
+    },
+    "legal_basis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Free-text citations, e.g. a notice number."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

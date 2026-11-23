@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/campaign.schema.json",
+  "title": "Campaign",
+  "description": "A request (SENSORIS-style) for a survey of a named facility.",
+  "type": "object",
+  "required": [
+    "id",
+    "requested_by",
+    "target",
+    "features_requested",
+    "reason",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Campaign id."
+    },
+    "requested_by": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Contributor or repository."
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What to survey.",
+      "properties": {
+        "facility_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "site_id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "bbox_wgs84": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "features_requested": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Feature types wanted, e.g. level, ramp, bay, gate."
+    },
+    "quality_target_tier": {
+      "type": "integer",
+      "description": "Target tier.",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        },
+        "end": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        }
+      }
+    },
+    "priority": {
+      "type": "integer",
+      "description": "1 low to 5 high.",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "reason": {
+      "enum": [
+        "new_facility",
+        "stale",
+        "conflict",
+        "closure",
+        "quality_upgrade",
+        "equity_gap",
+        "accessibility_audit"
+      ],
+      "description": "Why."
+    },
+    "status": {
+      "enum": [
+        "open",
+        "active",
+        "complete",
+        "cancelled"
+      ],
+      "description": "Status."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

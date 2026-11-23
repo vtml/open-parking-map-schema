@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/handover-requirements.schema.json",
+  "title": "HandoverRequirements",
+  "description": "Minimum derived requirements that MAY be sent to a facility or planner with consent. Contains no identity, diagnosis or condition.",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "need_step_free": {
+      "type": "boolean",
+      "description": "Step-free handover and path needed."
+    },
+    "min_kerbside_transfer_space_m": {
+      "type": "number",
+      "description": "Clear space needed beside the vehicle.",
+      "minimum": 0
+    },
+    "extended_dwell_factor": {
+      "type": "number",
+      "description": "Multiplier on standing time.",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "need_shelter": {
+      "type": "boolean",
+      "description": "Shelter wanted."
+    },
+    "need_assistance_point": {
+      "type": "boolean",
+      "description": "Assistance point wanted."
+    },
+    "low_stimulation": {
+      "type": "boolean",
+      "description": "Quiet route preferred."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

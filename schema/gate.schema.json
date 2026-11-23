@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/gate.schema.json",
+  "title": "Gate",
+  "description": "Boom gate, roller door, bollard or open lane.",
+  "type": "object",
+  "required": [
+    "id",
+    "host_id",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Gate id."
+    },
+    "host_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "AccessPoint or InterFacilityLink the gate belongs to."
+    },
+    "kind": {
+      "enum": [
+        "boom_gate",
+        "roller_door",
+        "bollard",
+        "open_lane",
+        "turnstile"
+      ],
+      "description": "Gate kind."
+    },
+    "direction": {
+      "enum": [
+        "in",
+        "out",
+        "both"
+      ],
+      "description": "Lane direction."
+    },
+    "actuation": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ticket",
+          "lpr",
+          "app",
+          "tap_card",
+          "remote_open",
+          "intercom",
+          "manual",
+          "none"
+        ],
+        "description": "Actuation."
+      },
+      "description": "How it opens."
+    },
+    "limits": {
+      "$ref": "common.schema.json#/$defs/VehicleLimits"
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

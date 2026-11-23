@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/pillar-grid.schema.json",
+  "title": "PillarGrid",
+  "description": "A regular pillar grid, useful as a strong alignment constraint.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_id",
+    "origin",
+    "spacing_x_m",
+    "spacing_y_m"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Grid id."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level."
+    },
+    "origin": {
+      "$ref": "common.schema.json#/$defs/LocalPoint"
+    },
+    "spacing_x_m": {
+      "type": "number",
+      "description": "Column spacing along grid x.",
+      "exclusiveMinimum": 0
+    },
+    "spacing_y_m": {
+      "type": "number",
+      "description": "Row spacing along grid y.",
+      "exclusiveMinimum": 0
+    },
+    "bearing_deg": {
+      "type": "number",
+      "description": "Grid x axis bearing in the facility frame."
+    },
+    "x_labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Painted column labels."
+    },
+    "y_labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Painted row labels."
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+    },
+    "valid_from": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "Start of validity, for planned changes."
+    },
+    "valid_to": {
+      "$ref": "common.schema.json#/$defs/DateTime",
+      "description": "End of validity."
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

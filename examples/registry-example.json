@@ -1,0 +1,211 @@
+{
+  "_note": "FICTIONAL / ILLUSTRATIVE. Jurisdiction settings are examples of how routing could be expressed. The CN entry paraphrases the public MNR Notice and is not legal advice or an official configuration; AU is an invented placeholder.",
+  "opms_version": "0.2.0",
+  "jurisdictions": [
+    {
+      "id": "jur.au-vic",
+      "name": "Victoria, Australia (illustrative)",
+      "country": "AU",
+      "repository_id": "repo.au.example",
+      "routing_mode": "direct_to_repository",
+      "accepted_contributor_types": [
+        "oem",
+        "survey_firm",
+        "authority",
+        "operator",
+        "research"
+      ],
+      "raw_data_access": "repository_only",
+      "residency": "unrestricted",
+      "approval_regime": "operator_consent",
+      "redaction_policy_id": "red.au.default",
+      "resolution_policy_id": "res.default",
+      "legal_basis": [
+        "Illustrative: Privacy Act 1988 (Cth) and operator consent. Not legal advice."
+      ]
+    },
+    {
+      "id": "jur.cn",
+      "name": "China (illustrative)",
+      "country": "CN",
+      "repository_id": "repo.cn.gateway.example",
+      "routing_mode": "via_licensed_unit",
+      "licensed_unit_ids": [
+        "contrib.cn-survey-firm-a"
+      ],
+      "accepted_contributor_types": [
+        "survey_firm",
+        "authority"
+      ],
+      "raw_data_access": "licensed_unit_only",
+      "residency": "in_country_only",
+      "approval_regime": "map_review",
+      "redaction_policy_id": "red.cn.default",
+      "resolution_policy_id": "res.cn.strict",
+      "legal_basis": [
+        "MNR Notice 自然资发〔2024〕139号 (26 July 2024): data from intelligent connected vehicles goes directly to a unit with navigation-map surveying qualification; stored in China; export needs approval."
+      ]
+    }
+  ],
+  "repositories": [
+    {
+      "id": "repo.au.example",
+      "operator": "Example national repository consortium (fictional)",
+      "jurisdiction_id": "jur.au-vic",
+      "role": "consortium",
+      "endpoint": "https://opms.example.org/au/",
+      "storage_region": "AU",
+      "default_licence": {
+        "spdx_id": "CC-BY-4.0",
+        "commercial_use": true,
+        "attribution_required": true,
+        "ai_training_use": "allowed"
+      }
+    },
+    {
+      "id": "repo.cn.gateway.example",
+      "operator": "Example licensed surveying firm gateway (fictional)",
+      "jurisdiction_id": "jur.cn",
+      "role": "licensed_unit_gateway",
+      "endpoint": "https://opms-cn.example.org/",
+      "storage_region": "CN",
+      "default_licence": {
+        "custom_terms_uri": "https://opms-cn.example.org/terms",
+        "commercial_use": false,
+        "redistribution": "restricted",
+        "ai_training_use": "restricted"
+      }
+    }
+  ],
+  "contributors": [
+    {
+      "id": "contrib.oem-a",
+      "org_type": "oem",
+      "name": "Example OEM A (fictional)",
+      "jurisdiction_ids": [
+        "jur.au-vic"
+      ],
+      "trust_tier": 1,
+      "public_key_ref": "key:oem-a-2026"
+    },
+    {
+      "id": "contrib.uni-a",
+      "org_type": "research",
+      "name": "Example University CAV Lab (fictional)",
+      "jurisdiction_ids": [
+        "jur.au-vic"
+      ],
+      "trust_tier": 2
+    },
+    {
+      "id": "contrib.cn-survey-firm-a",
+      "org_type": "survey_firm",
+      "name": "Example Licensed Surveying Firm (fictional)",
+      "jurisdiction_ids": [
+        "jur.cn"
+      ],
+      "trust_tier": 3,
+      "licence_ref": {
+        "scheme": "Navigation electronic map making qualification (illustrative)",
+        "number": "EXAMPLE-000",
+        "valid_to": "2028-12-31T00:00:00+08:00"
+      }
+    }
+  ],
+  "resolution_policies": [
+    {
+      "id": "res.default",
+      "jurisdiction_id": "jur.au-vic",
+      "min_contributors": 2,
+      "min_observations": 5,
+      "min_agreement": 0.8,
+      "max_position_spread_m": 0.3,
+      "override_roles": [
+        "operator",
+        "authority"
+      ],
+      "human_review_feature_types": [
+        "gate",
+        "height_limit",
+        "access_point"
+      ],
+      "auto_retire_after_days": 540
+    },
+    {
+      "id": "res.cn.strict",
+      "jurisdiction_id": "jur.cn",
+      "min_contributors": 1,
+      "min_observations": 5,
+      "min_agreement": 0.9,
+      "max_position_spread_m": 0.2,
+      "override_roles": [
+        "authority",
+        "auditor"
+      ],
+      "human_review_feature_types": [
+        "gate",
+        "height_limit",
+        "access_point",
+        "level"
+      ],
+      "auto_retire_after_days": 365
+    }
+  ],
+  "redaction_policies": [
+    {
+      "id": "red.au.default",
+      "jurisdiction_id": "jur.au-vic",
+      "imagery": "none",
+      "blur_faces": true,
+      "blur_plates": true,
+      "on_board_required": true,
+      "trajectories": "derived_geometry_only",
+      "trim_start_m": 200,
+      "trim_end_m": 200,
+      "time_jitter_s": 300,
+      "location_jitter_m": 25,
+      "min_contributors_before_release": 2,
+      "retention_days": 365
+    },
+    {
+      "id": "red.cn.default",
+      "jurisdiction_id": "jur.cn",
+      "imagery": "raw_to_licensed_unit_only",
+      "blur_faces": true,
+      "blur_plates": true,
+      "on_board_required": true,
+      "trajectories": "none",
+      "trim_start_m": 200,
+      "trim_end_m": 200,
+      "time_jitter_s": 300,
+      "min_contributors_before_release": 1,
+      "retention_days": 180
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "camp.mpsc.p2-resurvey",
+      "requested_by": "repo.au.example",
+      "target": {
+        "facility_id": "mpsc.p2",
+        "site_id": "mpsc"
+      },
+      "features_requested": [
+        "level",
+        "ramp",
+        "bay",
+        "pillar",
+        "gate",
+        "height_limit"
+      ],
+      "quality_target_tier": 3,
+      "window": {
+        "start": "2026-11-15T00:00:00+11:00",
+        "end": "2026-12-15T00:00:00+11:00"
+      },
+      "priority": 3,
+      "reason": "quality_upgrade",
+      "status": "active"
+    }
+  ]
+}

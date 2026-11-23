@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/contributor.schema.json",
+  "title": "Contributor",
+  "description": "An organisation submitting contributions. Never an individual vehicle or person.",
+  "type": "object",
+  "required": [
+    "id",
+    "org_type",
+    "name",
+    "jurisdiction_ids",
+    "trust_tier"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Contributor id."
+    },
+    "org_type": {
+      "enum": [
+        "oem",
+        "survey_firm",
+        "authority",
+        "operator",
+        "research"
+      ],
+      "description": "Organisation type."
+    },
+    "name": {
+      "type": "string",
+      "description": "Organisation name."
+    },
+    "licence_ref": {
+      "type": "object",
+      "required": [
+        "scheme",
+        "number"
+      ],
+      "additionalProperties": false,
+      "description": "Licence or qualification, e.g. a national surveying qualification.",
+      "properties": {
+        "scheme": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "valid_to": {
+          "$ref": "common.schema.json#/$defs/DateTime"
+        }
+      }
+    },
+    "jurisdiction_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Jurisdictions the contributor may submit to."
+    },
+    "trust_tier": {
+      "type": "integer",
+      "description": "0 unverified, 1 registered, 2 audited, 3 licensed or authority.",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "public_key_ref": {
+      "type": "string",
+      "description": "Reference to the key used to sign submissions."
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.2/resolution-policy.schema.json",
+  "title": "ResolutionPolicy",
+  "description": "How a repository promotes, merges and retires crowdsourced features.",
+  "type": "object",
+  "required": [
+    "id",
+    "min_contributors",
+    "min_observations",
+    "min_agreement"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Policy id."
+    },
+    "jurisdiction_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Jurisdiction."
+    },
+    "min_contributors": {
+      "type": "integer",
+      "description": "Distinct contributors needed to verify a feature.",
+      "minimum": 1
+    },
+    "min_observations": {
+      "type": "integer",
+      "description": "Observations needed to leave candidate status.",
+      "minimum": 1
+    },
+    "min_agreement": {
+      "type": "number",
+      "description": "Agreement score needed.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "max_position_spread_m": {
+      "type": "number",
+      "description": "Observations further than this from the consensus disagree.",
+      "exclusiveMinimum": 0
+    },
+    "override_roles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "operator",
+          "authority",
+          "auditor"
+        ],
+        "description": "Role."
+      },
+      "description": "Roles that may override consensus."
+    },
+    "human_review_feature_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Feature types that always need human or operator review, e.g. gate, height_limit."
+    },
+    "auto_retire_after_days": {
+      "type": "integer",
+      "description": "Retire a feature not seen for this long.",
+      "minimum": 1
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}
