@@ -1,4 +1,6 @@
-import type { Verification } from "./verification";
+import { reviewerRoles, type Verification } from "./verification";
+
+export const reviewRoles = reviewerRoles;
 
 export interface TierClaim {
   allowed: boolean;

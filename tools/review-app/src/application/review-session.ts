@@ -7,6 +7,8 @@ import { validateDataset, type ValidationIssue } from "../domain/validation-rule
 import type { Verification, VerificationStatus, ReviewerRole } from "../domain/verification";
 import type { ClockPort, SchemaValidatorPort } from "./ports";
 
+export type { SchemaValidatorPort };
+
 export interface LoadResult {
   dataset: DatasetModel | null;
   issues: ValidationIssue[];

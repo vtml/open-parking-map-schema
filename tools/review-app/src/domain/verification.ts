@@ -12,11 +12,3 @@ export interface Verification {
   reviewedAt: string;
   datasetVersion: string;
 }
-
-export function isReviewerRole(value: string): value is ReviewerRole {
-  return (reviewerRoles as readonly string[]).includes(value);
-}
-
-export function isVerificationStatus(value: string): value is VerificationStatus {
-  return (verificationStatuses as readonly string[]).includes(value);
-}

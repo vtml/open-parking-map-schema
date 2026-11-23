@@ -130,6 +130,18 @@ describe("review session", () => {
     expect(point[1]).toBeCloseTo(5, 5);
   });
 
+  it("rejects a review for another dataset and a review that is not an object", () => {
+    const loaded = loadDataset(simple, passingSchemas());
+    const wrong = importReview(loaded.dataset!, { dataset_id: "other", dataset_version: "nope", entries: [] }, passingSchemas());
+    expect(wrong.issues.length).toBeGreaterThan(0);
+    expect(wrong.dataset).toBe(loaded.dataset);
+    const empty = importReview(loaded.dataset!, null, {
+      validateDataset: () => [],
+      validateReview: () => [{ instancePath: "/", message: "must be object" }],
+    });
+    expect(empty.issues.some((item) => /not a review document/i.test(item.message))).toBe(true);
+  });
+
   it("builds a level view that includes bays and the entrance threshold", () => {
     const loaded = loadDataset(simple, passingSchemas());
     const view = levelView(loaded.dataset!, "wr.g");

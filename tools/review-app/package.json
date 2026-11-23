@@ -12,7 +12,7 @@
     "boundaries": "depcruise src --config .dependency-cruiser.cjs",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:bdd": "NODE_OPTIONS='--import tsx' cucumber-js --strict",
+    "test:bdd": "NODE_OPTIONS='--import tsx' cucumber-js --strict --import test/bdd/steps.ts features",
     "test:e2e": "playwright test"
   },
   "dependencies": {
