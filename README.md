@@ -64,7 +64,7 @@ Profiles are cumulative and enforced by `schema/dataset.schema.json`. A consumer
 ```
 README.md  SPEC.md  HUMAN_CENTRED_DESIGN.md  CONTRIBUTING.md  CHANGELOG.md
 LICENSE  LICENSE-CC-BY-4.0  LICENSE-APACHE-2.0  NOTICE
-docs/       project site (GitHub Pages, plain HTML)
+docs/       project site and explorer (GitHub Pages, plain HTML)
 schema/     JSON Schema (draft 2020-12): one file per object, plus dataset, contribution bundle and registry roots
 examples/   fictional examples that validate against the schemas
 tools/      validate.py

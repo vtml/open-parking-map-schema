@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Explorer · OPMS v0.2 draft</title>
+  <meta name="description" content="Interactive map of the fictional OPMS v0.2 examples. Select a bay, aisle, entrance or rule to read its JSON and the schema description of each field.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("opms-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">OPMS</span>
+        <span class="brand-text">
+          <span class="brand-name">Open Parking Map Schema</span>
+          <span class="brand-version">v0.2 draft</span>
+        </span>
+      </a>
+      <div class="header-tools">
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="spec.html">Spec</a></li>
+            <li><a href="example.html">Example</a></li>
+            <li><a href="explorer.html" aria-current="page">Explorer</a></li>
+            <li><a href="get-involved.html">Get involved</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle>Theme</button>
+      </div>
+    </div>
+  </header>
+  <main id="main" class="wide">
+    <p class="kicker">Fictional examples</p>
+    <h1>Explore a car park</h1>
+    <p class="lede">Two datasets from this draft, drawn from the coordinates stored in the files. Simple is one surface lot. Complex is Merriwa Park, the fictional mall with three car parks. This is a v0.2 draft. No organisation has endorsed it.</p>
+    <aside class="status">
+      <p><strong>Example data only.</strong> Wattle Reserve Office and Merriwa Park Shopping Centre, their roads, prices and coordinates are invented. A missing shape usually means the object has no position or polygon in v0.2, not that the object is absent. The field text in the panel is copied from the schema descriptions.</p>
+    </aside>
+    <p id="load-error" class="status" hidden></p>
+
+    <form class="controls">
+      <fieldset>
+        <legend>Example</legend>
+        <label class="choice"><input type="radio" name="example" value="simple" checked> Simple</label>
+        <label class="choice"><input type="radio" name="example" value="complex"> Complex</label>
+      </fieldset>
+      <label class="level-field">Level
+        <select id="level"></select>
+      </label>
+    </form>
+    <p class="muted">Tab to a shape or a tree row. Enter or Space selects it. The panel shows that object’s JSON and each field’s schema description. The same objects are listed under the map.</p>
+    <p class="visually-hidden" id="live" aria-live="polite"></p>
+
+    <div class="explorer-grid">
+      <section class="map-card" aria-labelledby="map-heading">
+        <h2 id="map-heading">Map</h2>
+        <div class="map-scroll">
+          <svg id="map" class="map-svg" role="group" aria-labelledby="map-title" aria-describedby="map-desc"></svg>
+        </div>
+        <p id="map-title" class="visually-hidden">Coordinates for the selected level</p>
+        <p id="map-desc">Local metres, x east and y north, with north at the top. The dashed rectangle is the extent of those points. A site in v0.2 has no outline of its own.</p>
+        <ul id="legend" class="legend"></ul>
+        <details>
+          <summary>Text list of what this level draws</summary>
+          <ul id="map-text"></ul>
+        </details>
+        <p id="undrawn"></p>
+      </section>
+      <section class="detail-card" aria-labelledby="detail-heading">
+        <h2 id="detail-heading">Selected object</h2>
+        <p id="detail-intro">Select a shape or a row in the tree.</p>
+        <h3>JSON</h3>
+        <pre id="detail-json" tabindex="0" aria-label="JSON for the selected object"></pre>
+        <h3>Fields</h3>
+        <div id="detail-fields" class="field-list"></div>
+      </section>
+    </div>
+
+    <section class="tree-card" aria-labelledby="tree-heading">
+      <h2 id="tree-heading">Dataset tree</h2>
+      <p class="muted">Rules, provenance, quality tier, external references and other records without coordinates are in this tree.</p>
+      <div class="tree-tools">
+        <button type="button" id="tree-expand">Expand all</button>
+        <button type="button" id="tree-collapse">Collapse all</button>
+      </div>
+      <ul id="tree" class="tree"></ul>
+    </section>
+
+    <section class="er-card" aria-labelledby="er-heading">
+      <h2 id="er-heading">How the objects fit together</h2>
+      <p>Each box is a schema file. A line is a <code>$ref</code> from one file to another. Shared field types such as Id, LocalPoint and Provenance live in <code>common.schema.json</code> and are not drawn as their own box. The list under the diagram is the same set of links.</p>
+      <div class="er-scroll">
+        <svg id="er" class="er-svg" role="img" aria-labelledby="er-svg-title"></svg>
+      </div>
+      <p id="er-svg-title" class="visually-hidden">Schema files linked by their references</p>
+      <ul id="er-list"></ul>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>The explorer reads copies in <code>docs/data</code>. <code>tools/sync_docs_data.py</code> refreshes them from <code>examples/</code> and <code>schema/</code>. Continuous integration checks that the copies match.</p>
+      <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+      <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
+  <script src="assets/explorer.js"></script>
+</body>
+</html>

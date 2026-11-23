@@ -1,0 +1,1085 @@
+{
+  "_note": "FICTIONAL EXAMPLE DATA. Wattle Reserve Office, its road, identifiers and coordinates are invented for illustration. Not a real place.",
+  "opms_version": "0.2.0",
+  "dataset_version": "2026-11-23.1",
+  "profile": "static-rules",
+  "site": {
+    "id": "wr",
+    "name": "Wattle Reserve Office car park (fictional)",
+    "kind": "office",
+    "timezone": "Australia/Melbourne",
+    "ticket_scope": "facility",
+    "facility_ids": [
+      "wr.lot"
+    ],
+    "jurisdiction_id": "jur.au-vic",
+    "locality_class": "metro_suburban",
+    "external_refs": {
+      "apds_place_id": "example:apds:wattle-reserve",
+      "iso5206_id": "example:iso5206:wattle-reserve"
+    },
+    "provenance": {
+      "source": "survey",
+      "observed_at": "2026-11-23T09:00:00+11:00",
+      "confidence": 0.9
+    },
+    "_note": "Fictional site. The external_refs values are placeholders, not real APDS or ISO records."
+  },
+  "frames": [
+    {
+      "id": "wr.frame",
+      "origin_wgs84": {
+        "lat": -37.85,
+        "lon": 145.05,
+        "h_ellipsoid_m": 40.0
+      },
+      "x_axis_bearing_deg": 90,
+      "anchor_accuracy_m": 0.05,
+      "_note": "Fictional origin. x is east and y is north in the local frame. This does not locate a real office."
+    }
+  ],
+  "facilities": [
+    {
+      "id": "wr.lot",
+      "site_id": "wr",
+      "name": "Surface lot",
+      "type": "surface_lot",
+      "frame_id": "wr.frame",
+      "gnss": "good",
+      "capacity": 14,
+      "levels": [
+        {
+          "id": "wr.g",
+          "ordinal": 0,
+          "label": "G",
+          "elevation_m": 0,
+          "open_air": true,
+          "gnss": "good",
+          "entry_anchor_ids": [
+            "wr.g.anc.gate"
+          ]
+        }
+      ],
+      "operating_hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "rate_id": "wr.rate.std",
+      "approval": {
+        "owner_consent": "granted",
+        "granted_by": "Fictional Reserve Office (example)",
+        "scope": [
+          "geometry_only",
+          "publish"
+        ],
+        "signage": false
+      },
+      "quality_tier": {
+        "tier": 1,
+        "accuracy_class": "adas",
+        "completeness_pct": 100
+      },
+      "licence": {
+        "spdx_id": "CC-BY-4.0",
+        "commercial_use": true,
+        "attribution_required": true,
+        "ai_training_use": "allowed"
+      },
+      "provenance": {
+        "source": "survey",
+        "observed_at": "2026-11-23T09:00:00+11:00",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "wr.g.main",
+      "level_id": "wr.g",
+      "name": "Main"
+    }
+  ],
+  "bays": [
+    {
+      "id": "wr.g.b01",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          6.0,
+          0
+        ],
+        [
+          6.4,
+          6.0,
+          0
+        ],
+        [
+          6.4,
+          8.7,
+          0
+        ],
+        [
+          1.0,
+          8.7,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "01",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b02",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          9.2,
+          0
+        ],
+        [
+          6.4,
+          9.2,
+          0
+        ],
+        [
+          6.4,
+          11.899999999999999,
+          0
+        ],
+        [
+          1.0,
+          11.899999999999999,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "02",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b03",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          12.4,
+          0
+        ],
+        [
+          6.4,
+          12.4,
+          0
+        ],
+        [
+          6.4,
+          15.100000000000001,
+          0
+        ],
+        [
+          1.0,
+          15.100000000000001,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "family"
+      ],
+      "painted_label": "03",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "rule_ids": [
+        "wr.rule.family"
+      ]
+    },
+    {
+      "id": "wr.g.b04",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          15.600000000000001,
+          0
+        ],
+        [
+          6.4,
+          15.600000000000001,
+          0
+        ],
+        [
+          6.4,
+          18.3,
+          0
+        ],
+        [
+          1.0,
+          18.3,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "04",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b05",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          18.8,
+          0
+        ],
+        [
+          6.4,
+          18.8,
+          0
+        ],
+        [
+          6.4,
+          21.5,
+          0
+        ],
+        [
+          1.0,
+          21.5,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "05",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b06",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          22.0,
+          0
+        ],
+        [
+          6.4,
+          22.0,
+          0
+        ],
+        [
+          6.4,
+          24.7,
+          0
+        ],
+        [
+          1.0,
+          24.7,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "06",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b07",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          1.0,
+          25.200000000000003,
+          0
+        ],
+        [
+          6.4,
+          25.200000000000003,
+          0
+        ],
+        [
+          6.4,
+          27.900000000000002,
+          0
+        ],
+        [
+          1.0,
+          27.900000000000002,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 1,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "07",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b08",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          6.0,
+          0
+        ],
+        [
+          18.0,
+          6.0,
+          0
+        ],
+        [
+          18.0,
+          8.7,
+          0
+        ],
+        [
+          12.6,
+          8.7,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "ev"
+      ],
+      "painted_label": "08",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "ev": {
+        "connector": "ccs2",
+        "power_kw": 22,
+        "charger_id": "wr-ev-1"
+      },
+      "rule_ids": [
+        "wr.rule.ev"
+      ]
+    },
+    {
+      "id": "wr.g.b09",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          9.2,
+          0
+        ],
+        [
+          18.0,
+          9.2,
+          0
+        ],
+        [
+          18.0,
+          11.899999999999999,
+          0
+        ],
+        [
+          12.6,
+          11.899999999999999,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "ev"
+      ],
+      "painted_label": "09",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "ev": {
+        "connector": "ccs2",
+        "power_kw": 22,
+        "charger_id": "wr-ev-2"
+      },
+      "rule_ids": [
+        "wr.rule.ev"
+      ]
+    },
+    {
+      "id": "wr.g.b10",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          12.4,
+          0
+        ],
+        [
+          18.0,
+          12.4,
+          0
+        ],
+        [
+          18.0,
+          15.100000000000001,
+          0
+        ],
+        [
+          12.6,
+          15.100000000000001,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "10",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b11",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          15.600000000000001,
+          0
+        ],
+        [
+          18.0,
+          15.600000000000001,
+          0
+        ],
+        [
+          18.0,
+          18.3,
+          0
+        ],
+        [
+          12.6,
+          18.3,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "11",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b12",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          18.8,
+          0
+        ],
+        [
+          18.0,
+          18.8,
+          0
+        ],
+        [
+          18.0,
+          21.5,
+          0
+        ],
+        [
+          12.6,
+          21.5,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "general"
+      ],
+      "painted_label": "12",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+    },
+    {
+      "id": "wr.g.b13",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          22.0,
+          0
+        ],
+        [
+          18.0,
+          22.0,
+          0
+        ],
+        [
+          18.0,
+          24.7,
+          0
+        ],
+        [
+          12.6,
+          24.7,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "accessible"
+      ],
+      "painted_label": "13",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "rule_ids": [
+        "wr.rule.accessible"
+      ],
+      "accessibility": {
+        "bay_width_m": 2.7,
+        "bay_length_m": 5.4,
+        "shared_zone": {
+          "side": "left",
+          "width_m": 2.4,
+          "length_m": 5.4,
+          "shared_between_bays": true
+        },
+        "kerb_ramp": true,
+        "gradient_pct": 2.0,
+        "permit_scheme": "adps",
+        "bollard": true,
+        "rest_point_on_path": true,
+        "distance_to_accessible_entrance_m": 12
+      }
+    },
+    {
+      "id": "wr.g.b14",
+      "zone_id": "wr.g.main",
+      "polygon": [
+        [
+          12.6,
+          25.200000000000003,
+          0
+        ],
+        [
+          18.0,
+          25.200000000000003,
+          0
+        ],
+        [
+          18.0,
+          27.900000000000002,
+          0
+        ],
+        [
+          12.6,
+          27.900000000000002,
+          0
+        ]
+      ],
+      "orientation": "perpendicular",
+      "angle_deg": 90,
+      "approach_edge": 3,
+      "bay_types": [
+        "accessible"
+      ],
+      "painted_label": "14",
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "rule_ids": [
+        "wr.rule.accessible"
+      ],
+      "accessibility": {
+        "bay_width_m": 2.7,
+        "bay_length_m": 5.4,
+        "shared_zone": {
+          "side": "left",
+          "width_m": 2.4,
+          "length_m": 5.4,
+          "shared_between_bays": true
+        },
+        "kerb_ramp": true,
+        "gradient_pct": 2.0,
+        "permit_scheme": "adps",
+        "bollard": true,
+        "rest_point_on_path": true,
+        "distance_to_accessible_entrance_m": 12
+      }
+    }
+  ],
+  "drive_nodes": [
+    {
+      "id": "wr.g.n.entry",
+      "level_id": "wr.g",
+      "position": [
+        9.5,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "wr.g.n.south",
+      "level_id": "wr.g",
+      "position": [
+        9.5,
+        6,
+        0
+      ]
+    },
+    {
+      "id": "wr.g.n.north",
+      "level_id": "wr.g",
+      "position": [
+        9.5,
+        30,
+        0
+      ]
+    }
+  ],
+  "drive_edges": [
+    {
+      "id": "wr.e.lane.in",
+      "from_node": "wr.g.n.entry",
+      "to_node": "wr.g.n.south",
+      "kind": "access_lane",
+      "level_id": "wr.g",
+      "centreline": [
+        [
+          9.5,
+          1,
+          0
+        ],
+        [
+          9.5,
+          6,
+          0
+        ]
+      ],
+      "width_m": 6.0,
+      "speed_limit_kmh": 10
+    },
+    {
+      "id": "wr.e.lane.out",
+      "from_node": "wr.g.n.south",
+      "to_node": "wr.g.n.entry",
+      "kind": "access_lane",
+      "level_id": "wr.g",
+      "centreline": [
+        [
+          9.5,
+          6,
+          0
+        ],
+        [
+          9.5,
+          1,
+          0
+        ]
+      ],
+      "width_m": 6.0,
+      "speed_limit_kmh": 10
+    },
+    {
+      "id": "wr.e.aisle.n",
+      "from_node": "wr.g.n.south",
+      "to_node": "wr.g.n.north",
+      "kind": "aisle",
+      "level_id": "wr.g",
+      "centreline": [
+        [
+          9.5,
+          6,
+          0
+        ],
+        [
+          9.5,
+          30,
+          0
+        ]
+      ],
+      "width_m": 6.0,
+      "speed_limit_kmh": 10,
+      "bay_ids": [
+        "wr.g.b01",
+        "wr.g.b02",
+        "wr.g.b03",
+        "wr.g.b04",
+        "wr.g.b05",
+        "wr.g.b06",
+        "wr.g.b07",
+        "wr.g.b08",
+        "wr.g.b09",
+        "wr.g.b10",
+        "wr.g.b11",
+        "wr.g.b12",
+        "wr.g.b13",
+        "wr.g.b14"
+      ]
+    },
+    {
+      "id": "wr.e.aisle.s",
+      "from_node": "wr.g.n.north",
+      "to_node": "wr.g.n.south",
+      "kind": "aisle",
+      "level_id": "wr.g",
+      "centreline": [
+        [
+          9.5,
+          30,
+          0
+        ],
+        [
+          9.5,
+          6,
+          0
+        ]
+      ],
+      "width_m": 6.0,
+      "speed_limit_kmh": 10,
+      "bay_ids": [
+        "wr.g.b01",
+        "wr.g.b02",
+        "wr.g.b03",
+        "wr.g.b04",
+        "wr.g.b05",
+        "wr.g.b06",
+        "wr.g.b07",
+        "wr.g.b08",
+        "wr.g.b09",
+        "wr.g.b10",
+        "wr.g.b11",
+        "wr.g.b12",
+        "wr.g.b13",
+        "wr.g.b14"
+      ]
+    }
+  ],
+  "access_points": [
+    {
+      "id": "wr.ap1",
+      "facility_id": "wr.lot",
+      "role": "both",
+      "position": [
+        9.5,
+        0.4,
+        0
+      ],
+      "road_link": {
+        "road_name": "Wattle Reserve Rd (fictional)",
+        "signalised": false
+      },
+      "movements_in": [
+        "left_in",
+        "right_in"
+      ],
+      "movements_out": [
+        "left_out",
+        "right_out"
+      ],
+      "served_level_ids": [
+        "wr.g"
+      ],
+      "served_zone_ids": [
+        "wr.g.main"
+      ],
+      "hours": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "credentials": [
+        "ticket",
+        "lpr"
+      ],
+      "gate_ids": [
+        "wr.g1"
+      ],
+      "queue_capacity_veh": 2,
+      "provenance": {
+        "source": "survey",
+        "observed_at": "2026-11-23T09:00:00+11:00",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "gates": [
+    {
+      "id": "wr.g1",
+      "host_id": "wr.ap1",
+      "kind": "boom_gate",
+      "direction": "both",
+      "actuation": [
+        "ticket",
+        "lpr"
+      ]
+    }
+  ],
+  "anchor_features": [
+    {
+      "id": "wr.g.anc.gate",
+      "level_id": "wr.g",
+      "kind": "gate_line",
+      "anchor_class": "surveyed",
+      "position": [
+        9.5,
+        1.6,
+        0
+      ],
+      "accuracy_m": 0.05,
+      "gnss_visible": true
+    }
+  ],
+  "pedestrian_portals": [
+    {
+      "id": "wr.pp.exit",
+      "kind": "mall_door",
+      "level_label": "G",
+      "position": [
+        9.5,
+        33.5,
+        0
+      ],
+      "step_free": true,
+      "_note": "The schema's door kinds have no generic pedestrian-exit value. mall_door is the door kind used here for a fictional pedestrian exit."
+    }
+  ],
+  "destinations": [
+    {
+      "id": "wr.d.exit",
+      "kind": "mall_door",
+      "name": "Pedestrian exit",
+      "level_label": "G",
+      "portal_ids": [
+        "wr.pp.exit"
+      ]
+    }
+  ],
+  "handover_zones": [
+    {
+      "id": "wr.hz.door",
+      "kind": "both",
+      "location_id": "wr.g",
+      "capacity_veh": 1,
+      "max_dwell_s": 120,
+      "iso23374_handover": false,
+      "accessibility": {
+        "kerbside_transfer_space_m": 1.5,
+        "kerb_ramp": true,
+        "step_free_to_destination": true,
+        "sheltered": false,
+        "seating": false,
+        "assistance_point": false,
+        "lighting": "good",
+        "wait_time_allowance_s": 120
+      },
+      "_note": "Fictional drop-off on level G. This object has no position or polygon in v0.2."
+    }
+  ],
+  "destination_access": [
+    {
+      "destination_id": "wr.d.exit",
+      "via": "handover_zone",
+      "target_id": "wr.hz.door",
+      "walk_time_s": 40,
+      "walk_distance_m": 30,
+      "step_free": true,
+      "covered": false,
+      "accessible_path_id": "wr.path.acc-exit"
+    }
+  ],
+  "accessible_paths": [
+    {
+      "id": "wr.path.acc-exit",
+      "from_id": "wr.g.b13",
+      "to_id": "wr.pp.exit",
+      "step_free": true,
+      "distance_m": 12,
+      "walk_time_s": 40,
+      "max_gradient_pct": 2.0,
+      "min_width_m": 1.5,
+      "surface": "smooth",
+      "tactile_indicators": true,
+      "lighting": "good",
+      "sheltered": "none",
+      "rest_points": 1,
+      "crossings": 0,
+      "_note": "Fictional path. The record stores distance, not a centreline."
+    }
+  ],
+  "wayfinding_aids": [
+    {
+      "id": "wr.wf.exit",
+      "level_id": "wr.g",
+      "kind": "sign",
+      "label": "Exit",
+      "position": [
+        11.2,
+        32.2,
+        0
+      ],
+      "description": "Sign beside the pedestrian exit."
+    }
+  ],
+  "rules": [
+    {
+      "id": "wr.rule.accessible",
+      "applies_to": [
+        "wr.g.b13",
+        "wr.g.b14"
+      ],
+      "activity": "park",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "user_classes": [
+        "disability_permit"
+      ],
+      "authority": "Fictional council (example)",
+      "_note": "Fictional rule, not a real instrument."
+    },
+    {
+      "id": "wr.rule.ev",
+      "applies_to": [
+        "wr.g.b08",
+        "wr.g.b09"
+      ],
+      "activity": "park",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "user_classes": [
+        "ev_charging"
+      ],
+      "max_stay_min": 120,
+      "authority": "Fictional Reserve Office (example)"
+    },
+    {
+      "id": "wr.rule.family",
+      "applies_to": [
+        "wr.g.b03"
+      ],
+      "activity": "park",
+      "when": [
+        {
+          "days": [
+            "mo",
+            "tu",
+            "we",
+            "th",
+            "fr",
+            "sa",
+            "su",
+            "ph"
+          ],
+          "start": "00:00",
+          "end": "24:00"
+        }
+      ],
+      "user_classes": [
+        "family"
+      ],
+      "authority": "Fictional Reserve Office (example)"
+    }
+  ],
+  "rates": [
+    {
+      "id": "wr.rate.std",
+      "currency": "AUD",
+      "periods": [
+        {
+          "up_to_min": 60,
+          "price": "0.00"
+        }
+      ],
+      "dynamic": false,
+      "_note": "Fictional free hour. Not a real tariff."
+    }
+  ],
+  "publication": {
+    "public_url": "https://opms.example.org/data/wattle-reserve",
+    "formats": [
+      "json"
+    ],
+    "bulk_download": true,
+    "non_av_use_allowed": true,
+    "accessible_documentation": true,
+    "update_frequency": "on_change",
+    "accessibility_contact": "Reserve office (example)"
+  }
+}

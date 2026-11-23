@@ -17,7 +17,7 @@ Added for multi-OEM crowdsourced surveying of static parking layout:
 - **Governance:** `Jurisdiction`, `Repository` (including `via_licensed_unit` routing and residency), `LicenceTerms`, `RedactionPolicy`, `ApprovalStatus`, `release_restrictions`; `registry` root.
 - **Human-centred design:** `HUMAN_CENTRED_DESIGN.md`; `BayAccessibility`, `AccessiblePath`, `Lift`, `HandoverAccessibility`, `WayfindingAid`, `SafetyFeature`, `PassengerNeeds` (on-device) and `HandoverRequirements`, `PublicationTerms`, `Site.locality_class`; new bay classes (ambulant, carer, pregnancy, taxi, community_transport, ndis_transport, patient_transport, coach, courier, oversize_van, emergency_services); `emergency_access` on access points.
 - **Related work:** APDS Place hierarchy reused by reference (`apds_*_id`), `iso5206_id`, `maze_id` (reserved); positioning relative to EAVP, ISO/TS 5206-1, China plan 20243535-T-466, Jiang et al. 2024 and the Autoware Lanelet2 parking extension.
-- **Examples:** fictional Merriwa Park mall (three complexes, seven access points), a street segment, a crowdsourced contribution, a change set, an optional dynamic feed and an illustrative AU/CN registry.
+- **Examples:** fictional Merriwa Park mall (three complexes, seven access points), a simple single-level surface lot (`examples/simple-carpark-dataset.json`), a street segment, a crowdsourced contribution, a change set, an optional dynamic feed and an illustrative AU/CN registry.
 - **Tooling:** `tools/validate.py` (schema validity, example validity, reference integrity, profile negative tests).
 
 Changed: root `dataset` now requires `profile`; `Facility` gained `jurisdiction_id`, `approval`, `quality_tier`, `licence`; `Provenance.source` gained `consolidation`.

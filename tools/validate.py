@@ -28,6 +28,7 @@ EXAMPLE_DIR = ROOT / "examples"
 
 # example file -> schema file
 EXAMPLE_SCHEMAS = {
+    "simple-carpark-dataset.json": "dataset.schema.json",
     "merriwa-park-dataset.json": "dataset.schema.json",
     "street-segment-dataset.json": "dataset.schema.json",
     "crowdsourced-contribution-bundle.json": "contribution-bundle.schema.json",

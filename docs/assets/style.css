@@ -485,3 +485,234 @@ figcaption {
     font-size: 1.85rem;
   }
 }
+
+main.wide {
+  width: min(92rem, calc(100% - 2rem));
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  align-items: end;
+  margin: 1rem 0;
+}
+
+.controls fieldset {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  margin: 0;
+  padding: 0.55rem 0.8rem 0.7rem;
+}
+
+.controls legend {
+  padding: 0 0.3rem;
+  font-weight: 650;
+}
+
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.8rem;
+}
+
+.level-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 650;
+}
+
+.level-field select,
+.tree-tools button,
+.tree-row {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.level-field select {
+  padding: 0.4rem 0.6rem;
+}
+
+.explorer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.map-card,
+.detail-card,
+.tree-card,
+.er-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  padding: 0.85rem;
+}
+
+.map-scroll {
+  overflow: auto;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 22rem;
+  color: var(--ink);
+}
+
+.map-svg .feature {
+  cursor: pointer;
+}
+
+.map-svg .feature:focus {
+  outline: none;
+}
+
+.map-svg .feature:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.map-svg .is-selected {
+  stroke: var(--focus);
+  stroke-width: 0.55;
+}
+
+.map-svg text {
+  fill: currentColor;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.map-svg .bay-label { fill: #1b1915; }
+.bay-general { fill: #d9d3c7; }
+.bay-accessible { fill: #9eb6d9; }
+.bay-ev { fill: #8fbfa8; }
+.bay-family { fill: #e2c07a; }
+.bay-taxi { fill: #c5b4d6; }
+.bay-courier { fill: #d7b59a; }
+.bay-transport { fill: #9ecfc8; }
+.bay-other { fill: #e3c1b8; }
+
+.legend {
+  margin-top: 0.8rem;
+}
+
+.detail-card {
+  max-height: 44rem;
+  overflow: auto;
+}
+
+.detail-card pre {
+  overflow: auto;
+  max-height: 16rem;
+  padding: 0.7rem;
+  background: var(--bg);
+  border-radius: 0.5rem;
+  white-space: pre;
+}
+
+.field-list,
+.field-list dl {
+  margin: 0.2rem 0 0.5rem;
+}
+
+.field-list dt {
+  font-weight: 650;
+  margin-top: 0.45rem;
+}
+
+.field-list dd {
+  margin: 0.1rem 0 0;
+}
+
+.tree-tools {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.tree-tools button,
+.tree-row {
+  padding: 0.25rem 0.55rem;
+}
+
+.tree-card {
+  margin-top: 1rem;
+}
+
+.tree,
+.tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 0.12rem 0;
+}
+
+.tree-row[aria-current="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  font-weight: 650;
+}
+
+.er-scroll {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--bg);
+  margin: 0.6rem 0 1rem;
+}
+
+.er-svg {
+  display: block;
+  min-width: 44rem;
+}
+
+.er-svg text {
+  fill: currentColor;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+@media (max-width: 62rem) {
+  .explorer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-card {
+    max-height: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  main.wide {
+    width: min(92rem, calc(100% - 1.25rem));
+  }
+}

@@ -1,0 +1,5543 @@
+{
+  "access-point.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/access-point.schema.json",
+    "title": "AccessPoint",
+    "description": "A vehicle entry, exit or both, tied to a public road.",
+    "type": "object",
+    "required": [
+      "id",
+      "facility_id",
+      "role",
+      "road_link"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Access point id."
+      },
+      "facility_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Complex it serves."
+      },
+      "role": {
+        "enum": [
+          "entry",
+          "exit",
+          "both"
+        ],
+        "description": "Direction of use."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "road_link": {
+        "type": "object",
+        "required": [
+          "road_name"
+        ],
+        "additionalProperties": false,
+        "description": "Public road it connects to.",
+        "properties": {
+          "road_name": {
+            "type": "string"
+          },
+          "intersection_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "approach_bearing_deg": {
+            "type": "number"
+          },
+          "signalised": {
+            "type": "boolean"
+          },
+          "external_refs": {
+            "$ref": "common.schema.json#/$defs/ExternalRefs"
+          }
+        }
+      },
+      "movements_in": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "left_in",
+            "right_in",
+            "straight_in"
+          ],
+          "description": "Movement."
+        },
+        "description": "Allowed entry movements."
+      },
+      "movements_out": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "left_out",
+            "right_out",
+            "straight_out"
+          ],
+          "description": "Movement."
+        },
+        "description": "Allowed exit movements."
+      },
+      "served_level_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Levels reachable without leaving."
+      },
+      "served_zone_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Zones reachable without leaving."
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Opening hours."
+      },
+      "limits": {
+        "$ref": "common.schema.json#/$defs/VehicleLimits"
+      },
+      "credentials": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "ticket",
+            "lpr",
+            "app",
+            "tap_card",
+            "rfid",
+            "permit",
+            "intercom",
+            "none"
+          ],
+          "description": "Credential."
+        },
+        "description": "Accepted credentials."
+      },
+      "gate_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "One per lane."
+      },
+      "queue_capacity_veh": {
+        "type": "integer",
+        "description": "Stacking space before blocking the road.",
+        "minimum": 0
+      },
+      "emergency_access": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Emergency vehicle access.",
+        "properties": {
+          "fire_brigade_access": {
+            "type": "boolean"
+          },
+          "ambulance_clearance_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "emergency_override": {
+            "type": "boolean"
+          }
+        }
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false,
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "role": {
+              "const": "entry"
+            }
+          },
+          "required": [
+            "role"
+          ]
+        },
+        "then": {
+          "required": [
+            "movements_in"
+          ]
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "role": {
+              "const": "exit"
+            }
+          },
+          "required": [
+            "role"
+          ]
+        },
+        "then": {
+          "required": [
+            "movements_out"
+          ]
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "role": {
+              "const": "both"
+            }
+          },
+          "required": [
+            "role"
+          ]
+        },
+        "then": {
+          "required": [
+            "movements_in",
+            "movements_out"
+          ]
+        }
+      }
+    ]
+  },
+  "accessible-path.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/accessible-path.schema.json",
+    "title": "AccessiblePath",
+    "description": "A step-free route from a bay or drop-off to a door or destination.",
+    "type": "object",
+    "required": [
+      "id",
+      "from_id",
+      "to_id",
+      "step_free",
+      "distance_m"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Path id."
+      },
+      "from_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Bay, zone or handover zone."
+      },
+      "to_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Pedestrian portal, destination or handover zone."
+      },
+      "step_free": {
+        "type": "boolean",
+        "description": "No steps or kerbs on the route."
+      },
+      "distance_m": {
+        "type": "number",
+        "description": "Route length.",
+        "minimum": 0
+      },
+      "walk_time_s": {
+        "type": "number",
+        "description": "Typical time for a slow or wheelchair pace.",
+        "minimum": 0
+      },
+      "max_gradient_pct": {
+        "type": "number",
+        "description": "Steepest gradient on the route."
+      },
+      "min_width_m": {
+        "type": "number",
+        "description": "Narrowest clear width.",
+        "exclusiveMinimum": 0
+      },
+      "surface": {
+        "enum": [
+          "smooth",
+          "textured",
+          "loose",
+          "mixed"
+        ],
+        "description": "Surface."
+      },
+      "tactile_indicators": {
+        "type": "boolean",
+        "description": "Tactile ground surface indicators on the route."
+      },
+      "lighting": {
+        "enum": [
+          "none",
+          "partial",
+          "good"
+        ],
+        "description": "Lighting."
+      },
+      "sheltered": {
+        "enum": [
+          "none",
+          "partial",
+          "full"
+        ],
+        "description": "Weather cover."
+      },
+      "rest_points": {
+        "type": "integer",
+        "description": "Places to rest.",
+        "minimum": 0
+      },
+      "seating_points": {
+        "type": "integer",
+        "description": "Seats along the route.",
+        "minimum": 0
+      },
+      "lift_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Lifts used."
+      },
+      "crossings": {
+        "type": "integer",
+        "description": "Vehicle aisle or road crossings.",
+        "minimum": 0
+      },
+      "hazards": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "speed_hump",
+            "vehicle_crossing",
+            "steep_ramp",
+            "narrow_door",
+            "heavy_door",
+            "loose_surface",
+            "blocked_often"
+          ],
+          "description": "Hazard."
+        },
+        "description": "Known hazards."
+      },
+      "low_stimulation_rating": {
+        "enum": [
+          "unknown",
+          "quiet",
+          "moderate",
+          "busy"
+        ],
+        "description": "Typical noise and crowding."
+      },
+      "wayfinding_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Wayfinding aids along the route."
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "When the route is usable (e.g. lift hours)."
+      },
+      "standard_ref": {
+        "type": "string",
+        "description": "e.g. AS 1428.1:2021 (verify the edition in force)."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "alignment-record.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/alignment-record.schema.json",
+    "title": "AlignmentRecord",
+    "description": "How a contribution was aligned into the facility frame in GNSS-denied areas.",
+    "type": "object",
+    "required": [
+      "id",
+      "contribution_id",
+      "frame_id",
+      "method",
+      "anchor_ids",
+      "residual_rmse_m",
+      "solved_at"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Record id."
+      },
+      "contribution_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Contribution."
+      },
+      "frame_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Target facility frame."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level aligned."
+      },
+      "method": {
+        "enum": [
+          "pose_graph",
+          "landmark_match",
+          "loop_closure",
+          "gnss_at_anchor"
+        ],
+        "description": "Alignment method."
+      },
+      "anchor_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "AnchorFeatures used."
+      },
+      "residual_rmse_m": {
+        "type": "number",
+        "description": "RMS residual after alignment.",
+        "minimum": 0
+      },
+      "loop_closures": {
+        "type": "integer",
+        "description": "Loop closures found.",
+        "minimum": 0
+      },
+      "drift_m_per_100m": {
+        "type": "number",
+        "description": "Estimated residual drift.",
+        "minimum": 0
+      },
+      "solved_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "status": {
+        "enum": [
+          "ok",
+          "poor",
+          "failed"
+        ],
+        "description": "Outcome."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "anchor-feature.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/anchor-feature.schema.json",
+    "title": "AnchorFeature",
+    "description": "A distinctive feature used to align contributions and tie levels to the global frame.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "kind",
+      "anchor_class",
+      "position"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Anchor id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "kind": {
+        "enum": [
+          "ramp_head",
+          "gate_line",
+          "pillar_corner",
+          "level_transition",
+          "wall_corner",
+          "surveyed_target",
+          "lift_door"
+        ],
+        "description": "Anchor kind."
+      },
+      "anchor_class": {
+        "enum": [
+          "surveyed",
+          "crowd_derived"
+        ],
+        "description": "How the anchor position was obtained."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "accuracy_m": {
+        "type": "number",
+        "description": "1-sigma accuracy.",
+        "minimum": 0
+      },
+      "gnss_visible": {
+        "type": "boolean",
+        "description": "Anchor is reachable by GNSS (for example at a ramp mouth)."
+      },
+      "localization_aid_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Optional fiducial co-located with the anchor."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "bay.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/bay.schema.json",
+    "title": "Bay",
+    "description": "A single parking space.",
+    "type": "object",
+    "required": [
+      "id",
+      "zone_id",
+      "polygon",
+      "orientation",
+      "bay_types"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Bay id."
+      },
+      "zone_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parent zone."
+      },
+      "polygon": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "description": "Four corners, counter-clockwise, in the facility frame.",
+        "minItems": 4,
+        "maxItems": 4
+      },
+      "orientation": {
+        "enum": [
+          "parallel",
+          "angle",
+          "perpendicular",
+          "stacker_platform",
+          "robot_pallet"
+        ],
+        "description": "Bay orientation."
+      },
+      "angle_deg": {
+        "type": "number",
+        "description": "Angle for angle parking; 90 for perpendicular.",
+        "minimum": 0,
+        "maximum": 90
+      },
+      "approach_edge": {
+        "type": "integer",
+        "description": "Polygon edge the vehicle enters through.",
+        "minimum": 0,
+        "maximum": 3
+      },
+      "bay_types": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "general",
+            "accessible",
+            "ambulant",
+            "carer",
+            "ev",
+            "family",
+            "pregnancy",
+            "motorcycle",
+            "compact",
+            "reserved",
+            "tenant",
+            "permit",
+            "loading",
+            "rideshare",
+            "taxi",
+            "community_transport",
+            "ndis_transport",
+            "patient_transport",
+            "coach",
+            "courier",
+            "oversize_van",
+            "emergency_services",
+            "valet",
+            "staff"
+          ],
+          "description": "Bay class."
+        },
+        "description": "Bay classes.",
+        "minItems": 1
+      },
+      "ev": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "EV charging details.",
+        "properties": {
+          "connector": {
+            "enum": [
+              "ccs2",
+              "type2",
+              "chademo",
+              "nacs"
+            ]
+          },
+          "power_kw": {
+            "type": "number"
+          },
+          "charger_id": {
+            "type": "string"
+          }
+        }
+      },
+      "painted_label": {
+        "type": "string",
+        "description": "Text on the ground."
+      },
+      "rule_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Eligibility and time limits (static-rules profile)."
+      },
+      "accessibility": {
+        "$ref": "common.schema.json#/$defs/BayAccessibility"
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "campaign.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/campaign.schema.json",
+    "title": "Campaign",
+    "description": "A request (SENSORIS-style) for a survey of a named facility.",
+    "type": "object",
+    "required": [
+      "id",
+      "requested_by",
+      "target",
+      "features_requested",
+      "reason",
+      "status"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Campaign id."
+      },
+      "requested_by": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Contributor or repository."
+      },
+      "target": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "What to survey.",
+        "properties": {
+          "facility_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "site_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "bbox_wgs84": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        }
+      },
+      "features_requested": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Feature types wanted, e.g. level, ramp, bay, gate."
+      },
+      "quality_target_tier": {
+        "type": "integer",
+        "description": "Target tier.",
+        "minimum": 0,
+        "maximum": 3
+      },
+      "window": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "start": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "end": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          }
+        }
+      },
+      "priority": {
+        "type": "integer",
+        "description": "1 low to 5 high.",
+        "minimum": 1,
+        "maximum": 5
+      },
+      "reason": {
+        "enum": [
+          "new_facility",
+          "stale",
+          "conflict",
+          "closure",
+          "quality_upgrade",
+          "equity_gap",
+          "accessibility_audit"
+        ],
+        "description": "Why."
+      },
+      "status": {
+        "enum": [
+          "open",
+          "active",
+          "complete",
+          "cancelled"
+        ],
+        "description": "Status."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "certification.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/certification.schema.json",
+    "title": "Certification",
+    "description": "Certification supporting a quality tier for driverless use.",
+    "type": "object",
+    "required": [
+      "id",
+      "subject_id",
+      "body",
+      "scheme",
+      "tier",
+      "issued_at"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Certification id."
+      },
+      "subject_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Facility, feature set or contributor certified."
+      },
+      "body": {
+        "type": "string",
+        "description": "Certifying body."
+      },
+      "scheme": {
+        "type": "string",
+        "description": "Scheme name."
+      },
+      "tier": {
+        "type": "integer",
+        "description": "Quality tier granted.",
+        "minimum": 0,
+        "maximum": 3
+      },
+      "issued_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "evidence_ref": {
+        "type": "string",
+        "description": "Reference to the audit report."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "change-set.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/change-set.schema.json",
+    "title": "ChangeSet",
+    "description": "A diff between two dataset versions; the unit of the change feed.",
+    "type": "object",
+    "required": [
+      "id",
+      "site_id",
+      "from_version",
+      "to_version",
+      "created_at",
+      "reason_codes"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Change set id."
+      },
+      "site_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Site."
+      },
+      "from_version": {
+        "$ref": "common.schema.json#/$defs/Version"
+      },
+      "to_version": {
+        "$ref": "common.schema.json#/$defs/Version"
+      },
+      "created_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "reason_codes": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "new_survey",
+            "re_survey",
+            "operator_update",
+            "conflict_resolved",
+            "retirement",
+            "correction"
+          ],
+          "description": "Reason."
+        },
+        "description": "Why the change was made.",
+        "minItems": 1
+      },
+      "added": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Feature ids added."
+      },
+      "modified": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Feature ids modified."
+      },
+      "removed": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "feature_id",
+            "feature_type",
+            "removed_at",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "Tombstone.",
+          "properties": {
+            "feature_id": {
+              "$ref": "common.schema.json#/$defs/Id"
+            },
+            "feature_type": {
+              "type": "string"
+            },
+            "removed_at": {
+              "$ref": "common.schema.json#/$defs/DateTime"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "superseded_by": {
+              "$ref": "common.schema.json#/$defs/Id"
+            }
+          }
+        },
+        "description": "Tombstones for removed features."
+      },
+      "contribution_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Contributions that drove the change."
+      },
+      "approved_by": {
+        "type": "string",
+        "description": "Operator, authority or algorithm version that approved it."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "closure.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/closure.schema.json",
+    "title": "Closure",
+    "description": "OPTIONAL temporary change. Not part of the static-core profile.",
+    "type": "object",
+    "required": [
+      "id",
+      "target_ids",
+      "effect",
+      "reason",
+      "window"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Closure id."
+      },
+      "target_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Edges, levels, access points, links."
+      },
+      "effect": {
+        "enum": [
+          "closed",
+          "restricted",
+          "reversed_direction",
+          "reduced_clearance",
+          "event_only"
+        ],
+        "description": "Effect."
+      },
+      "reason": {
+        "enum": [
+          "event",
+          "maintenance",
+          "flooding",
+          "incident",
+          "security"
+        ],
+        "description": "Reason."
+      },
+      "window": {
+        "type": "object",
+        "required": [
+          "start"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "start": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "end": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          }
+        }
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "common.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/common.schema.json",
+    "title": "OPMS common definitions",
+    "description": "Shared definitions reused by every OPMS object schema.",
+    "$defs": {
+      "Id": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._:+-]{0,127}$",
+        "description": "Stable, dotted, lower-case, never reused."
+      },
+      "Version": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$",
+        "description": "Dataset or change-set version label, e.g. 2026-11-23.1."
+      },
+      "DateTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "RFC 3339 / ISO 8601 with offset."
+      },
+      "LocalPoint": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "items": false,
+        "minItems": 3,
+        "description": "[x, y, z] metres in the facility frame (x east, y north, z up)."
+      },
+      "Geometry": {
+        "type": "object",
+        "required": [
+          "type",
+          "coordinates"
+        ],
+        "additionalProperties": false,
+        "description": "Geometry in a local frame. Coordinates are LocalPoints.",
+        "properties": {
+          "type": {
+            "enum": [
+              "Point",
+              "LineString",
+              "Polygon"
+            ]
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/LocalPoint"
+            },
+            "minItems": 1
+          },
+          "sigma_m": {
+            "type": "number",
+            "minimum": 0,
+            "description": "1-sigma horizontal position uncertainty."
+          }
+        }
+      },
+      "TimeWindow": {
+        "type": "object",
+        "required": [
+          "days",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false,
+        "description": "Local-time window in the site's IANA timezone.",
+        "properties": {
+          "days": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "mo",
+                "tu",
+                "we",
+                "th",
+                "fr",
+                "sa",
+                "su",
+                "ph"
+              ]
+            }
+          },
+          "start": {
+            "type": "string",
+            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^(([01][0-9]|2[0-3]):[0-5][0-9]|24:00)$"
+          }
+        }
+      },
+      "VehicleLimits": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Physical limits. The lowest value along a route wins.",
+        "properties": {
+          "max_height_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "max_width_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "max_length_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "max_mass_kg": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "vehicle_classes": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "car",
+                "motorcycle",
+                "van",
+                "light_truck",
+                "bus"
+              ]
+            }
+          }
+        }
+      },
+      "ExternalRefs": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Links to other standards' identifiers instead of copying their geometry.",
+        "properties": {
+          "lanelet2_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "opendrive": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "road": {
+                "type": "string"
+              },
+              "lane": {
+                "type": "integer"
+              },
+              "object": {
+                "type": "string"
+              }
+            }
+          },
+          "osm": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(node|way|relation)/[0-9]+$"
+            }
+          },
+          "indoorgml_cell": {
+            "type": "string"
+          },
+          "nds_live_id": {
+            "type": "string"
+          },
+          "cds_zone_id": {
+            "type": "string"
+          },
+          "apds_id": {
+            "type": "string"
+          },
+          "apds_place_id": {
+            "type": "string",
+            "description": "APDS Place id (Place > SubplaceElement > IdentifiedArea > Space hierarchy is reused, not duplicated)."
+          },
+          "apds_subplace_id": {
+            "type": "string"
+          },
+          "apds_identified_area_id": {
+            "type": "string"
+          },
+          "apds_space_id": {
+            "type": "string"
+          },
+          "maze_id": {
+            "type": "string",
+            "description": "Reserved: identifier in a MAZE facility map (interoperability is an open question)."
+          },
+          "iso5206_id": {
+            "type": "string",
+            "description": "Identifier in an ISO/TS 5206-1 core data model instance."
+          }
+        }
+      },
+      "Provenance": {
+        "type": "object",
+        "required": [
+          "source",
+          "observed_at"
+        ],
+        "additionalProperties": false,
+        "description": "Where a fact came from and when it was last confirmed.",
+        "properties": {
+          "source": {
+            "enum": [
+              "survey",
+              "operator",
+              "authority",
+              "vehicle_crowd",
+              "sensor",
+              "import",
+              "consolidation"
+            ]
+          },
+          "observed_at": {
+            "$ref": "#/$defs/DateTime"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "contribution_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            },
+            "description": "Contributions that support this record (crowdsourced features)."
+          },
+          "change_set_id": {
+            "$ref": "#/$defs/Id",
+            "description": "Change set that last touched this record."
+          }
+        }
+      },
+      "Evidence": {
+        "type": "object",
+        "required": [
+          "n_observations",
+          "status"
+        ],
+        "additionalProperties": false,
+        "description": "Per-feature multi-source evidence kept by the consolidating repository.",
+        "properties": {
+          "n_observations": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "n_distinct_contributors": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "n_distinct_vehicles": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "first_seen": {
+            "$ref": "#/$defs/DateTime"
+          },
+          "last_seen": {
+            "$ref": "#/$defs/DateTime"
+          },
+          "agreement_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Weighted share of observations consistent with the consensus."
+          },
+          "positional_sigma_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "provisional",
+              "verified",
+              "disputed",
+              "retired"
+            ]
+          }
+        }
+      },
+      "Lifecycle": {
+        "enum": [
+          "active",
+          "superseded",
+          "retired"
+        ],
+        "description": "Feature lifecycle. Retired features are announced by a tombstone in a ChangeSet."
+      },
+      "LicenceTerms": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Usage terms for a dataset, feature or contribution.",
+        "anyOf": [
+          {
+            "required": [
+              "spdx_id"
+            ]
+          },
+          {
+            "required": [
+              "custom_terms_uri"
+            ]
+          }
+        ],
+        "properties": {
+          "spdx_id": {
+            "type": "string",
+            "description": "SPDX identifier, e.g. CC-BY-4.0."
+          },
+          "custom_terms_uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "commercial_use": {
+            "type": "boolean"
+          },
+          "attribution_required": {
+            "type": "boolean"
+          },
+          "redistribution": {
+            "enum": [
+              "allowed",
+              "restricted",
+              "prohibited"
+            ]
+          },
+          "derivative_works": {
+            "enum": [
+              "allowed",
+              "restricted",
+              "prohibited"
+            ]
+          },
+          "ai_training_use": {
+            "enum": [
+              "allowed",
+              "restricted",
+              "prohibited",
+              "unspecified"
+            ]
+          },
+          "retention_days": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sublicensable": {
+            "type": "boolean"
+          },
+          "sublicence_chain": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        }
+      },
+      "QualityTier": {
+        "type": "object",
+        "required": [
+          "tier"
+        ],
+        "additionalProperties": false,
+        "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier.",
+        "properties": {
+          "tier": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3,
+            "description": "0 indicative, 1 ADAS-grade, 2 supervised self-park, 3 driverless."
+          },
+          "accuracy_class": {
+            "enum": [
+              "indicative",
+              "adas",
+              "supervised_self_park",
+              "driverless"
+            ]
+          },
+          "completeness_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "last_audit": {
+            "$ref": "#/$defs/DateTime"
+          },
+          "certification_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        }
+      },
+      "ApprovalStatus": {
+        "type": "object",
+        "required": [
+          "owner_consent"
+        ],
+        "additionalProperties": false,
+        "description": "Facility owner or operator consent for mapping and use.",
+        "properties": {
+          "owner_consent": {
+            "enum": [
+              "unknown",
+              "granted",
+              "denied",
+              "conditional"
+            ]
+          },
+          "granted_by": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "geometry_only",
+                "publish",
+                "driverless_use",
+                "commercial_use"
+              ]
+            }
+          },
+          "valid_to": {
+            "$ref": "#/$defs/DateTime"
+          },
+          "signage": {
+            "type": "boolean",
+            "description": "Mapping or AVP signage is posted on site."
+          },
+          "dispute_contact": {
+            "type": "string",
+            "description": "Public contact for corrections or takedown (organisation role or URL)."
+          }
+        }
+      },
+      "Profile": {
+        "enum": [
+          "static-core",
+          "static-rules",
+          "dynamic",
+          "services"
+        ],
+        "default": "static-core",
+        "description": "Cumulative dataset profile. static-core is the default and requires no live data."
+      },
+      "BayAccessibility": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Accessible-bay attributes. Dimensions are as built; standard_ref says what the facility was designed or audited against.",
+        "properties": {
+          "standard_ref": {
+            "type": "string",
+            "description": "e.g. AS 2890.6:2022 (verify the edition in force)."
+          },
+          "bay_width_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "bay_length_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "shared_zone": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "side": {
+                "enum": [
+                  "none",
+                  "left",
+                  "right",
+                  "both"
+                ]
+              },
+              "width_m": {
+                "type": "number",
+                "minimum": 0
+              },
+              "length_m": {
+                "type": "number",
+                "minimum": 0
+              },
+              "rear_length_m": {
+                "type": "number",
+                "minimum": 0
+              },
+              "shared_between_bays": {
+                "type": "boolean"
+              }
+            }
+          },
+          "kerb_ramp": {
+            "type": "boolean"
+          },
+          "surface": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "material": {
+                "enum": [
+                  "asphalt",
+                  "concrete",
+                  "pavers",
+                  "gravel",
+                  "other"
+                ]
+              },
+              "slip_resistant": {
+                "type": "boolean"
+              }
+            }
+          },
+          "gradient_pct": {
+            "type": "number",
+            "description": "Maximum gradient across the bay and shared zone."
+          },
+          "headroom_m": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Minimum headroom over the bay and its approach."
+          },
+          "high_roof_van_ok": {
+            "type": "boolean",
+            "description": "Headroom and approach suit high-roof wheelchair vans."
+          },
+          "loading": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Clear space for ramps and lifts.",
+            "properties": {
+              "rear_ramp_clearance_m": {
+                "type": "number",
+                "minimum": 0
+              },
+              "side_lift_clearance_m": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "distance_to_accessible_entrance_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "rest_point_on_path": {
+            "type": "boolean"
+          },
+          "permit_scheme": {
+            "enum": [
+              "none",
+              "adps",
+              "organisation",
+              "any_accessible"
+            ],
+            "description": "adps = Australian Disability Parking Scheme permit."
+          },
+          "bollard": {
+            "type": "boolean",
+            "description": "Bollard in the shared zone to keep it clear."
+          },
+          "audit": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "last_audited": {
+                "$ref": "#/$defs/DateTime"
+              },
+              "method": {
+                "enum": [
+                  "survey",
+                  "self_report",
+                  "crowd"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "HandoverAccessibility": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Accessibility of a drop-off or pick-up zone.",
+        "properties": {
+          "kerbside_transfer_space_m": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Clear width beside the vehicle for a wheelchair transfer or ramp."
+          },
+          "kerb_ramp": {
+            "type": "boolean"
+          },
+          "step_free_to_destination": {
+            "type": "boolean"
+          },
+          "sheltered": {
+            "type": "boolean"
+          },
+          "seating": {
+            "type": "boolean"
+          },
+          "assistance_point": {
+            "type": "boolean"
+          },
+          "tactile_marking": {
+            "type": "boolean"
+          },
+          "lighting": {
+            "enum": [
+              "none",
+              "partial",
+              "good"
+            ]
+          },
+          "wait_time_allowance_s": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Extra standing time allowed when a passenger needs assistance."
+          }
+        }
+      },
+      "PublicationTerms": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "How openly the dataset is published so councils, disability organisations and non-AV apps can use it.",
+        "properties": {
+          "public_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "api_endpoint": {
+            "type": "string",
+            "format": "uri"
+          },
+          "formats": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "json",
+                "geojson",
+                "opendrive",
+                "lanelet2",
+                "indoorgml",
+                "apds"
+              ]
+            }
+          },
+          "bulk_download": {
+            "type": "boolean"
+          },
+          "non_av_use_allowed": {
+            "type": "boolean",
+            "description": "Usable by people driving themselves or being driven, not only by automated vehicles."
+          },
+          "accessible_documentation": {
+            "type": "boolean"
+          },
+          "update_frequency": {
+            "enum": [
+              "realtime",
+              "daily",
+              "weekly",
+              "monthly",
+              "on_change"
+            ]
+          },
+          "accessibility_contact": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "conflict-case.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/conflict-case.schema.json",
+    "title": "ConflictCase",
+    "description": "A recorded disagreement between observations and how it was resolved.",
+    "type": "object",
+    "required": [
+      "id",
+      "feature_id",
+      "competing_observation_ids",
+      "opened_at",
+      "outcome"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Case id."
+      },
+      "feature_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Feature in dispute."
+      },
+      "competing_observation_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Observations in conflict.",
+        "minItems": 2
+      },
+      "resolution_policy_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Policy applied."
+      },
+      "rule_applied": {
+        "type": "string",
+        "description": "Short name of the rule used."
+      },
+      "resolved_by": {
+        "enum": [
+          "algorithm",
+          "operator",
+          "authority",
+          "auditor"
+        ],
+        "description": "Resolver."
+      },
+      "outcome": {
+        "enum": [
+          "open",
+          "accepted_observation",
+          "merged",
+          "retained_existing",
+          "rejected_all",
+          "escalated"
+        ],
+        "description": "Outcome."
+      },
+      "opened_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "resolved_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "contribution-bundle.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/contribution-bundle.schema.json",
+    "title": "OPMS contribution bundle",
+    "description": "A contribution with its feature observations and alignment records, as submitted to a repository.",
+    "type": "object",
+    "required": [
+      "opms_version",
+      "contribution",
+      "feature_observations"
+    ],
+    "additionalProperties": false,
+    "patternProperties": {
+      "^x_": {}
+    },
+    "properties": {
+      "_note": {
+        "type": "string"
+      },
+      "opms_version": {
+        "type": "string",
+        "pattern": "^0[.]2[.][0-9]+$"
+      },
+      "contribution": {
+        "$ref": "contribution.schema.json"
+      },
+      "feature_observations": {
+        "type": "array",
+        "items": {
+          "$ref": "feature-observation.schema.json"
+        },
+        "description": "Observations.",
+        "minItems": 1
+      },
+      "alignment_records": {
+        "type": "array",
+        "items": {
+          "$ref": "alignment-record.schema.json"
+        },
+        "description": "Alignment records."
+      },
+      "anchor_observations": {
+        "type": "array",
+        "items": {
+          "$ref": "anchor-feature.schema.json"
+        },
+        "description": "Anchors proposed by the contributor."
+      }
+    }
+  },
+  "contribution.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/contribution.schema.json",
+    "title": "Contribution",
+    "description": "A batch of static-feature observations from one contributor, kept separate from the consolidated map.",
+    "type": "object",
+    "required": [
+      "id",
+      "contributor_id",
+      "submitted_at",
+      "trace_window",
+      "pseudonym",
+      "redaction_attestation",
+      "status"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Contribution id."
+      },
+      "contributor_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Organisation that collected the data."
+      },
+      "submitted_via_contributor_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Licensed unit or gateway that received it, if routed."
+      },
+      "campaign_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Campaign it responds to, if any."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction it was routed under."
+      },
+      "repository_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Receiving repository."
+      },
+      "submitted_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "trace_window": {
+        "type": "object",
+        "required": [
+          "start",
+          "end"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "start": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "end": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          }
+        }
+      },
+      "facility_hint": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Where the trace was collected.",
+        "properties": {
+          "facility_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "site_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "bbox_wgs84": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        }
+      },
+      "sensor_profile": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Declared sensing capability.",
+        "properties": {
+          "sensors": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "camera",
+                "lidar",
+                "radar",
+                "ultrasonic",
+                "imu",
+                "wheel_odometry",
+                "gnss"
+              ]
+            }
+          },
+          "calibration_class": {
+            "enum": [
+              "uncalibrated",
+              "factory",
+              "fleet_calibrated",
+              "survey_grade"
+            ]
+          },
+          "odometry_drift_m_per_100m": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "pseudonym": {
+        "type": "object",
+        "required": [
+          "vehicle_token",
+          "session_token",
+          "pseudonym_epoch"
+        ],
+        "additionalProperties": false,
+        "description": "Rotating tokens. No VIN or plate.",
+        "properties": {
+          "vehicle_token": {
+            "type": "string",
+            "minLength": 16
+          },
+          "session_token": {
+            "type": "string",
+            "minLength": 16
+          },
+          "pseudonym_epoch": {
+            "type": "string",
+            "description": "Rotation period label, e.g. 2026-11."
+          },
+          "k_anonymity_group": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "redaction_attestation": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "performed_on_board",
+          "imagery_included",
+          "trajectories_included",
+          "attested_at"
+        ],
+        "additionalProperties": false,
+        "description": "Contributor's signed statement of what was removed.",
+        "properties": {
+          "policy_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "performed_on_board": {
+            "type": "boolean"
+          },
+          "imagery_included": {
+            "type": "boolean"
+          },
+          "trajectories_included": {
+            "type": "boolean"
+          },
+          "trim_start_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "trim_end_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "time_jitter_applied": {
+            "type": "boolean"
+          },
+          "attested_at": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "signature_ref": {
+            "type": "string"
+          }
+        }
+      },
+      "payload_ref": {
+        "type": "object",
+        "required": [
+          "uri",
+          "sha256"
+        ],
+        "additionalProperties": false,
+        "description": "Optional bulk payload (e.g. a SENSORIS message set) held separately.",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "media_type": {
+            "type": "string"
+          }
+        }
+      },
+      "licence": {
+        "$ref": "common.schema.json#/$defs/LicenceTerms"
+      },
+      "status": {
+        "enum": [
+          "received",
+          "rejected",
+          "accepted"
+        ],
+        "description": "Processing status."
+      },
+      "rejection_reason": {
+        "type": "string",
+        "description": "Reason when rejected."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "contributor.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/contributor.schema.json",
+    "title": "Contributor",
+    "description": "An organisation submitting contributions. Never an individual vehicle or person.",
+    "type": "object",
+    "required": [
+      "id",
+      "org_type",
+      "name",
+      "jurisdiction_ids",
+      "trust_tier"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Contributor id."
+      },
+      "org_type": {
+        "enum": [
+          "oem",
+          "survey_firm",
+          "authority",
+          "operator",
+          "research"
+        ],
+        "description": "Organisation type."
+      },
+      "name": {
+        "type": "string",
+        "description": "Organisation name."
+      },
+      "licence_ref": {
+        "type": "object",
+        "required": [
+          "scheme",
+          "number"
+        ],
+        "additionalProperties": false,
+        "description": "Licence or qualification, e.g. a national surveying qualification.",
+        "properties": {
+          "scheme": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "valid_to": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          }
+        }
+      },
+      "jurisdiction_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Jurisdictions the contributor may submit to."
+      },
+      "trust_tier": {
+        "type": "integer",
+        "description": "0 unverified, 1 registered, 2 audited, 3 licensed or authority.",
+        "minimum": 0,
+        "maximum": 3
+      },
+      "public_key_ref": {
+        "type": "string",
+        "description": "Reference to the key used to sign submissions."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "curb-segment.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/curb-segment.schema.json",
+    "title": "CurbSegment",
+    "description": "A length of kerb along a public road, linearly referenced.",
+    "type": "object",
+    "required": [
+      "id",
+      "road_ref",
+      "side",
+      "linear_ref",
+      "rule_ids"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Segment id."
+      },
+      "road_ref": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "external_refs": {
+            "$ref": "common.schema.json#/$defs/ExternalRefs"
+          }
+        }
+      },
+      "side": {
+        "enum": [
+          "left",
+          "right"
+        ],
+        "description": "Side relative to road digitisation."
+      },
+      "linear_ref": {
+        "type": "object",
+        "required": [
+          "from_m",
+          "to_m"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "from_m": {
+            "type": "number"
+          },
+          "to_m": {
+            "type": "number"
+          }
+        }
+      },
+      "orientation": {
+        "enum": [
+          "parallel",
+          "angle",
+          "perpendicular"
+        ],
+        "description": "Bay orientation."
+      },
+      "marked_bays": {
+        "type": "integer",
+        "description": "Count of marked bays.",
+        "minimum": 0
+      },
+      "rule_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Regulations along the segment (CDS-style)."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "dataset.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/dataset.schema.json",
+    "title": "OPMS dataset (consolidated map)",
+    "description": "Root of a consolidated OPMS map for one site. Raw contributions are separate (contribution-bundle).",
+    "type": "object",
+    "required": [
+      "opms_version",
+      "dataset_version",
+      "profile",
+      "site",
+      "frames"
+    ],
+    "additionalProperties": false,
+    "patternProperties": {
+      "^x_": {}
+    },
+    "anyOf": [
+      {
+        "required": [
+          "facilities"
+        ]
+      },
+      {
+        "required": [
+          "curb_segments"
+        ]
+      }
+    ],
+    "properties": {
+      "_note": {
+        "type": "string"
+      },
+      "opms_version": {
+        "type": "string",
+        "pattern": "^0[.]2[.][0-9]+$"
+      },
+      "dataset_version": {
+        "$ref": "common.schema.json#/$defs/Version"
+      },
+      "profile": {
+        "$ref": "common.schema.json#/$defs/Profile"
+      },
+      "site": {
+        "$ref": "site.schema.json"
+      },
+      "frames": {
+        "type": "array",
+        "items": {
+          "$ref": "frame.schema.json"
+        },
+        "description": "Local frames."
+      },
+      "facilities": {
+        "type": "array",
+        "items": {
+          "$ref": "facility.schema.json"
+        },
+        "description": "Complexes."
+      },
+      "zones": {
+        "type": "array",
+        "items": {
+          "$ref": "zone.schema.json"
+        },
+        "description": "Zones."
+      },
+      "bays": {
+        "type": "array",
+        "items": {
+          "$ref": "bay.schema.json"
+        },
+        "description": "Bays."
+      },
+      "drive_nodes": {
+        "type": "array",
+        "items": {
+          "$ref": "drive-node.schema.json"
+        },
+        "description": "Drive graph nodes."
+      },
+      "drive_edges": {
+        "type": "array",
+        "items": {
+          "$ref": "drive-edge.schema.json"
+        },
+        "description": "Drive graph edges."
+      },
+      "access_points": {
+        "type": "array",
+        "items": {
+          "$ref": "access-point.schema.json"
+        },
+        "description": "Entries and exits."
+      },
+      "gates": {
+        "type": "array",
+        "items": {
+          "$ref": "gate.schema.json"
+        },
+        "description": "Gates."
+      },
+      "inter_facility_links": {
+        "type": "array",
+        "items": {
+          "$ref": "inter-facility-link.schema.json"
+        },
+        "description": "Links between complexes."
+      },
+      "anchor_features": {
+        "type": "array",
+        "items": {
+          "$ref": "anchor-feature.schema.json"
+        },
+        "description": "Alignment anchors."
+      },
+      "pillar_grids": {
+        "type": "array",
+        "items": {
+          "$ref": "pillar-grid.schema.json"
+        },
+        "description": "Pillar grids."
+      },
+      "pillars": {
+        "type": "array",
+        "items": {
+          "$ref": "pillar.schema.json"
+        },
+        "description": "Pillars."
+      },
+      "localization_aids": {
+        "type": "array",
+        "items": {
+          "$ref": "localization-aid.schema.json"
+        },
+        "description": "Fiducials and beacons."
+      },
+      "destinations": {
+        "type": "array",
+        "items": {
+          "$ref": "destination.schema.json"
+        },
+        "description": "[static-rules] Destinations."
+      },
+      "pedestrian_portals": {
+        "type": "array",
+        "items": {
+          "$ref": "pedestrian-portal.schema.json"
+        },
+        "description": "[static-rules] Portals."
+      },
+      "destination_access": {
+        "type": "array",
+        "items": {
+          "$ref": "destination-access.schema.json"
+        },
+        "description": "[static-rules] Destination links."
+      },
+      "handover_zones": {
+        "type": "array",
+        "items": {
+          "$ref": "handover-zone.schema.json"
+        },
+        "description": "[static-rules] Handover zones."
+      },
+      "curb_segments": {
+        "type": "array",
+        "items": {
+          "$ref": "curb-segment.schema.json"
+        },
+        "description": "[static-rules] Kerb segments."
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "rule.schema.json"
+        },
+        "description": "[static-rules] Rules."
+      },
+      "rates": {
+        "type": "array",
+        "items": {
+          "$ref": "rate.schema.json"
+        },
+        "description": "[static-rules] Tariffs."
+      },
+      "certifications": {
+        "type": "array",
+        "items": {
+          "$ref": "certification.schema.json"
+        },
+        "description": "Certifications."
+      },
+      "lifts": {
+        "type": "array",
+        "items": {
+          "$ref": "lift.schema.json"
+        },
+        "description": "Lifts used on accessible routes."
+      },
+      "wayfinding_aids": {
+        "type": "array",
+        "items": {
+          "$ref": "wayfinding-aid.schema.json"
+        },
+        "description": "Signs, colours and landmarks people use."
+      },
+      "safety_features": {
+        "type": "array",
+        "items": {
+          "$ref": "safety-feature.schema.json"
+        },
+        "description": "Lighting, help points and CCTV presence flags."
+      },
+      "accessible_paths": {
+        "type": "array",
+        "items": {
+          "$ref": "accessible-path.schema.json"
+        },
+        "description": "[static-rules] Step-free routes from bays or drop-offs to portals and destinations."
+      },
+      "publication": {
+        "$ref": "common.schema.json#/$defs/PublicationTerms"
+      },
+      "dynamic": {
+        "$ref": "dynamic-feed.schema.json",
+        "description": "[dynamic profile] Optional live layer."
+      },
+      "services": {
+        "type": "object",
+        "description": "[services profile] Reservations, sessions and missions. Not yet schematised in v0.2."
+      }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "profile": {
+              "const": "static-core"
+            }
+          },
+          "required": [
+            "profile"
+          ]
+        },
+        "then": {
+          "properties": {
+            "destinations": false,
+            "pedestrian_portals": false,
+            "destination_access": false,
+            "handover_zones": false,
+            "curb_segments": false,
+            "rules": false,
+            "rates": false,
+            "accessible_paths": false
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "profile": {
+              "enum": [
+                "static-core",
+                "static-rules"
+              ]
+            }
+          },
+          "required": [
+            "profile"
+          ]
+        },
+        "then": {
+          "properties": {
+            "dynamic": false,
+            "services": false
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "profile": {
+              "const": "dynamic"
+            }
+          },
+          "required": [
+            "profile"
+          ]
+        },
+        "then": {
+          "properties": {
+            "services": false
+          }
+        }
+      }
+    ]
+  },
+  "destination-access.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/destination-access.schema.json",
+    "title": "DestinationAccess",
+    "description": "Link between a destination and where a car can leave the passenger or park.",
+    "type": "object",
+    "required": [
+      "destination_id",
+      "via",
+      "target_id",
+      "walk_time_s"
+    ],
+    "properties": {
+      "destination_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Destination."
+      },
+      "via": {
+        "enum": [
+          "handover_zone",
+          "zone",
+          "portal"
+        ],
+        "description": "What target_id refers to."
+      },
+      "target_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Zone, handover zone or portal."
+      },
+      "walk_time_s": {
+        "type": "number",
+        "description": "Typical walking time.",
+        "minimum": 0
+      },
+      "walk_distance_m": {
+        "type": "number",
+        "description": "Walking distance.",
+        "minimum": 0
+      },
+      "step_free": {
+        "type": "boolean",
+        "description": "Step-free."
+      },
+      "covered": {
+        "type": "boolean",
+        "description": "Covered from weather."
+      },
+      "accessible_path_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "AccessiblePath describing the step-free route, if one exists."
+      },
+      "assistance_available": {
+        "type": "boolean",
+        "description": "Staff or an assistance point can help at the handover."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "destination.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/destination.schema.json",
+    "title": "Destination",
+    "description": "Where passengers are going.",
+    "type": "object",
+    "required": [
+      "id",
+      "kind",
+      "name",
+      "portal_ids"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Destination id."
+      },
+      "kind": {
+        "enum": [
+          "store",
+          "cinema",
+          "food_court",
+          "supermarket",
+          "mall_door",
+          "lift_lobby",
+          "terminal",
+          "hospital_entrance",
+          "emergency_dept",
+          "residence"
+        ],
+        "description": "Destination kind."
+      },
+      "name": {
+        "type": "string",
+        "description": "Display name."
+      },
+      "level_label": {
+        "type": "string",
+        "description": "Level as signed."
+      },
+      "portal_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Doors people use to reach it."
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Opening hours."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "drive-edge.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/drive-edge.schema.json",
+    "title": "DriveEdge",
+    "description": "A directed drivable segment: aisle, ramp, level transition or internal road.",
+    "type": "object",
+    "required": [
+      "id",
+      "from_node",
+      "to_node",
+      "kind"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Edge id."
+      },
+      "from_node": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Start node."
+      },
+      "to_node": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "End node. Two-way aisles are two edges."
+      },
+      "kind": {
+        "enum": [
+          "aisle",
+          "ramp",
+          "level_transition",
+          "access_lane",
+          "internal_road",
+          "inter_facility",
+          "lift",
+          "turntable"
+        ],
+        "description": "Edge kind."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level the edge lies on (start level for ramps)."
+      },
+      "centreline": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "description": "Polyline in the facility frame."
+      },
+      "width_m": {
+        "type": "number",
+        "description": "Drivable width.",
+        "exclusiveMinimum": 0
+      },
+      "speed_limit_kmh": {
+        "type": "number",
+        "description": "Signed speed limit.",
+        "exclusiveMinimum": 0
+      },
+      "limits": {
+        "$ref": "common.schema.json#/$defs/VehicleLimits"
+      },
+      "ramp": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Ramp geometry.",
+        "properties": {
+          "form": {
+            "enum": [
+              "straight",
+              "helical",
+              "split_level",
+              "spiral_double"
+            ]
+          },
+          "gradient_pct": {
+            "type": "number"
+          },
+          "inner_radius_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      },
+      "turn_restrictions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "banned_next_edge"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "banned_next_edge": {
+              "$ref": "common.schema.json#/$defs/Id"
+            },
+            "when": {
+              "type": "array",
+              "items": {
+                "$ref": "common.schema.json#/$defs/TimeWindow"
+              },
+              "description": "When."
+            }
+          }
+        },
+        "description": "Banned next edges."
+      },
+      "bay_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Bays reachable from this edge."
+      },
+      "shared_with_pedestrians": {
+        "type": "boolean",
+        "description": "Pedestrian priority area."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "drive-node.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/drive-node.schema.json",
+    "title": "DriveNode",
+    "description": "A node of the directed drivable graph.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "position"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Node id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level (or the id of the facility for external nodes)."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "dynamic-feed.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/dynamic-feed.schema.json",
+    "title": "DynamicFeed",
+    "description": "OPTIONAL dynamic layer feed (stream or document).",
+    "type": "object",
+    "required": [
+      "site_id",
+      "as_of"
+    ],
+    "properties": {
+      "site_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Site."
+      },
+      "as_of": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "occupancy": {
+        "type": "array",
+        "items": {
+          "$ref": "occupancy-update.schema.json"
+        },
+        "description": "Occupancy updates."
+      },
+      "closures": {
+        "type": "array",
+        "items": {
+          "$ref": "closure.schema.json"
+        },
+        "description": "Closures."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "facility.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/facility.schema.json",
+    "title": "Facility",
+    "description": "A parking complex.",
+    "type": "object",
+    "required": [
+      "id",
+      "site_id",
+      "type",
+      "frame_id",
+      "levels"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Facility id."
+      },
+      "site_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parent site."
+      },
+      "name": {
+        "type": "string",
+        "description": "Display name."
+      },
+      "type": {
+        "enum": [
+          "surface_lot",
+          "multi_storey",
+          "underground",
+          "rooftop",
+          "mechanical_stacker",
+          "robotic",
+          "private_garage",
+          "driveway",
+          "on_street_block"
+        ],
+        "description": "Facility type."
+      },
+      "frame_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Local frame used by all geometry in the facility."
+      },
+      "levels": {
+        "type": "array",
+        "items": {
+          "$ref": "level.schema.json"
+        },
+        "description": "Levels ordered by ordinal.",
+        "minItems": 1
+      },
+      "gnss": {
+        "enum": [
+          "good",
+          "degraded",
+          "none"
+        ],
+        "description": "Worst GNSS quality across levels."
+      },
+      "capacity": {
+        "type": "integer",
+        "description": "Total bays.",
+        "minimum": 0
+      },
+      "operating_hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "When vehicles may enter."
+      },
+      "exit_hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "When vehicles may leave, if different."
+      },
+      "rate_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Default tariff (static-rules profile)."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction; overrides the site's if set."
+      },
+      "approval": {
+        "$ref": "common.schema.json#/$defs/ApprovalStatus"
+      },
+      "quality_tier": {
+        "$ref": "common.schema.json#/$defs/QualityTier"
+      },
+      "licence": {
+        "$ref": "common.schema.json#/$defs/LicenceTerms"
+      },
+      "release_restrictions": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "no_public_release",
+            "authority_only",
+            "tier_gated",
+            "licensed_unit_only"
+          ],
+          "description": "Restriction on releasing this facility's data."
+        },
+        "description": "Release restrictions."
+      },
+      "avp": {
+        "type": "object",
+        "required": [
+          "iso23374_type"
+        ],
+        "additionalProperties": false,
+        "description": "Optional AVP service description (services profile; advisory otherwise).",
+        "properties": {
+          "iso23374_type": {
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          },
+          "handover_zone_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/Id"
+            },
+            "description": "Handover zones."
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "bay_assignment",
+                "remote_gate_open",
+                "infra_perception",
+                "occupancy_feed",
+                "reservation",
+                "remote_assist"
+              ],
+              "description": "Capability."
+            },
+            "description": "Capabilities."
+          },
+          "endpoint": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "feature-observation.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/feature-observation.schema.json",
+    "title": "FeatureObservation",
+    "description": "One observed feature in one contribution. Raw observations never appear in the published map.",
+    "type": "object",
+    "required": [
+      "id",
+      "contribution_id",
+      "feature_type",
+      "geometry_local",
+      "frame_id",
+      "observed_at",
+      "confidence"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Observation id."
+      },
+      "contribution_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parent contribution."
+      },
+      "target_feature_id": {
+        "anyOf": [
+          {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Existing feature this observes, or null for a candidate new feature."
+      },
+      "feature_type": {
+        "enum": [
+          "level",
+          "zone",
+          "bay",
+          "drive_node",
+          "drive_edge",
+          "ramp",
+          "pillar",
+          "access_point",
+          "gate",
+          "anchor_feature",
+          "pedestrian_portal",
+          "sign",
+          "localization_aid",
+          "height_limit",
+          "lift",
+          "kerb_ramp",
+          "wayfinding_aid",
+          "safety_feature",
+          "other"
+        ],
+        "description": "Observed feature type."
+      },
+      "geometry_local": {
+        "$ref": "common.schema.json#/$defs/Geometry"
+      },
+      "frame_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Frame the geometry is expressed in (before alignment)."
+      },
+      "attributes": {
+        "type": "object",
+        "description": "Type-specific attributes, e.g. orientation, width_m, painted_label."
+      },
+      "observed_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "confidence": {
+        "type": "number",
+        "description": "0-1.",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "evidence_ref": {
+        "type": "string",
+        "description": "Opaque reference to supporting evidence held under the redaction policy."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "frame.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/frame.schema.json",
+    "title": "Frame",
+    "description": "Local Cartesian facility frame anchored to WGS84.",
+    "type": "object",
+    "required": [
+      "id",
+      "origin_wgs84",
+      "x_axis_bearing_deg"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Frame id."
+      },
+      "origin_wgs84": {
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "h_ellipsoid_m"
+        ],
+        "additionalProperties": false,
+        "description": "Frame origin on WGS84.",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "lon": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "h_ellipsoid_m": {
+            "type": "number"
+          }
+        }
+      },
+      "x_axis_bearing_deg": {
+        "type": "number",
+        "description": "Bearing of the local x axis, clockwise from true north.",
+        "minimum": 0,
+        "exclusiveMaximum": 360
+      },
+      "anchor_accuracy_m": {
+        "type": "number",
+        "description": "1-sigma accuracy of the anchoring.",
+        "minimum": 0
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "gate.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/gate.schema.json",
+    "title": "Gate",
+    "description": "Boom gate, roller door, bollard or open lane.",
+    "type": "object",
+    "required": [
+      "id",
+      "host_id",
+      "kind"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Gate id."
+      },
+      "host_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "AccessPoint or InterFacilityLink the gate belongs to."
+      },
+      "kind": {
+        "enum": [
+          "boom_gate",
+          "roller_door",
+          "bollard",
+          "open_lane",
+          "turnstile"
+        ],
+        "description": "Gate kind."
+      },
+      "direction": {
+        "enum": [
+          "in",
+          "out",
+          "both"
+        ],
+        "description": "Lane direction."
+      },
+      "actuation": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "ticket",
+            "lpr",
+            "app",
+            "tap_card",
+            "remote_open",
+            "intercom",
+            "manual",
+            "none"
+          ],
+          "description": "Actuation."
+        },
+        "description": "How it opens."
+      },
+      "limits": {
+        "$ref": "common.schema.json#/$defs/VehicleLimits"
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "handover-requirements.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/handover-requirements.schema.json",
+    "title": "HandoverRequirements",
+    "description": "Minimum derived requirements that MAY be sent to a facility or planner with consent. Contains no identity, diagnosis or condition.",
+    "type": "object",
+    "required": [],
+    "properties": {
+      "need_step_free": {
+        "type": "boolean",
+        "description": "Step-free handover and path needed."
+      },
+      "min_kerbside_transfer_space_m": {
+        "type": "number",
+        "description": "Clear space needed beside the vehicle.",
+        "minimum": 0
+      },
+      "extended_dwell_factor": {
+        "type": "number",
+        "description": "Multiplier on standing time.",
+        "minimum": 1,
+        "maximum": 5
+      },
+      "need_shelter": {
+        "type": "boolean",
+        "description": "Shelter wanted."
+      },
+      "need_assistance_point": {
+        "type": "boolean",
+        "description": "Assistance point wanted."
+      },
+      "low_stimulation": {
+        "type": "boolean",
+        "description": "Quiet route preferred."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "handover-zone.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/handover-zone.schema.json",
+    "title": "HandoverZone",
+    "description": "Drop-off, pick-up, valet, ride-share or taxi zone.",
+    "type": "object",
+    "required": [
+      "id",
+      "kind",
+      "location_id"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Zone id."
+      },
+      "kind": {
+        "enum": [
+          "drop_off",
+          "pick_up",
+          "both",
+          "valet",
+          "rideshare",
+          "taxi",
+          "loading"
+        ],
+        "description": "Kind."
+      },
+      "location_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level id for in-facility zones or CurbSegment id for kerbside zones."
+      },
+      "capacity_veh": {
+        "type": "integer",
+        "description": "Vehicles that can stand at once.",
+        "minimum": 1
+      },
+      "max_dwell_s": {
+        "type": "integer",
+        "description": "Allowed standing time.",
+        "minimum": 0
+      },
+      "iso23374_handover": {
+        "type": "boolean",
+        "description": "Valid ISO 23374 AVP handover area."
+      },
+      "rule_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Rules."
+      },
+      "accessibility": {
+        "$ref": "common.schema.json#/$defs/HandoverAccessibility"
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "inter-facility-link.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/inter-facility-link.schema.json",
+    "title": "InterFacilityLink",
+    "description": "A tunnel, bridge, ramp or internal road between two facilities.",
+    "type": "object",
+    "required": [
+      "id",
+      "from",
+      "to",
+      "kind",
+      "direction",
+      "ticket_transfer"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Link id."
+      },
+      "from": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "DriveNode in the first facility."
+      },
+      "to": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "DriveNode in the second facility."
+      },
+      "kind": {
+        "enum": [
+          "tunnel",
+          "bridge",
+          "internal_ramp",
+          "internal_road",
+          "public_road"
+        ],
+        "description": "Link kind."
+      },
+      "direction": {
+        "enum": [
+          "one_way_forward",
+          "one_way_reverse",
+          "two_way"
+        ],
+        "description": "Direction."
+      },
+      "ticket_transfer": {
+        "type": "object",
+        "required": [
+          "allowed"
+        ],
+        "additionalProperties": false,
+        "description": "Whether a ticket or session carries across.",
+        "properties": {
+          "allowed": {
+            "type": "boolean"
+          },
+          "conditions": {
+            "type": "string"
+          },
+          "gate_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          }
+        }
+      },
+      "limits": {
+        "$ref": "common.schema.json#/$defs/VehicleLimits"
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Hours."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "jurisdiction.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/jurisdiction.schema.json",
+    "title": "Jurisdiction",
+    "description": "Rules for where contributions go, who may handle them and where they are stored.",
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "country",
+      "repository_id",
+      "routing_mode",
+      "residency",
+      "approval_regime"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction id."
+      },
+      "name": {
+        "type": "string",
+        "description": "Name."
+      },
+      "country": {
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2.",
+        "pattern": "^[A-Z]{2}$"
+      },
+      "repository_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Default repository."
+      },
+      "routing_mode": {
+        "enum": [
+          "direct_to_repository",
+          "via_licensed_unit",
+          "authority_only"
+        ],
+        "description": "How contributions reach the repository. via_licensed_unit is the China-style mode."
+      },
+      "licensed_unit_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Contributors (survey_firm) licensed to receive raw data in via_licensed_unit mode."
+      },
+      "accepted_contributor_types": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "oem",
+            "survey_firm",
+            "authority",
+            "operator",
+            "research"
+          ],
+          "description": "Type."
+        },
+        "description": "Who may submit directly."
+      },
+      "raw_data_access": {
+        "enum": [
+          "repository_only",
+          "licensed_unit_only",
+          "contributor_retains"
+        ],
+        "description": "Who may touch raw contributions."
+      },
+      "residency": {
+        "enum": [
+          "unrestricted",
+          "in_country_only",
+          "cross_border_with_approval"
+        ],
+        "description": "Data residency."
+      },
+      "approval_regime": {
+        "enum": [
+          "none",
+          "operator_consent",
+          "authority_approval",
+          "licensed_unit_only",
+          "map_review"
+        ],
+        "description": "Approvals needed before data is used."
+      },
+      "redaction_policy_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Default redaction policy."
+      },
+      "resolution_policy_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Default conflict resolution policy."
+      },
+      "legal_basis": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Free-text citations, e.g. a notice number."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "level.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/level.schema.json",
+    "title": "Level",
+    "description": "A floor of a facility.",
+    "type": "object",
+    "required": [
+      "id",
+      "ordinal",
+      "label",
+      "elevation_m"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level id."
+      },
+      "ordinal": {
+        "type": "integer",
+        "description": "0 = ground; negative below ground. Ordering only."
+      },
+      "label": {
+        "type": "string",
+        "description": "As signed: G, L1, B2, Roof."
+      },
+      "elevation_m": {
+        "type": "number",
+        "description": "Floor height in the facility frame."
+      },
+      "clearance_m": {
+        "type": "number",
+        "description": "Lowest headroom.",
+        "exclusiveMinimum": 0
+      },
+      "open_air": {
+        "type": "boolean",
+        "description": "Rooftop or surface.",
+        "default": false
+      },
+      "gnss": {
+        "enum": [
+          "good",
+          "degraded",
+          "none"
+        ],
+        "description": "GNSS quality on this level."
+      },
+      "entry_anchor_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "AnchorFeatures that tie this level's local geometry back to a GNSS-visible reference."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "lift.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/lift.schema.json",
+    "title": "Lift",
+    "description": "A lift on an accessible route.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_ids",
+      "kind"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Lift id."
+      },
+      "level_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Levels served.",
+        "minItems": 2
+      },
+      "kind": {
+        "enum": [
+          "passenger",
+          "goods",
+          "platform"
+        ],
+        "description": "Kind."
+      },
+      "car_width_m": {
+        "type": "number",
+        "description": "Car width.",
+        "exclusiveMinimum": 0
+      },
+      "car_depth_m": {
+        "type": "number",
+        "description": "Car depth.",
+        "exclusiveMinimum": 0
+      },
+      "door_width_m": {
+        "type": "number",
+        "description": "Clear door width.",
+        "exclusiveMinimum": 0
+      },
+      "audible_announcements": {
+        "type": "boolean",
+        "description": "Floor announcements."
+      },
+      "braille_buttons": {
+        "type": "boolean",
+        "description": "Braille or tactile buttons."
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Operating hours."
+      },
+      "status_feed_uri": {
+        "type": "string",
+        "format": "uri",
+        "description": "OPTIONAL live status feed; not required."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "localization-aid.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/localization-aid.schema.json",
+    "title": "LocalizationAid",
+    "description": "Fiducial, beacon or landmark for GNSS-denied localisation.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "kind",
+      "pose"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Aid id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "kind": {
+        "enum": [
+          "apriltag",
+          "aruco",
+          "ble_beacon",
+          "uwb_anchor",
+          "pillar_label",
+          "painted_marker",
+          "surveyed_landmark"
+        ],
+        "description": "Aid kind."
+      },
+      "code": {
+        "type": "string",
+        "description": "Tag ID, beacon UUID/major/minor or label text."
+      },
+      "pose": {
+        "type": "object",
+        "required": [
+          "position"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "position": {
+            "$ref": "common.schema.json#/$defs/LocalPoint"
+          },
+          "yaw_deg": {
+            "type": "number"
+          }
+        }
+      },
+      "accuracy_m": {
+        "type": "number",
+        "description": "1-sigma accuracy.",
+        "minimum": 0
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "occupancy-update.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/occupancy-update.schema.json",
+    "title": "OccupancyUpdate",
+    "description": "OPTIONAL live state. Not part of the static-core profile.",
+    "type": "object",
+    "required": [
+      "target_id",
+      "observed_at",
+      "ttl_s",
+      "source"
+    ],
+    "properties": {
+      "target_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Bay, zone, level or facility."
+      },
+      "state": {
+        "enum": [
+          "free",
+          "occupied",
+          "reserved",
+          "blocked",
+          "unknown"
+        ],
+        "description": "Bay-level state."
+      },
+      "free": {
+        "type": "integer",
+        "description": "Free count.",
+        "minimum": 0
+      },
+      "total": {
+        "type": "integer",
+        "description": "Total count.",
+        "minimum": 0
+      },
+      "observed_at": {
+        "$ref": "common.schema.json#/$defs/DateTime"
+      },
+      "ttl_s": {
+        "type": "integer",
+        "description": "Treat as unknown after this many seconds.",
+        "minimum": 1
+      },
+      "source": {
+        "enum": [
+          "bay_sensor",
+          "camera",
+          "gate_count",
+          "vehicle",
+          "operator"
+        ],
+        "description": "Source."
+      },
+      "confidence": {
+        "type": "number",
+        "description": "0-1.",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false,
+    "oneOf": [
+      {
+        "required": [
+          "state"
+        ]
+      },
+      {
+        "required": [
+          "free",
+          "total"
+        ]
+      }
+    ]
+  },
+  "passenger-needs.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/passenger-needs.schema.json",
+    "title": "PassengerNeeds",
+    "description": "On-device passenger needs profile for a Banish-style mission. Never part of a map dataset.",
+    "type": "object",
+    "required": [
+      "storage",
+      "consent"
+    ],
+    "properties": {
+      "storage": {
+        "const": "on_device",
+        "description": "Needs are stored and processed on the device only."
+      },
+      "mobility_aid": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "none",
+            "manual_wheelchair",
+            "power_wheelchair",
+            "scooter",
+            "walking_frame",
+            "cane",
+            "pram"
+          ],
+          "description": "Aid."
+        },
+        "description": "Aids travelling with the passenger."
+      },
+      "step_free_door_to_door": {
+        "type": "boolean",
+        "description": "Needs step-free door-to-door drop-off and pick-up."
+      },
+      "assistance_animal": {
+        "type": "boolean",
+        "description": "Travels with an assistance animal."
+      },
+      "extra_time_factor": {
+        "type": "number",
+        "description": "Multiplier on walking and standing time.",
+        "minimum": 1,
+        "maximum": 5
+      },
+      "low_stimulation_route": {
+        "type": "boolean",
+        "description": "Prefers quiet, uncrowded routes."
+      },
+      "wants_assistance_at_handover": {
+        "type": "boolean",
+        "description": "Wants help at drop-off or pick-up."
+      },
+      "carer_travelling": {
+        "type": "boolean",
+        "description": "A carer travels with the passenger."
+      },
+      "sensory_support": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "audible_guidance",
+            "large_text",
+            "visual_alerts",
+            "tactile_cues"
+          ],
+          "description": "Support."
+        },
+        "description": "Interface support needed."
+      },
+      "consent": {
+        "type": "object",
+        "required": [
+          "scope",
+          "granted_at"
+        ],
+        "additionalProperties": false,
+        "description": "Passenger's consent. Revocable at any time.",
+        "properties": {
+          "scope": {
+            "enum": [
+              "on_device_only",
+              "derived_requirements_only"
+            ]
+          },
+          "granted_at": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          },
+          "expires_at": {
+            "$ref": "common.schema.json#/$defs/DateTime"
+          }
+        }
+      },
+      "derived_requirements": {
+        "$ref": "handover-requirements.schema.json",
+        "description": "The only part that may leave the device, and only if consent.scope allows it."
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "pedestrian-portal.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/pedestrian-portal.schema.json",
+    "title": "PedestrianPortal",
+    "description": "A door, lift lobby or stair a person walks through.",
+    "type": "object",
+    "required": [
+      "id",
+      "kind",
+      "level_label"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Portal id."
+      },
+      "kind": {
+        "enum": [
+          "mall_door",
+          "lift_lobby",
+          "stairs",
+          "escalator",
+          "bridge",
+          "terminal_door",
+          "ward_entrance"
+        ],
+        "description": "Portal kind."
+      },
+      "level_label": {
+        "type": "string",
+        "description": "Level as signed on the pedestrian side."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "step_free": {
+        "type": "boolean",
+        "description": "Step-free."
+      },
+      "hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Hours."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "pillar-grid.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/pillar-grid.schema.json",
+    "title": "PillarGrid",
+    "description": "A regular pillar grid, useful as a strong alignment constraint.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "origin",
+      "spacing_x_m",
+      "spacing_y_m"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Grid id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "origin": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "spacing_x_m": {
+        "type": "number",
+        "description": "Column spacing along grid x.",
+        "exclusiveMinimum": 0
+      },
+      "spacing_y_m": {
+        "type": "number",
+        "description": "Row spacing along grid y.",
+        "exclusiveMinimum": 0
+      },
+      "bearing_deg": {
+        "type": "number",
+        "description": "Grid x axis bearing in the facility frame."
+      },
+      "x_labels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Painted column labels."
+      },
+      "y_labels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Painted row labels."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "pillar.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/pillar.schema.json",
+    "title": "Pillar",
+    "description": "A structural pillar: obstacle and alignment landmark.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "position",
+      "shape"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Pillar id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "grid_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parent grid, if regular."
+      },
+      "grid_ref": {
+        "type": "object",
+        "required": [
+          "col",
+          "row"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "col": {
+            "type": "integer"
+          },
+          "row": {
+            "type": "integer"
+          }
+        }
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "shape": {
+        "enum": [
+          "rect",
+          "round"
+        ],
+        "description": "Shape."
+      },
+      "width_m": {
+        "type": "number",
+        "description": "Width or diameter.",
+        "exclusiveMinimum": 0
+      },
+      "depth_m": {
+        "type": "number",
+        "description": "Depth for rectangular pillars.",
+        "exclusiveMinimum": 0
+      },
+      "painted_label": {
+        "type": "string",
+        "description": "Label on the pillar."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "rate.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/rate.schema.json",
+    "title": "Rate",
+    "description": "Tariff (APDS-style).",
+    "type": "object",
+    "required": [
+      "id",
+      "currency",
+      "periods"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Rate id."
+      },
+      "currency": {
+        "type": "string",
+        "description": "ISO 4217 code.",
+        "pattern": "^[A-Z]{3}$"
+      },
+      "periods": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "up_to_min",
+            "price"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "up_to_min": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "price": {
+              "type": "string",
+              "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+            }
+          }
+        },
+        "description": "Tariff steps; price is a decimal string.",
+        "minItems": 1
+      },
+      "daily_cap": {
+        "type": "string",
+        "description": "Decimal amount.",
+        "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+      },
+      "grace_min": {
+        "type": "integer",
+        "description": "Free leaving time.",
+        "minimum": 0
+      },
+      "validation": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "free_min": {
+              "type": "integer"
+            }
+          }
+        },
+        "description": "Validation schemes."
+      },
+      "dynamic": {
+        "type": "boolean",
+        "description": "Prices may change via a dynamic feed."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "redaction-policy.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/redaction-policy.schema.json",
+    "title": "RedactionPolicy",
+    "description": "Privacy redaction requirements for contributions.",
+    "type": "object",
+    "required": [
+      "id",
+      "imagery",
+      "trajectories",
+      "on_board_required"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Policy id."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction it applies to."
+      },
+      "imagery": {
+        "enum": [
+          "none",
+          "redacted_only",
+          "raw_to_licensed_unit_only"
+        ],
+        "description": "Imagery allowed in contributions."
+      },
+      "blur_faces": {
+        "type": "boolean",
+        "description": "Faces blurred."
+      },
+      "blur_plates": {
+        "type": "boolean",
+        "description": "Plates blurred."
+      },
+      "on_board_required": {
+        "type": "boolean",
+        "description": "Redaction must happen on the vehicle."
+      },
+      "trajectories": {
+        "enum": [
+          "none",
+          "derived_geometry_only"
+        ],
+        "description": "Whether raw vehicle trajectories may be uploaded."
+      },
+      "trim_start_m": {
+        "type": "number",
+        "description": "Trim this much of the start of each trace.",
+        "minimum": 0
+      },
+      "trim_end_m": {
+        "type": "number",
+        "description": "Trim this much of the end of each trace.",
+        "minimum": 0
+      },
+      "time_jitter_s": {
+        "type": "number",
+        "description": "Random time offset applied.",
+        "minimum": 0
+      },
+      "location_jitter_m": {
+        "type": "number",
+        "description": "Random offset for coarse locations.",
+        "minimum": 0
+      },
+      "min_contributors_before_release": {
+        "type": "integer",
+        "description": "Minimum distinct contributors before a feature is published.",
+        "minimum": 1
+      },
+      "retention_days": {
+        "type": "integer",
+        "description": "Retention of raw contributions.",
+        "minimum": 0
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "registry.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/registry.schema.json",
+    "title": "OPMS registry",
+    "description": "Jurisdictions, repositories, contributors and policies. Published by repositories or authorities, separate from site datasets.",
+    "type": "object",
+    "required": [
+      "opms_version",
+      "jurisdictions",
+      "repositories"
+    ],
+    "additionalProperties": false,
+    "patternProperties": {
+      "^x_": {}
+    },
+    "properties": {
+      "_note": {
+        "type": "string"
+      },
+      "opms_version": {
+        "type": "string",
+        "pattern": "^0[.]2[.][0-9]+$"
+      },
+      "jurisdictions": {
+        "type": "array",
+        "items": {
+          "$ref": "jurisdiction.schema.json"
+        },
+        "description": "Jurisdictions."
+      },
+      "repositories": {
+        "type": "array",
+        "items": {
+          "$ref": "repository.schema.json"
+        },
+        "description": "Repositories."
+      },
+      "contributors": {
+        "type": "array",
+        "items": {
+          "$ref": "contributor.schema.json"
+        },
+        "description": "Contributors."
+      },
+      "resolution_policies": {
+        "type": "array",
+        "items": {
+          "$ref": "resolution-policy.schema.json"
+        },
+        "description": "Policies."
+      },
+      "redaction_policies": {
+        "type": "array",
+        "items": {
+          "$ref": "redaction-policy.schema.json"
+        },
+        "description": "Policies."
+      },
+      "campaigns": {
+        "type": "array",
+        "items": {
+          "$ref": "campaign.schema.json"
+        },
+        "description": "Open campaigns."
+      }
+    }
+  },
+  "repository.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/repository.schema.json",
+    "title": "Repository",
+    "description": "Central repository (or licensed-unit gateway) for a jurisdiction.",
+    "type": "object",
+    "required": [
+      "id",
+      "operator",
+      "jurisdiction_id",
+      "role",
+      "endpoint",
+      "storage_region"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Repository id."
+      },
+      "operator": {
+        "type": "string",
+        "description": "Operating organisation."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction."
+      },
+      "role": {
+        "enum": [
+          "repository",
+          "licensed_unit_gateway",
+          "consortium"
+        ],
+        "description": "Role."
+      },
+      "endpoint": {
+        "type": "string",
+        "format": "uri"
+      },
+      "storage_region": {
+        "type": "string",
+        "description": "Where data is stored, e.g. AU or CN."
+      },
+      "signing_key_refs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Keys used to sign datasets and change sets."
+      },
+      "default_licence": {
+        "$ref": "common.schema.json#/$defs/LicenceTerms"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "resolution-policy.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/resolution-policy.schema.json",
+    "title": "ResolutionPolicy",
+    "description": "How a repository promotes, merges and retires crowdsourced features.",
+    "type": "object",
+    "required": [
+      "id",
+      "min_contributors",
+      "min_observations",
+      "min_agreement"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Policy id."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction."
+      },
+      "min_contributors": {
+        "type": "integer",
+        "description": "Distinct contributors needed to verify a feature.",
+        "minimum": 1
+      },
+      "min_observations": {
+        "type": "integer",
+        "description": "Observations needed to leave candidate status.",
+        "minimum": 1
+      },
+      "min_agreement": {
+        "type": "number",
+        "description": "Agreement score needed.",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "max_position_spread_m": {
+        "type": "number",
+        "description": "Observations further than this from the consensus disagree.",
+        "exclusiveMinimum": 0
+      },
+      "override_roles": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "operator",
+            "authority",
+            "auditor"
+          ],
+          "description": "Role."
+        },
+        "description": "Roles that may override consensus."
+      },
+      "human_review_feature_types": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Feature types that always need human or operator review, e.g. gate, height_limit."
+      },
+      "auto_retire_after_days": {
+        "type": "integer",
+        "description": "Retire a feature not seen for this long.",
+        "minimum": 1
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "rule.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/rule.schema.json",
+    "title": "Rule",
+    "description": "Time-conditioned permission or ban (CDS-style regulation).",
+    "type": "object",
+    "required": [
+      "id",
+      "applies_to",
+      "activity"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Rule id."
+      },
+      "applies_to": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Bays, zones, curb segments, access points, edges, handover zones.",
+        "minItems": 1
+      },
+      "activity": {
+        "enum": [
+          "park",
+          "stop",
+          "load",
+          "pick_up_drop_off",
+          "no_parking",
+          "no_stopping",
+          "clearway"
+        ],
+        "description": "Permitted or banned activity."
+      },
+      "when": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Time windows."
+      },
+      "max_stay_min": {
+        "type": "integer",
+        "description": "Maximum stay, 2P = 120.",
+        "minimum": 1
+      },
+      "user_classes": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "any",
+            "permit_area",
+            "disability_permit",
+            "motorcycle",
+            "loading_vehicle",
+            "taxi",
+            "tenant",
+            "ev_charging",
+            "family",
+            "community_transport",
+            "ndis_transport",
+            "patient_transport",
+            "courier",
+            "emergency",
+            "carer"
+          ],
+          "description": "User class."
+        },
+        "description": "Eligible users."
+      },
+      "payment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "required": {
+            "type": "boolean"
+          },
+          "rate_id": {
+            "$ref": "common.schema.json#/$defs/Id"
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "sign": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Sign as shown (Melbourne style).",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "symbol": {
+            "enum": [
+              "P",
+              "no_parking_P",
+              "no_stopping_S",
+              "clearway",
+              "loading_zone",
+              "disabled",
+              "permit",
+              "meter",
+              "ticket"
+            ]
+          }
+        }
+      },
+      "priority": {
+        "type": "integer",
+        "default": 0,
+        "description": "Higher wins when windows overlap."
+      },
+      "authority": {
+        "type": "string",
+        "description": "Council, road authority or operator."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "safety-feature.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/safety-feature.schema.json",
+    "title": "SafetyFeature",
+    "description": "Personal-security and safety features.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "kind"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Feature id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "kind": {
+        "enum": [
+          "help_point",
+          "cctv",
+          "lighting_zone",
+          "duress_button",
+          "staffed_booth",
+          "emergency_exit",
+          "fire_lane",
+          "security_patrol"
+        ],
+        "description": "Kind."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "lighting_level": {
+        "enum": [
+          "poor",
+          "adequate",
+          "good"
+        ],
+        "description": "Lighting quality."
+      },
+      "cctv_present": {
+        "type": "boolean",
+        "description": "Flag only. No camera feeds or footage are described by OPMS."
+      },
+      "staffed_hours": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/TimeWindow"
+        },
+        "description": "Staffed hours."
+      },
+      "contact_ref": {
+        "type": "string",
+        "description": "How to reach help (organisation role or number reference)."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "site.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/site.schema.json",
+    "title": "Site",
+    "description": "A precinct containing facilities, destinations and handover zones.",
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "kind",
+      "timezone",
+      "facility_ids"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Site id."
+      },
+      "name": {
+        "type": "string",
+        "description": "Display name."
+      },
+      "kind": {
+        "enum": [
+          "shopping_centre",
+          "airport",
+          "hospital",
+          "campus",
+          "residential",
+          "office",
+          "event_venue",
+          "street_precinct"
+        ],
+        "description": "Precinct type."
+      },
+      "timezone": {
+        "type": "string",
+        "description": "IANA timezone; all time windows are local to it."
+      },
+      "ticket_scope": {
+        "enum": [
+          "facility",
+          "site"
+        ],
+        "description": "Whether one ticket works across complexes by default.",
+        "default": "facility"
+      },
+      "facility_ids": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Complexes in the precinct."
+      },
+      "jurisdiction_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Jurisdiction whose repository and rules govern this site."
+      },
+      "locality_class": {
+        "enum": [
+          "metro_premium",
+          "metro_suburban",
+          "regional",
+          "rural"
+        ],
+        "description": "Used to measure equity of coverage across suburbs and regions, not only premium sites."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "wayfinding-aid.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/wayfinding-aid.schema.json",
+    "title": "WayfindingAid",
+    "description": "Signs, level colours and landmarks people use to find their car and the way out.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "kind"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Aid id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level."
+      },
+      "kind": {
+        "enum": [
+          "sign",
+          "level_colour",
+          "level_name",
+          "zone_colour",
+          "landmark",
+          "floor_marking",
+          "audio_beacon",
+          "tactile_map"
+        ],
+        "description": "Kind."
+      },
+      "label": {
+        "type": "string",
+        "description": "As signed."
+      },
+      "colour": {
+        "type": "string",
+        "description": "Colour name used by the facility, e.g. Orange."
+      },
+      "description": {
+        "type": "string",
+        "description": "Plain-language description people actually use, e.g. next to the red lift."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "audible": {
+        "type": "boolean",
+        "description": "Audio cue."
+      },
+      "braille": {
+        "type": "boolean",
+        "description": "Braille."
+      },
+      "tactile": {
+        "type": "boolean",
+        "description": "Tactile."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
+  "zone.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.2/zone.schema.json",
+    "title": "Zone",
+    "description": "A painted area of bays.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_id",
+      "name"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Zone id."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parent level."
+      },
+      "name": {
+        "type": "string",
+        "description": "Signed name, e.g. Blue C."
+      },
+      "bay_types": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Optional hint of dominant bay classes (free ids such as ev, accessible)."
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "supersedes": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "IDs of earlier features this one replaces (for tombstoning and diffs)."
+      },
+      "valid_from": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "Start of validity, for planned changes."
+      },
+      "valid_to": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "End of validity."
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  }
+}
