@@ -40,16 +40,28 @@
         "description": "Public road it connects to.",
         "properties": {
           "road_name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the public road this access joins, as it is signed.",
+            "examples": [
+              "Wattle Street"
+            ]
           },
           "intersection_id": {
             "$ref": "common.schema.json#/$defs/Id"
           },
           "approach_bearing_deg": {
-            "type": "number"
+            "type": "number",
+            "description": "Compass bearing of the vehicle approach, degrees clockwise from true north.",
+            "examples": [
+              90
+            ]
           },
           "signalised": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the junction with the public road has traffic signals.",
+            "examples": [
+              false
+            ]
           },
           "external_refs": {
             "$ref": "common.schema.json#/$defs/ExternalRefs"
@@ -139,14 +151,26 @@
         "description": "Emergency vehicle access.",
         "properties": {
           "fire_brigade_access": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when fire appliances can use this access.",
+            "examples": [
+              true
+            ]
           },
           "ambulance_clearance_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Clearance kept for an ambulance, in metres.",
+            "examples": [
+              3.5
+            ]
           },
           "emergency_override": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when an emergency vehicle can override a gate or barrier here.",
+            "examples": [
+              true
+            ]
           }
         }
       },
@@ -742,13 +766,25 @@
               "type2",
               "chademo",
               "nacs"
+            ],
+            "description": "Charging connector. ccs2: Combined Charging System Type 2. type2: IEC Type 2 AC. chademo: CHAdeMO DC. nacs: North American Charging Standard.",
+            "examples": [
+              "ccs2"
             ]
           },
           "power_kw": {
-            "type": "number"
+            "type": "number",
+            "description": "Rated charging power, in kilowatts.",
+            "examples": [
+              150
+            ]
           },
           "charger_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Operator's identifier for this charger. Not a vehicle identifier.",
+            "examples": [
+              "charger-12"
+            ]
           }
         }
       },
@@ -850,7 +886,16 @@
               "type": "number"
             },
             "minItems": 4,
-            "maxItems": 4
+            "maxItems": 4,
+            "description": "Survey bounding box in WGS84 degrees: [minimum longitude, minimum latitude, maximum longitude, maximum latitude].",
+            "examples": [
+              [
+                144.96,
+                -37.82,
+                144.98,
+                -37.8
+              ]
+            ]
           }
         }
       },
@@ -877,7 +922,8 @@
           "end": {
             "$ref": "common.schema.json#/$defs/DateTime"
           }
-        }
+        },
+        "description": "When the survey is wanted. start and end are RFC 3339 instants with an offset."
       },
       "priority": {
         "type": "integer",
@@ -1052,13 +1098,21 @@
               "$ref": "common.schema.json#/$defs/Id"
             },
             "feature_type": {
-              "type": "string"
+              "type": "string",
+              "description": "Kind of feature that was removed, such as bay or drive_edge.",
+              "examples": [
+                "bay"
+              ]
             },
             "removed_at": {
               "$ref": "common.schema.json#/$defs/DateTime"
             },
             "reason": {
-              "type": "string"
+              "type": "string",
+              "description": "Why the feature was removed from the map.",
+              "examples": [
+                "demolished"
+              ]
             },
             "superseded_by": {
               "$ref": "common.schema.json#/$defs/Id"
@@ -1146,7 +1200,8 @@
           "end": {
             "$ref": "common.schema.json#/$defs/DateTime"
           }
-        }
+        },
+        "description": "When the closure applies. start is required. Omit end when the finish time is not yet known."
       },
       "_note": {
         "type": "string",
@@ -1219,6 +1274,10 @@
               "Point",
               "LineString",
               "Polygon"
+            ],
+            "description": "Geometry kind in the facility frame. Point: one position. LineString: an ordered path. Polygon: a counter-clockwise ring. The ring need not repeat the first point.",
+            "examples": [
+              "Polygon"
             ]
           },
           "coordinates": {
@@ -1226,7 +1285,32 @@
             "items": {
               "$ref": "#/$defs/LocalPoint"
             },
-            "minItems": 1
+            "minItems": 1,
+            "description": "Positions as LocalPoint values, metres in the facility frame (x east, y north, z up).",
+            "examples": [
+              [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  10,
+                  8,
+                  0
+                ],
+                [
+                  0,
+                  8,
+                  0
+                ]
+              ]
+            ]
           },
           "sigma_m": {
             "type": "number",
@@ -1259,15 +1343,33 @@
                 "su",
                 "ph"
               ]
-            }
+            },
+            "description": "Days the window applies, in the site's timezone. mo Monday, tu Tuesday, we Wednesday, th Thursday, fr Friday, sa Saturday, su Sunday, ph a public holiday in the site's jurisdiction.",
+            "examples": [
+              [
+                "mo",
+                "tu",
+                "we",
+                "th",
+                "fr"
+              ]
+            ]
           },
           "start": {
             "type": "string",
-            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+            "description": "Local start time, HH:MM, from 00:00 to 23:59. The site's IANA timezone applies.",
+            "examples": [
+              "09:00"
+            ]
           },
           "end": {
             "type": "string",
-            "pattern": "^(([01][0-9]|2[0-3]):[0-5][0-9]|24:00)$"
+            "pattern": "^(([01][0-9]|2[0-3]):[0-5][0-9]|24:00)$",
+            "description": "Local end time, HH:MM. 24:00 means the end of the local day.",
+            "examples": [
+              "17:30"
+            ]
           }
         }
       },
@@ -1278,19 +1380,35 @@
         "properties": {
           "max_height_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Highest vehicle that may pass, in metres. A missing value means the limit is unknown, so an oversize vehicle must not assume it can pass.",
+            "examples": [
+              2.1
+            ]
           },
           "max_width_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Widest vehicle that may pass, in metres.",
+            "examples": [
+              2.5
+            ]
           },
           "max_length_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Longest vehicle that may pass, in metres.",
+            "examples": [
+              5.5
+            ]
           },
           "max_mass_kg": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Heaviest vehicle that may pass, in kilograms.",
+            "examples": [
+              3500
+            ]
           },
           "vehicle_classes": {
             "type": "array",
@@ -1302,7 +1420,14 @@
                 "light_truck",
                 "bus"
               ]
-            }
+            },
+            "description": "Vehicle classes allowed. car, motorcycle, van, light_truck, bus. An empty or missing list does not grant access.",
+            "examples": [
+              [
+                "car",
+                "van"
+              ]
+            ]
           }
         }
       },
@@ -1315,54 +1440,108 @@
             "type": "array",
             "items": {
               "type": "integer"
-            }
+            },
+            "description": "Lanelet2 primitive identifiers this feature corresponds to. Geometry stays in the other map.",
+            "examples": [
+              [
+                1204,
+                1205
+              ]
+            ]
           },
           "opendrive": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "road": {
-                "type": "string"
+                "type": "string",
+                "description": "OpenDRIVE road id.",
+                "examples": [
+                  "42"
+                ]
               },
               "lane": {
-                "type": "integer"
+                "type": "integer",
+                "description": "OpenDRIVE lane id on that road. Sign follows OpenDRIVE (left positive, right negative in the road direction).",
+                "examples": [
+                  -1
+                ]
               },
               "object": {
-                "type": "string"
+                "type": "string",
+                "description": "OpenDRIVE object id, when the feature is an object rather than a lane.",
+                "examples": [
+                  "parking-1"
+                ]
               }
-            }
+            },
+            "description": "OpenDRIVE identifiers for the same feature. OPMS does not copy the OpenDRIVE geometry."
           },
           "osm": {
             "type": "array",
             "items": {
               "type": "string",
               "pattern": "^(node|way|relation)/[0-9]+$"
-            }
+            },
+            "description": "OpenStreetMap elements, each node/<id>, way/<id> or relation/<id>.",
+            "examples": [
+              [
+                "way/123456789"
+              ]
+            ]
           },
           "indoorgml_cell": {
-            "type": "string"
+            "type": "string",
+            "description": "IndoorGML cell identifier for this space.",
+            "examples": [
+              "cell-level-1-a"
+            ]
           },
           "nds_live_id": {
-            "type": "string"
+            "type": "string",
+            "description": "NDS.Live feature identifier.",
+            "examples": [
+              "nds-live-example-1"
+            ]
           },
           "cds_zone_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Curb Data Specification zone identifier.",
+            "examples": [
+              "cds-zone-example"
+            ]
           },
           "apds_id": {
-            "type": "string"
+            "type": "string",
+            "description": "APDS identifier when a single id is enough. Prefer the place, subplace, identified-area or space fields when the level is known.",
+            "examples": [
+              "apds-example"
+            ]
           },
           "apds_place_id": {
             "type": "string",
             "description": "APDS Place id (Place > SubplaceElement > IdentifiedArea > Space hierarchy is reused, not duplicated)."
           },
           "apds_subplace_id": {
-            "type": "string"
+            "type": "string",
+            "description": "APDS SubplaceElement id. The APDS hierarchy is referenced, not copied.",
+            "examples": [
+              "subplace-example"
+            ]
           },
           "apds_identified_area_id": {
-            "type": "string"
+            "type": "string",
+            "description": "APDS IdentifiedArea id.",
+            "examples": [
+              "area-example"
+            ]
           },
           "apds_space_id": {
-            "type": "string"
+            "type": "string",
+            "description": "APDS Space id, typically one bay.",
+            "examples": [
+              "space-example"
+            ]
           },
           "maze_id": {
             "type": "string",
@@ -1392,6 +1571,10 @@
               "sensor",
               "import",
               "consolidation"
+            ],
+            "description": "Who produced the fact. survey: a deliberate survey. operator: the car-park operator. authority: a public authority. vehicle_crowd: many vehicles. sensor: a fixed sensor. import: copied from another dataset. consolidation: the repository's merged result.",
+            "examples": [
+              "survey"
             ]
           },
           "observed_at": {
@@ -1400,7 +1583,11 @@
           "confidence": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1
+            "maximum": 1,
+            "description": "Producer's confidence, from 0 (none) to 1 (certain). This is not the evidence agreement score.",
+            "examples": [
+              0.8
+            ]
           },
           "contribution_ids": {
             "type": "array",
@@ -1426,15 +1613,27 @@
         "properties": {
           "n_observations": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "description": "How many observations support the current consensus.",
+            "examples": [
+              4
+            ]
           },
           "n_distinct_contributors": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "description": "How many different contributor organisations those observations came from.",
+            "examples": [
+              2
+            ]
           },
           "n_distinct_vehicles": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "description": "How many distinct vehicle pseudonyms those observations came from. Not a count of VINs.",
+            "examples": [
+              3
+            ]
           },
           "first_seen": {
             "$ref": "#/$defs/DateTime"
@@ -1450,7 +1649,11 @@
           },
           "positional_sigma_m": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Estimated positional spread of the observations, one standard deviation, in metres.",
+            "examples": [
+              0.4
+            ]
           },
           "status": {
             "enum": [
@@ -1459,6 +1662,10 @@
               "verified",
               "disputed",
               "retired"
+            ],
+            "description": "Evidence state. candidate: seen but not yet reviewed. provisional: usable with caution. verified: accepted by the repository. disputed: observations disagree. retired: no longer current.",
+            "examples": [
+              "provisional"
             ]
           }
         }
@@ -1494,19 +1701,35 @@
           },
           "custom_terms_uri": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "URI of custom licence terms, used when there is no SPDX identifier. One of spdx_id or this URI is required.",
+            "examples": [
+              "https://example.org/licences/opms-example"
+            ]
           },
           "commercial_use": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the terms allow commercial use.",
+            "examples": [
+              true
+            ]
           },
           "attribution_required": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when users must attribute the source.",
+            "examples": [
+              true
+            ]
           },
           "redistribution": {
             "enum": [
               "allowed",
               "restricted",
               "prohibited"
+            ],
+            "description": "Whether the data may be passed on. allowed: yes. restricted: only under extra conditions in the terms. prohibited: no.",
+            "examples": [
+              "allowed"
             ]
           },
           "derivative_works": {
@@ -1514,6 +1737,10 @@
               "allowed",
               "restricted",
               "prohibited"
+            ],
+            "description": "Whether modified copies are allowed. allowed, restricted, or prohibited.",
+            "examples": [
+              "allowed"
             ]
           },
           "ai_training_use": {
@@ -1522,20 +1749,38 @@
               "restricted",
               "prohibited",
               "unspecified"
+            ],
+            "description": "Whether the data may be used to train models. allowed, restricted, prohibited, or unspecified when the terms are silent.",
+            "examples": [
+              "unspecified"
             ]
           },
           "retention_days": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "description": "How many days a recipient may keep a copy. 0 means no retained copy.",
+            "examples": [
+              365
+            ]
           },
           "sublicensable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when a recipient may grant the same rights to someone else.",
+            "examples": [
+              false
+            ]
           },
           "sublicence_chain": {
             "type": "array",
             "items": {
               "$ref": "#/$defs/Id"
-            }
+            },
+            "description": "Contributor or repository ids that show how the licence was passed on.",
+            "examples": [
+              [
+                "example.contributor"
+              ]
+            ]
           }
         }
       },
@@ -1559,12 +1804,20 @@
               "adas",
               "supervised_self_park",
               "driverless"
+            ],
+            "description": "Intended use, matching the tier. indicative: display and planning. adas: driver-supervised assistance. supervised_self_park: supervised self-parking. driverless: driverless operation. Numeric accuracy targets in the spec are proposals, not regulator requirements.",
+            "examples": [
+              "supervised_self_park"
             ]
           },
           "completeness_pct": {
             "type": "number",
             "minimum": 0,
-            "maximum": 100
+            "maximum": 100,
+            "description": "Share of expected features present, from 0 to 100 percent.",
+            "examples": [
+              95
+            ]
           },
           "last_audit": {
             "$ref": "#/$defs/DateTime"
@@ -1573,7 +1826,13 @@
             "type": "array",
             "items": {
               "$ref": "#/$defs/Id"
-            }
+            },
+            "description": "Certification records that support this tier.",
+            "examples": [
+              [
+                "example.cert.1"
+              ]
+            ]
           }
         }
       },
@@ -1591,10 +1850,18 @@
               "granted",
               "denied",
               "conditional"
+            ],
+            "description": "Operator or owner consent. unknown: not asked. granted: given. denied: refused. conditional: given only for the listed scope.",
+            "examples": [
+              "granted"
             ]
           },
           "granted_by": {
-            "type": "string"
+            "type": "string",
+            "description": "Organisation that granted or refused consent. An organisation label, not a person's name.",
+            "examples": [
+              "Example Parking Co"
+            ]
           },
           "scope": {
             "type": "array",
@@ -1605,7 +1872,14 @@
                 "driverless_use",
                 "commercial_use"
               ]
-            }
+            },
+            "description": "What consent covers. geometry_only: the map geometry. publish: publishing it. driverless_use: driverless operation. commercial_use: commercial use.",
+            "examples": [
+              [
+                "publish",
+                "geometry_only"
+              ]
+            ]
           },
           "valid_to": {
             "$ref": "#/$defs/DateTime"
@@ -1641,11 +1915,19 @@
           },
           "bay_width_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "As-built width of the bay, in metres.",
+            "examples": [
+              3.2
+            ]
           },
           "bay_length_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "As-built length of the bay, in metres.",
+            "examples": [
+              5.4
+            ]
           },
           "shared_zone": {
             "type": "object",
@@ -1657,27 +1939,52 @@
                   "left",
                   "right",
                   "both"
+                ],
+                "description": "Which side of the bay the shared zone is on, as the driver looks out of the bay. none, left, right, or both.",
+                "examples": [
+                  "left"
                 ]
               },
               "width_m": {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Width of the shared zone, in metres.",
+                "examples": [
+                  2.4
+                ]
               },
               "length_m": {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Length of the shared zone along the bay, in metres.",
+                "examples": [
+                  5.4
+                ]
               },
               "rear_length_m": {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Extra shared length behind the bay, in metres.",
+                "examples": [
+                  1.0
+                ]
               },
               "shared_between_bays": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "True when neighbouring accessible bays share one zone.",
+                "examples": [
+                  true
+                ]
               }
-            }
+            },
+            "description": "Marked shared area beside or behind the bay, used for unloading a wheelchair or ramp."
           },
           "kerb_ramp": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when a kerb ramp serves this bay.",
+            "examples": [
+              true
+            ]
           },
           "surface": {
             "type": "object",
@@ -1690,12 +1997,21 @@
                   "pavers",
                   "gravel",
                   "other"
+                ],
+                "description": "Surface material. asphalt, concrete, pavers, gravel, or other.",
+                "examples": [
+                  "concrete"
                 ]
               },
               "slip_resistant": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "True when the surface is treated or finished to resist slipping when wet.",
+                "examples": [
+                  true
+                ]
               }
-            }
+            },
+            "description": "Walking surface of the bay and its shared zone."
           },
           "gradient_pct": {
             "type": "number",
@@ -1717,20 +2033,36 @@
             "properties": {
               "rear_ramp_clearance_m": {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Clear length behind the vehicle for a rear ramp, in metres.",
+                "examples": [
+                  2.4
+                ]
               },
               "side_lift_clearance_m": {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Clear width beside the vehicle for a side lift, in metres.",
+                "examples": [
+                  1.5
+                ]
               }
             }
           },
           "distance_to_accessible_entrance_m": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Walking distance from the bay to the nearest accessible entrance, in metres.",
+            "examples": [
+              25
+            ]
           },
           "rest_point_on_path": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when there is a place to rest on the path from this bay to the entrance.",
+            "examples": [
+              true
+            ]
           },
           "permit_scheme": {
             "enum": [
@@ -1757,9 +2089,14 @@
                   "survey",
                   "self_report",
                   "crowd"
+                ],
+                "description": "How the audit was done. survey: measured on site. self_report: the operator's own report. crowd: reported by contributors.",
+                "examples": [
+                  "survey"
                 ]
               }
-            }
+            },
+            "description": "How and when the accessible-bay attributes were last checked."
           }
         }
       },
@@ -1774,27 +2111,55 @@
             "description": "Clear width beside the vehicle for a wheelchair transfer or ramp."
           },
           "kerb_ramp": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when a kerb ramp is at the drop-off or pick-up.",
+            "examples": [
+              true
+            ]
           },
           "step_free_to_destination": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when a person can reach the destination from here without steps.",
+            "examples": [
+              true
+            ]
           },
           "sheltered": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when people waiting are under cover.",
+            "examples": [
+              true
+            ]
           },
           "seating": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when there is seating for people waiting.",
+            "examples": [
+              false
+            ]
           },
           "assistance_point": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when staff or a call point can help a passenger here.",
+            "examples": [
+              true
+            ]
           },
           "tactile_marking": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when tactile paving or another tactile mark is present.",
+            "examples": [
+              true
+            ]
           },
           "lighting": {
             "enum": [
               "none",
               "partial",
+              "good"
+            ],
+            "description": "Lighting where people wait. none, partial, or good.",
+            "examples": [
               "good"
             ]
           },
@@ -1812,11 +2177,19 @@
         "properties": {
           "public_url": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "Public web page for this dataset.",
+            "examples": [
+              "https://example.org/data/opms"
+            ]
           },
           "api_endpoint": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "HTTP endpoint that serves the dataset.",
+            "examples": [
+              "https://example.org/api/opms"
+            ]
           },
           "formats": {
             "type": "array",
@@ -1829,17 +2202,31 @@
                 "indoorgml",
                 "apds"
               ]
-            }
+            },
+            "description": "Formats offered. json, geojson, opendrive, lanelet2, indoorgml, or apds.",
+            "examples": [
+              [
+                "json"
+              ]
+            ]
           },
           "bulk_download": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the whole dataset can be downloaded in one file.",
+            "examples": [
+              true
+            ]
           },
           "non_av_use_allowed": {
             "type": "boolean",
             "description": "Usable by people driving themselves or being driven, not only by automated vehicles."
           },
           "accessible_documentation": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the documentation of this dataset meets an accessibility target such as WCAG 2.2.",
+            "examples": [
+              true
+            ]
           },
           "update_frequency": {
             "enum": [
@@ -1848,10 +2235,18 @@
               "weekly",
               "monthly",
               "on_change"
+            ],
+            "description": "How often the published copy changes. realtime, daily, weekly, monthly, or on_change.",
+            "examples": [
+              "on_change"
             ]
           },
           "accessibility_contact": {
-            "type": "string"
+            "type": "string",
+            "description": "Contact for accessibility questions. An organisation mailbox or role, not a private person's name.",
+            "examples": [
+              "access@example.org"
+            ]
           }
         }
       },
@@ -1995,7 +2390,11 @@
     },
     "properties": {
       "_note": {
-        "type": "string"
+        "type": "string",
+        "description": "Free-text note. Used to label fictional example data. Not a map fact.",
+        "examples": [
+          "Fictional contribution bundle."
+        ]
       },
       "opms_version": {
         "type": "string",
@@ -2086,7 +2485,8 @@
           "end": {
             "$ref": "common.schema.json#/$defs/DateTime"
           }
-        }
+        },
+        "description": "Time span of the vehicle trace that produced this contribution. start and end are RFC 3339 instants."
       },
       "facility_hint": {
         "type": "object",
@@ -2105,7 +2505,16 @@
               "type": "number"
             },
             "minItems": 4,
-            "maxItems": 4
+            "maxItems": 4,
+            "description": "Approximate WGS84 box where the trace was collected: [minimum longitude, minimum latitude, maximum longitude, maximum latitude], in degrees.",
+            "examples": [
+              [
+                144.96,
+                -37.82,
+                144.97,
+                -37.81
+              ]
+            ]
           }
         }
       },
@@ -2126,7 +2535,15 @@
                 "wheel_odometry",
                 "gnss"
               ]
-            }
+            },
+            "description": "Sensors used. camera, lidar, radar, ultrasonic, imu, wheel_odometry, gnss.",
+            "examples": [
+              [
+                "lidar",
+                "imu",
+                "wheel_odometry"
+              ]
+            ]
           },
           "calibration_class": {
             "enum": [
@@ -2134,11 +2551,19 @@
               "factory",
               "fleet_calibrated",
               "survey_grade"
+            ],
+            "description": "How well the sensors are calibrated. uncalibrated, factory, fleet_calibrated, or survey_grade.",
+            "examples": [
+              "factory"
             ]
           },
           "odometry_drift_m_per_100m": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Claimed wheel-odometry drift, in metres per 100 metres travelled.",
+            "examples": [
+              0.5
+            ]
           }
         }
       },
@@ -2154,11 +2579,19 @@
         "properties": {
           "vehicle_token": {
             "type": "string",
-            "minLength": 16
+            "minLength": 16,
+            "description": "Rotating vehicle token, at least 16 characters. Not a VIN, plate or other direct identifier.",
+            "examples": [
+              "0123456789abcdef"
+            ]
           },
           "session_token": {
             "type": "string",
-            "minLength": 16
+            "minLength": 16,
+            "description": "Rotating session token, at least 16 characters. Not a person's name.",
+            "examples": [
+              "fedcba9876543210"
+            ]
           },
           "pseudonym_epoch": {
             "type": "string",
@@ -2166,7 +2599,11 @@
           },
           "k_anonymity_group": {
             "type": "integer",
-            "minimum": 1
+            "minimum": 1,
+            "description": "Smallest group size the publisher claims this pseudonym shares. 1 means no k-anonymity claim.",
+            "examples": [
+              5
+            ]
           }
         }
       },
@@ -2186,30 +2623,58 @@
             "$ref": "common.schema.json#/$defs/Id"
           },
           "performed_on_board": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the redaction ran on the vehicle before upload.",
+            "examples": [
+              true
+            ]
           },
           "imagery_included": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the payload still contains imagery.",
+            "examples": [
+              false
+            ]
           },
           "trajectories_included": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when the payload still contains trajectories.",
+            "examples": [
+              true
+            ]
           },
           "trim_start_m": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Metres trimmed from the start of the trace so the journey origin is not kept.",
+            "examples": [
+              50
+            ]
           },
           "trim_end_m": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Metres trimmed from the end of the trace so the journey destination is not kept.",
+            "examples": [
+              50
+            ]
           },
           "time_jitter_applied": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when timestamps were jittered to reduce re-identification.",
+            "examples": [
+              true
+            ]
           },
           "attested_at": {
             "$ref": "common.schema.json#/$defs/DateTime"
           },
           "signature_ref": {
-            "type": "string"
+            "type": "string",
+            "description": "Reference to the attestation signature. Not the signature bytes themselves.",
+            "examples": [
+              "sig-example-1"
+            ]
           }
         }
       },
@@ -2224,14 +2689,26 @@
         "properties": {
           "uri": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "URI of a bulk payload held outside this record, for example a SENSORIS message set.",
+            "examples": [
+              "https://example.org/payloads/example.bin"
+            ]
           },
           "sha256": {
             "type": "string",
-            "pattern": "^[a-f0-9]{64}$"
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Lower-case hex SHA-256 of that payload, 64 digits.",
+            "examples": [
+              "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+            ]
           },
           "media_type": {
-            "type": "string"
+            "type": "string",
+            "description": "Media type of the payload.",
+            "examples": [
+              "application/octet-stream"
+            ]
           }
         }
       },
@@ -2302,10 +2779,18 @@
         "description": "Licence or qualification, e.g. a national surveying qualification.",
         "properties": {
           "scheme": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the licence or qualification scheme, for example a national surveying qualification.",
+            "examples": [
+              "example-survey-licence"
+            ]
           },
           "number": {
-            "type": "string"
+            "type": "string",
+            "description": "Licence or qualification number. Not a person's name.",
+            "examples": [
+              "EX-1000"
+            ]
           },
           "valid_to": {
             "$ref": "common.schema.json#/$defs/DateTime"
@@ -2365,12 +2850,17 @@
         "additionalProperties": false,
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Road name as signed.",
+            "examples": [
+              "Station Road"
+            ]
           },
           "external_refs": {
             "$ref": "common.schema.json#/$defs/ExternalRefs"
           }
-        }
+        },
+        "description": "Public road this kerb segment belongs to."
       },
       "side": {
         "enum": [
@@ -2388,12 +2878,21 @@
         "additionalProperties": false,
         "properties": {
           "from_m": {
-            "type": "number"
+            "type": "number",
+            "description": "Start of the segment along the road, in metres.",
+            "examples": [
+              0
+            ]
           },
           "to_m": {
-            "type": "number"
+            "type": "number",
+            "description": "End of the segment along the road, in metres. Greater than from_m when the segment has length.",
+            "examples": [
+              40
+            ]
           }
-        }
+        },
+        "description": "Where along the road the segment runs, measured in metres from an agreed origin."
       },
       "orientation": {
         "enum": [
@@ -2490,7 +2989,11 @@
     ],
     "properties": {
       "_note": {
-        "type": "string"
+        "type": "string",
+        "description": "Free-text note. Used to label fictional example data. Not a map fact.",
+        "examples": [
+          "Fictional dataset."
+        ]
       },
       "opms_version": {
         "type": "string",
@@ -3015,14 +3518,26 @@
               "helical",
               "split_level",
               "spiral_double"
+            ],
+            "description": "Ramp shape. straight, helical, split_level (short ramps between split floors), or spiral_double (two helices).",
+            "examples": [
+              "straight"
             ]
           },
           "gradient_pct": {
-            "type": "number"
+            "type": "number",
+            "description": "Longitudinal gradient of the ramp, in percent. Positive uphill in the edge's forward direction.",
+            "examples": [
+              12
+            ]
           },
           "inner_radius_m": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "exclusiveMinimum": 0,
+            "description": "Inside radius of a curved ramp, in metres.",
+            "examples": [
+              8
+            ]
           }
         }
       },
@@ -3335,6 +3850,10 @@
               1,
               2,
               3
+            ],
+            "description": "ISO 23374 automated valet parking system type: 1, 2 or 3. OPMS stores the type number and does not redefine those types. The vehicle-to-facility protocol is out of scope.",
+            "examples": [
+              1
             ]
           },
           "handover_zone_ids": {
@@ -3361,7 +3880,11 @@
           },
           "endpoint": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "URI of the facility's AVP service endpoint, if one is published.",
+            "examples": [
+              "https://example.org/avp"
+            ]
           }
         }
       },
@@ -3531,15 +4054,27 @@
           "lat": {
             "type": "number",
             "minimum": -90,
-            "maximum": 90
+            "maximum": 90,
+            "description": "Latitude of the frame origin, WGS84 degrees, from -90 to 90.",
+            "examples": [
+              -37.81
+            ]
           },
           "lon": {
             "type": "number",
             "minimum": -180,
-            "maximum": 180
+            "maximum": 180,
+            "description": "Longitude of the frame origin, WGS84 degrees, from -180 to 180.",
+            "examples": [
+              144.97
+            ]
           },
           "h_ellipsoid_m": {
-            "type": "number"
+            "type": "number",
+            "description": "Ellipsoidal height of the frame origin, WGS84, in metres.",
+            "examples": [
+              28.4
+            ]
           }
         }
       },
@@ -3890,10 +4425,18 @@
         "description": "Whether a ticket or session carries across.",
         "properties": {
           "allowed": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when a ticket or parking session remains valid after the vehicle uses this link.",
+            "examples": [
+              true
+            ]
           },
           "conditions": {
-            "type": "string"
+            "type": "string",
+            "description": "Conditions for carrying the ticket or session across, in plain language.",
+            "examples": [
+              "Same operator, within 15 minutes."
+            ]
           },
           "gate_id": {
             "$ref": "common.schema.json#/$defs/Id"
@@ -4332,9 +4875,14 @@
             "$ref": "common.schema.json#/$defs/LocalPoint"
           },
           "yaw_deg": {
-            "type": "number"
+            "type": "number",
+            "description": "Heading of the aid, degrees clockwise from the frame's north (+y) axis.",
+            "examples": [
+              180
+            ]
           }
-        }
+        },
+        "description": "Where the aid is, and which way it faces, in the facility frame."
       },
       "accuracy_m": {
         "type": "number",
@@ -4551,6 +5099,10 @@
           "scope": {
             "enum": [
               "on_device_only",
+              "derived_requirements_only"
+            ],
+            "description": "What may leave the device. on_device_only: nothing is shared. derived_requirements_only: only the derived handover requirements, not the underlying needs.",
+            "examples": [
               "derived_requirements_only"
             ]
           },
@@ -4801,12 +5353,21 @@
         "additionalProperties": false,
         "properties": {
           "col": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Column index in the pillar grid.",
+            "examples": [
+              3
+            ]
           },
           "row": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Row index in the pillar grid.",
+            "examples": [
+              2
+            ]
           }
-        }
+        },
+        "description": "Column and row of this pillar in its pillar grid. Integers, origin chosen by the grid."
       },
       "position": {
         "$ref": "common.schema.json#/$defs/LocalPoint"
@@ -4909,11 +5470,19 @@
           "properties": {
             "up_to_min": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "description": "This price applies until this many minutes of the stay. The next step, if any, covers longer stays.",
+              "examples": [
+                60
+              ]
             },
             "price": {
               "type": "string",
-              "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+              "pattern": "^[0-9]+([.][0-9]{1,2})?$",
+              "description": "Price for this step as a decimal string in the rate's currency. No currency symbol.",
+              "examples": [
+                "4.50"
+              ]
             }
           }
         },
@@ -4937,10 +5506,18 @@
           "additionalProperties": false,
           "properties": {
             "description": {
-              "type": "string"
+              "type": "string",
+              "description": "What the validation offers, in plain language.",
+              "examples": [
+                "Cinema ticket: first hour free."
+              ]
             },
             "free_min": {
-              "type": "integer"
+              "type": "integer",
+              "description": "Minutes that are free when this validation applies.",
+              "examples": [
+                60
+              ]
             }
           }
         },
@@ -5099,7 +5676,11 @@
     },
     "properties": {
       "_note": {
-        "type": "string"
+        "type": "string",
+        "description": "Free-text note. Used to label fictional example data. Not a registry fact.",
+        "examples": [
+          "Fictional registry."
+        ]
       },
       "opms_version": {
         "type": "string",
@@ -5187,7 +5768,11 @@
       },
       "endpoint": {
         "type": "string",
-        "format": "uri"
+        "format": "uri",
+        "description": "URI where this repository accepts contributions or serves datasets.",
+        "examples": [
+          "https://example.org/opms"
+        ]
       },
       "storage_region": {
         "type": "string",
@@ -5310,7 +5895,11 @@
     },
     "properties": {
       "_note": {
-        "type": "string"
+        "type": "string",
+        "description": "Free-text note. Used to label fictional example data. Not a review result.",
+        "examples": [
+          "Fictional review."
+        ]
       },
       "opms_version": {
         "type": "string",
@@ -5406,7 +5995,11 @@
               "description": "Result for this feature."
             },
             "note": {
-              "type": "string"
+              "type": "string",
+              "description": "Short note on this feature. No names, plates or diagnoses.",
+              "examples": [
+                "Threshold matches the painted line."
+              ]
             },
             "evidence_ref": {
               "type": "string",
@@ -5500,7 +6093,11 @@
         "additionalProperties": false,
         "properties": {
           "required": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True when payment is required.",
+            "examples": [
+              true
+            ]
           },
           "rate_id": {
             "$ref": "common.schema.json#/$defs/Id"
@@ -5509,9 +6106,17 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Payment methods the operator accepts, as short labels such as ticket, app or meter.",
+            "examples": [
+              [
+                "ticket",
+                "app"
+              ]
+            ]
           }
-        }
+        },
+        "description": "Whether and how a driver pays to use the space this rule covers."
       },
       "sign": {
         "type": "object",
@@ -5519,7 +6124,11 @@
         "description": "Sign as shown (Melbourne style).",
         "properties": {
           "text": {
-            "type": "string"
+            "type": "string",
+            "description": "Words on the sign, as shown.",
+            "examples": [
+              "1P 9AM-5PM"
+            ]
           },
           "symbol": {
             "enum": [
@@ -5532,6 +6141,10 @@
               "permit",
               "meter",
               "ticket"
+            ],
+            "description": "Sign symbol. P parking, no_parking_P, no_stopping_S, clearway, loading_zone, disabled, permit, meter, or ticket.",
+            "examples": [
+              "P"
             ]
           }
         }

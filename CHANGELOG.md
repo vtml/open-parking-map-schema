@@ -14,6 +14,7 @@ Added:
 - **Verification:** `verifications` on features (`role`, `status`, `note`, `evidence_ref`, `reviewed_at`, `dataset_version`). Tier 2 and tier 3 require an owner `confirmed` record on the facility for that dataset version. The record does not raise the tier by itself.
 - **Review document:** `schema/review.schema.json`, a standalone sign-off that references a dataset id and version. `examples/review-example.json` is fictional.
 - **Examples:** Merriwa Park and Wattle Reserve are `opms_version` 0.3.0 with representative bay layouts, positioned entrances, gates, lifts, stairs, portals, drop-offs and paths. Still fictional. Street, registry and contribution examples stay 0.2.0 and still validate.
+- **Data dictionary:** every property schema has a plain-English `description` (units and enum meanings included). Validation keywords are unchanged. `tools/check_descriptions.py` fails if a description is missing. `tools/build_data_dictionary.py` writes `DATA_DICTIONARY.md` and `docs/data-dictionary.html`.
 
 ### Migration from 0.2
 

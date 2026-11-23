@@ -75,7 +75,11 @@
       "additionalProperties": false,
       "properties": {
         "required": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when payment is required.",
+          "examples": [
+            true
+          ]
         },
         "rate_id": {
           "$ref": "common.schema.json#/$defs/Id"
@@ -84,9 +88,17 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Payment methods the operator accepts, as short labels such as ticket, app or meter.",
+          "examples": [
+            [
+              "ticket",
+              "app"
+            ]
+          ]
         }
-      }
+      },
+      "description": "Whether and how a driver pays to use the space this rule covers."
     },
     "sign": {
       "type": "object",
@@ -94,7 +106,11 @@
       "description": "Sign as shown (Melbourne style).",
       "properties": {
         "text": {
-          "type": "string"
+          "type": "string",
+          "description": "Words on the sign, as shown.",
+          "examples": [
+            "1P 9AM-5PM"
+          ]
         },
         "symbol": {
           "enum": [
@@ -107,6 +123,10 @@
             "permit",
             "meter",
             "ticket"
+          ],
+          "description": "Sign symbol. P parking, no_parking_P, no_stopping_S, clearway, loading_zone, disabled, permit, meter, or ticket.",
+          "examples": [
+            "P"
           ]
         }
       }

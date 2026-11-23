@@ -31,11 +31,19 @@
         "properties": {
           "up_to_min": {
             "type": "integer",
-            "minimum": 1
+            "minimum": 1,
+            "description": "This price applies until this many minutes of the stay. The next step, if any, covers longer stays.",
+            "examples": [
+              60
+            ]
           },
           "price": {
             "type": "string",
-            "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+            "pattern": "^[0-9]+([.][0-9]{1,2})?$",
+            "description": "Price for this step as a decimal string in the rate's currency. No currency symbol.",
+            "examples": [
+              "4.50"
+            ]
           }
         }
       },
@@ -59,10 +67,18 @@
         "additionalProperties": false,
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "What the validation offers, in plain language.",
+            "examples": [
+              "Cinema ticket: first hour free."
+            ]
           },
           "free_min": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Minutes that are free when this validation applies.",
+            "examples": [
+              60
+            ]
           }
         }
       },

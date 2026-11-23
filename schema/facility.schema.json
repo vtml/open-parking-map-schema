@@ -120,6 +120,10 @@
             1,
             2,
             3
+          ],
+          "description": "ISO 23374 automated valet parking system type: 1, 2 or 3. OPMS stores the type number and does not redefine those types. The vehicle-to-facility protocol is out of scope.",
+          "examples": [
+            1
           ]
         },
         "handover_zone_ids": {
@@ -146,7 +150,11 @@
         },
         "endpoint": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "URI of the facility's AVP service endpoint, if one is published.",
+          "examples": [
+            "https://example.org/avp"
+          ]
         }
       }
     },

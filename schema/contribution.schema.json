@@ -55,7 +55,8 @@
         "end": {
           "$ref": "common.schema.json#/$defs/DateTime"
         }
-      }
+      },
+      "description": "Time span of the vehicle trace that produced this contribution. start and end are RFC 3339 instants."
     },
     "facility_hint": {
       "type": "object",
@@ -74,7 +75,16 @@
             "type": "number"
           },
           "minItems": 4,
-          "maxItems": 4
+          "maxItems": 4,
+          "description": "Approximate WGS84 box where the trace was collected: [minimum longitude, minimum latitude, maximum longitude, maximum latitude], in degrees.",
+          "examples": [
+            [
+              144.96,
+              -37.82,
+              144.97,
+              -37.81
+            ]
+          ]
         }
       }
     },
@@ -95,7 +105,15 @@
               "wheel_odometry",
               "gnss"
             ]
-          }
+          },
+          "description": "Sensors used. camera, lidar, radar, ultrasonic, imu, wheel_odometry, gnss.",
+          "examples": [
+            [
+              "lidar",
+              "imu",
+              "wheel_odometry"
+            ]
+          ]
         },
         "calibration_class": {
           "enum": [
@@ -103,11 +121,19 @@
             "factory",
             "fleet_calibrated",
             "survey_grade"
+          ],
+          "description": "How well the sensors are calibrated. uncalibrated, factory, fleet_calibrated, or survey_grade.",
+          "examples": [
+            "factory"
           ]
         },
         "odometry_drift_m_per_100m": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "description": "Claimed wheel-odometry drift, in metres per 100 metres travelled.",
+          "examples": [
+            0.5
+          ]
         }
       }
     },
@@ -123,11 +149,19 @@
       "properties": {
         "vehicle_token": {
           "type": "string",
-          "minLength": 16
+          "minLength": 16,
+          "description": "Rotating vehicle token, at least 16 characters. Not a VIN, plate or other direct identifier.",
+          "examples": [
+            "0123456789abcdef"
+          ]
         },
         "session_token": {
           "type": "string",
-          "minLength": 16
+          "minLength": 16,
+          "description": "Rotating session token, at least 16 characters. Not a person's name.",
+          "examples": [
+            "fedcba9876543210"
+          ]
         },
         "pseudonym_epoch": {
           "type": "string",
@@ -135,7 +169,11 @@
         },
         "k_anonymity_group": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "description": "Smallest group size the publisher claims this pseudonym shares. 1 means no k-anonymity claim.",
+          "examples": [
+            5
+          ]
         }
       }
     },
@@ -155,30 +193,58 @@
           "$ref": "common.schema.json#/$defs/Id"
         },
         "performed_on_board": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when the redaction ran on the vehicle before upload.",
+          "examples": [
+            true
+          ]
         },
         "imagery_included": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when the payload still contains imagery.",
+          "examples": [
+            false
+          ]
         },
         "trajectories_included": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when the payload still contains trajectories.",
+          "examples": [
+            true
+          ]
         },
         "trim_start_m": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "description": "Metres trimmed from the start of the trace so the journey origin is not kept.",
+          "examples": [
+            50
+          ]
         },
         "trim_end_m": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "description": "Metres trimmed from the end of the trace so the journey destination is not kept.",
+          "examples": [
+            50
+          ]
         },
         "time_jitter_applied": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when timestamps were jittered to reduce re-identification.",
+          "examples": [
+            true
+          ]
         },
         "attested_at": {
           "$ref": "common.schema.json#/$defs/DateTime"
         },
         "signature_ref": {
-          "type": "string"
+          "type": "string",
+          "description": "Reference to the attestation signature. Not the signature bytes themselves.",
+          "examples": [
+            "sig-example-1"
+          ]
         }
       }
     },
@@ -193,14 +259,26 @@
       "properties": {
         "uri": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "URI of a bulk payload held outside this record, for example a SENSORIS message set.",
+          "examples": [
+            "https://example.org/payloads/example.bin"
+          ]
         },
         "sha256": {
           "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Lower-case hex SHA-256 of that payload, 64 digits.",
+          "examples": [
+            "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          ]
         },
         "media_type": {
-          "type": "string"
+          "type": "string",
+          "description": "Media type of the payload.",
+          "examples": [
+            "application/octet-stream"
+          ]
         }
       }
     },

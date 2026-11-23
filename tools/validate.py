@@ -10,6 +10,8 @@ Checks performed
   2. Every example validates against its schema (with format checking).
   3. Referential integrity inside datasets and contribution bundles (ids that
      must exist), and across files (jurisdictions, contributors, policies).
+  4. Every property schema has a description (tools/check_descriptions.py).
+  5. DATA_DICTIONARY.md and docs/data-dictionary.html match the schemas.
 
 Requires: pip install jsonschema referencing rfc3339-validator rfc3987
 Licence: Apache-2.0
@@ -458,6 +460,24 @@ def main(argv):
         neg += 0 if review_refs(t, {"simple-carpark-dataset.json": simple}) else 1
         print(f"negative tests (profile and role rules reject bad data): {'OK' if neg == 0 else str(neg) + ' did not behave'}")
         failures += neg
+
+    from check_descriptions import find_missing
+    from build_data_dictionary import dictionaries_match
+
+    missing, required = find_missing(SCHEMA_DIR)
+    if missing:
+        print(f"schema descriptions: {len(missing)} of {required} lack a description")
+        for path in missing[:30]:
+            print("  FAIL", path)
+        failures += len(missing)
+    else:
+        print(f"schema descriptions: {required}/{required} (100%)")
+
+    if dictionaries_match():
+        print("data dictionary: OK")
+    else:
+        print("data dictionary: stale (run python tools/build_data_dictionary.py)")
+        failures += 1
 
     print("RESULT:", "PASS" if failures == 0 else f"FAIL ({failures} problems)")
     return 0 if failures == 0 else 1

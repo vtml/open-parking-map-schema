@@ -16,5 +16,9 @@ jobs:
         run: pip install jsonschema referencing rfc3339-validator rfc3987
       - name: Validate schemas and examples
         run: python tools/validate.py
+      - name: Check schema descriptions
+        run: python tools/check_descriptions.py
+      - name: Check the data dictionary is current
+        run: python tools/build_data_dictionary.py --check
       - name: Check Pages copies match the spec
         run: python tools/sync_docs_data.py --check

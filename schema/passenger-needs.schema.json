@@ -81,6 +81,10 @@
           "enum": [
             "on_device_only",
             "derived_requirements_only"
+          ],
+          "description": "What may leave the device. on_device_only: nothing is shared. derived_requirements_only: only the derived handover requirements, not the underlying needs.",
+          "examples": [
+            "derived_requirements_only"
           ]
         },
         "granted_at": {

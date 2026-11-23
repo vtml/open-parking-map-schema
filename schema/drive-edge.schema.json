@@ -72,14 +72,26 @@
             "helical",
             "split_level",
             "spiral_double"
+          ],
+          "description": "Ramp shape. straight, helical, split_level (short ramps between split floors), or spiral_double (two helices).",
+          "examples": [
+            "straight"
           ]
         },
         "gradient_pct": {
-          "type": "number"
+          "type": "number",
+          "description": "Longitudinal gradient of the ramp, in percent. Positive uphill in the edge's forward direction.",
+          "examples": [
+            12
+          ]
         },
         "inner_radius_m": {
           "type": "number",
-          "exclusiveMinimum": 0
+          "exclusiveMinimum": 0,
+          "description": "Inside radius of a curved ramp, in metres.",
+          "examples": [
+            8
+          ]
         }
       }
     },

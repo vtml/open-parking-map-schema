@@ -64,11 +64,13 @@ Profiles are cumulative and enforced by `schema/dataset.schema.json`. A consumer
 ```
 README.md  SPEC.md  HUMAN_CENTRED_DESIGN.md  CONTRIBUTING.md  CHANGELOG.md
 LICENSE  LICENSE-CC-BY-4.0  LICENSE-APACHE-2.0  NOTICE
-docs/       project site and explorer (GitHub Pages, plain HTML)
+docs/       project site, data dictionary and explorer (GitHub Pages, plain HTML)
 schema/     JSON Schema (draft 2020-12): one file per object, plus dataset, contribution bundle and registry roots
 examples/   fictional examples that validate against the schemas
-tools/      validate.py
+tools/      validate.py, check_descriptions.py, build_data_dictionary.py
 ```
+
+**Data dictionary:** [field-by-field descriptions](https://vtml.github.io/open-parking-map-schema/data-dictionary.html), also in [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md). Generated from `schema/`.
 
 ## Quick start
 
