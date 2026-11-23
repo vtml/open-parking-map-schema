@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Merriwa Park example · OPMS v0.2 draft</title>
+  <meta name="description" content="A fictional shopping centre with three car parks and seven access points, used to illustrate the OPMS v0.2 draft.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("opms-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">OPMS</span>
+        <span class="brand-text">
+          <span class="brand-name">Open Parking Map Schema</span>
+          <span class="brand-version">v0.2 draft</span>
+        </span>
+      </a>
+      <div class="header-tools">
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="spec.html">Spec</a></li>
+            <li><a href="example.html" aria-current="page">Example</a></li>
+            <li><a href="get-involved.html">Get involved</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle>Theme</button>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    <p class="kicker">Worked example</p>
+    <h1>Merriwa Park Shopping Centre</h1>
+    <p class="lede">The dataset <a href="https://github.com/vtml/open-parking-map-schema/blob/main/examples/merriwa-park-dataset.json"><code>examples/merriwa-park-dataset.json</code></a> is a fictional mall precinct: one site, three car parks, and seven vehicle entrances and exits. Profile <code>static-rules</code>, schema version 0.2.0, dataset version 2026-11-23.1.</p>
+    <aside class="status">
+      <p><strong>Fictional.</strong> The file’s own note says Merriwa Park Shopping Centre, its roads, identifiers, prices, coordinates and organisations are invented. It is not a real place, and the organisations named in it have not endorsed OPMS. Jurisdiction examples in the draft are illustrations, not legal advice.</p>
+    </aside>
+
+    <h2>The precinct</h2>
+    <p class="prose">Site <code>mpsc</code> is a <code>shopping_centre</code> in timezone <code>Australia/Melbourne</code>, locality class <code>metro_suburban</code>, governed in the example by jurisdiction <code>jur.au-vic</code>. <code>ticket_scope</code> is <code>facility</code>, so one ticket does not cover every complex by default. The three facilities share one local frame.</p>
+    <p class="prose">The drawing below is a schematic. It places the north multi-deck toward Banksia Street and Merriwa Road, the basement beneath, and the east lot toward Wattle Avenue, because those are the names in the file. It is not a surveyed plan, and the example does not give a site outline.</p>
+
+    <figure>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 980 760" role="img" aria-labelledby="diag-title diag-desc">
+          <title id="diag-title">Schematic of the fictional Merriwa Park Shopping Centre</title>
+          <desc id="diag-desc">Three car parks and seven access points. North Multi-deck meets Merriwa Road at ap1 and Banksia Street at ap2 and ap3. A two-way internal ramp joins it to the basement under the mall, which meets Merriwa Road at ap4 and Wattle Avenue at ap5. A one-way internal road runs from the basement to the east surface lot, which meets Wattle Avenue at ap6 and Merriwa Road at ap7. Positions follow names in the example, not a survey.</desc>
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path class="arrow-head" d="M0,0 L10,5 L0,10 Z"/>
+            </marker>
+          </defs>
+
+          <rect class="road" x="18" y="96" width="84" height="630" rx="10"/>
+          <text x="60" y="410" transform="rotate(-90 60 410)" text-anchor="middle" font-size="15" font-weight="650">Merriwa Rd (fictional)</text>
+
+          <rect class="road" x="130" y="16" width="520" height="54" rx="10"/>
+          <text x="150" y="49" font-size="15" font-weight="650">Banksia St (fictional)</text>
+
+          <rect class="road" x="878" y="250" width="84" height="470" rx="10"/>
+          <text x="920" y="490" transform="rotate(90 920 490)" text-anchor="middle" font-size="15" font-weight="650">Wattle Ave (fictional)</text>
+
+          <rect class="facility" x="140" y="108" width="560" height="228" rx="14"/>
+          <text x="160" y="140" font-size="20" font-weight="700">North Multi-deck</text>
+          <text x="160" y="164" font-size="14">mpsc.p1 · multi-storey · 1,200 bays</text>
+          <text x="160" y="186" font-size="14">Levels G, L1, L2, Roof · height limit 2.2 m</text>
+          <text x="160" y="208" font-size="14">GNSS degraded · tier 3 driverless</text>
+          <circle class="ap ap-both" cx="128" cy="210" r="8"/>
+          <text x="160" y="244" font-size="14">ap1 both · Merriwa Rd · serves G · signalised</text>
+          <circle class="ap ap-entry" cx="300" cy="108" r="8"/>
+          <text x="160" y="268" font-size="14">ap2 entry · Banksia St · left in only · serves L1 · 08:00–21:00</text>
+          <circle class="ap ap-exit" cx="560" cy="108" r="8"/>
+          <text x="160" y="292" font-size="14">ap3 exit · Banksia St · left out only · serves L1, L2 and Roof</text>
+          <text x="160" y="316" font-size="14">Handover mpsc.hz.north on level G · ISO 23374 handover</text>
+
+          <line class="link-line" x1="360" y1="336" x2="360" y2="400" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          <text x="376" y="374" font-size="14">Two-way internal ramp · ticket transfer allowed · height 2.1 m</text>
+
+          <rect class="facility" x="140" y="408" width="360" height="220" rx="14"/>
+          <text x="158" y="440" font-size="18" font-weight="700">Basement under the mall</text>
+          <text x="158" y="464" font-size="14">mpsc.p2 · underground · 850 bays</text>
+          <text x="158" y="486" font-size="14">Levels B1, B2 · height limit 2.1 m</text>
+          <text x="158" y="508" font-size="14">GNSS none · tier 2 supervised self-park</text>
+          <circle class="ap ap-both" cx="128" cy="530" r="8"/>
+          <text x="158" y="546" font-size="14">ap4 both · Merriwa Rd · serves B1</text>
+          <text x="158" y="568" font-size="14">Roller doors · cars and motorcycles</text>
+          <circle class="ap ap-exit" cx="500" cy="470" r="8"/>
+          <text x="158" y="592" font-size="14">ap5 exit · Wattle Ave · left out · B2</text>
+
+          <line class="link-line" x1="508" y1="530" x2="582" y2="530" marker-end="url(#arrow)"/>
+          <text x="500" y="660" font-size="14">One-way internal road, basement to east lot.</text>
+          <text x="500" y="680" font-size="14">Ticket does not transfer. Pay the</text>
+          <text x="500" y="700" font-size="14">basement session at gate mpsc.g6.</text>
+
+          <rect class="facility" x="590" y="408" width="260" height="220" rx="14"/>
+          <text x="606" y="440" font-size="18" font-weight="700">East surface lot</text>
+          <text x="606" y="464" font-size="14">mpsc.p3 · surface · 380 bays</text>
+          <text x="606" y="486" font-size="14">Level G · open air</text>
+          <text x="606" y="508" font-size="14">GNSS good · tier 1 adas</text>
+          <circle class="ap ap-both" cx="862" cy="500" r="8"/>
+          <text x="606" y="546" font-size="14">ap6 both · Wattle Ave</text>
+          <text x="606" y="568" font-size="14">No gate · licence-plate</text>
+          <text x="606" y="590" font-size="14">recognition only</text>
+          <text x="606" y="612" font-size="14">ap7 entry · Merriwa Rd</text>
+        </svg>
+      </div>
+      <figcaption id="diag-desc-visible">
+        Schematic only. Dots mark the seven access points: green is both directions, blue is entry, rust is exit. Words repeat the role, so colour is not the only cue. The two links are the only connections the file records between car parks.
+      </figcaption>
+    </figure>
+    <ul class="legend" aria-label="Access point roles">
+      <li><span class="swatch both" aria-hidden="true"></span> Both entry and exit</li>
+      <li><span class="swatch entry" aria-hidden="true"></span> Entry only</li>
+      <li><span class="swatch exit" aria-hidden="true"></span> Exit only</li>
+    </ul>
+
+    <h2>Three car parks</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Facilities declared in the Merriwa Park dataset. Capacities are the facility totals. The file includes seven sample bay records, not every space.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Facility</th>
+            <th scope="col">Type and levels</th>
+            <th scope="col">Hours</th>
+            <th scope="col">Quality and consent in the example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>North Multi-deck<br><code>mpsc.p1</code><br>1,200 bays</td>
+            <td>Multi-storey. G, L1, L2, Roof. GNSS degraded on the complex. L1 and L2 have GNSS none. Roof is open air with GNSS good. Clearance 2.2 m on G, L1 and L2.</td>
+            <td>06:00–24:00, every day including public holidays.</td>
+            <td>Tier 3, class <code>driverless</code>, completeness 98%. Consent granted by “Fictional Centre Management (example)” for geometry, publication and driverless use. Certification <code>mpsc.cert.p1</code> is from “Fictional Mapping Auditor Pty Ltd”.</td>
+          </tr>
+          <tr>
+            <td>Basement under the mall<br><code>mpsc.p2</code><br>850 bays</td>
+            <td>Underground. B1 and B2. GNSS none. Clearance 2.1 m. Vehicle classes at ap4 are car and motorcycle.</td>
+            <td>07:00–22:30, every day including public holidays.</td>
+            <td>Tier 2, class <code>supervised_self_park</code>, completeness 91%. Consent is conditional, and the recorded scope is geometry and publication only.</td>
+          </tr>
+          <tr>
+            <td>East surface lot<br><code>mpsc.p3</code><br>380 bays</td>
+            <td>Surface lot. Ground, open air, GNSS good. Its own rate id, <code>mpsc.rate.p3</code>.</td>
+            <td>00:00–24:00, every day including public holidays.</td>
+            <td>Tier 1, class <code>adas</code> (driver-supervised assistance in the specification), completeness 100%. Consent granted for geometry and publication.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose">Sample bays in the file, not a full inventory: an EV bay in Zone C on L2 of the north deck; two accessible bays and a family bay in Zone A (supermarket) on B1; and, on the east lot, a community, NDIS and patient-transport bay, a taxi bay, and a courier and oversize-van bay.</p>
+
+    <h2>Seven access points</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Every access point in the example. Roads are named as fictional in the file.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Car park</th>
+            <th scope="col">Role</th>
+            <th scope="col">Road and movements</th>
+            <th scope="col">Levels served</th>
+            <th scope="col">Gate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>mpsc.ap1</code></td>
+            <td>North Multi-deck</td>
+            <td>Both</td>
+            <td>Merriwa Rd, signalised at <code>int.merriwa-banksia</code>. Left and right in. Left and right out. Queue of 12. Height 2.2 m. Fire-brigade access is recorded.</td>
+            <td>G</td>
+            <td>Boom gates <code>mpsc.g1.in</code> and <code>mpsc.g1.out</code></td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap2</code></td>
+            <td>North Multi-deck</td>
+            <td>Entry</td>
+            <td>Banksia St. Left in only. Open 08:00–21:00. Queue of 6. Height 2.2 m.</td>
+            <td>L1</td>
+            <td>Boom gate <code>mpsc.g2</code></td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap3</code></td>
+            <td>North Multi-deck</td>
+            <td>Exit</td>
+            <td>Banksia St. Left out only. Height 2.2 m.</td>
+            <td>L1, L2, Roof</td>
+            <td>Boom gate <code>mpsc.g3</code></td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap4</code></td>
+            <td>Basement</td>
+            <td>Both</td>
+            <td>Merriwa Rd, signalised at <code>int.merriwa-ring</code>. Left and right in and out. Height 2.1 m. Cars and motorcycles. Queue of 8. Fire-brigade access is recorded.</td>
+            <td>B1</td>
+            <td>Roller doors <code>mpsc.g4.in</code> and <code>mpsc.g4.out</code></td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap5</code></td>
+            <td>Basement</td>
+            <td>Exit</td>
+            <td>Wattle Ave. Left out only. Open 07:00–21:00. Height 2.1 m.</td>
+            <td>B2</td>
+            <td>Boom gate <code>mpsc.g5</code></td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap6</code></td>
+            <td>East surface lot</td>
+            <td>Both</td>
+            <td>Wattle Ave, signalised at <code>int.wattle-ring</code>. Left and right in and out. Credential is licence-plate recognition only.</td>
+            <td>G</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><code>mpsc.ap7</code></td>
+            <td>East surface lot</td>
+            <td>Entry</td>
+            <td>Merriwa Rd. Left in only. Credential is licence-plate recognition only.</td>
+            <td>G</td>
+            <td>None</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Links between car parks</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Inter-facility links. The site default is one ticket per facility. Only the first link overrides that.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Link</th>
+            <th scope="col">Path</th>
+            <th scope="col">Ticket</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>mpsc.link.p1-p2</code><br>Internal ramp, two-way<br>07:00–22:30<br>Height 2.1 m</td>
+            <td>From drive node <code>mpsc.p1.g.n12</code> to <code>mpsc.p2.b1.n03</code>.</td>
+            <td>Transfer allowed. The file says: same ticket or licence-plate session, no extra gate.</td>
+          </tr>
+          <tr>
+            <td><code>mpsc.link.p2-p3</code><br>Internal road, one way from the basement to the east lot</td>
+            <td>From <code>mpsc.p2.b1.n20</code> to <code>mpsc.p3.g.n01</code>. Gate <code>mpsc.g6</code> is a boom on this link, direction out.</td>
+            <td>Transfer not allowed. The east lot is ticketless licence-plate recognition with its own tariff. The basement session must be paid at <code>mpsc.g6</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Where people are dropped off</h2>
+    <p class="prose">Destinations in the file are the cinema on mall level 2, the food court on mall level 1, the supermarket on mall ground, and the east entrance on mall ground. Three handover zones are recorded.</p>
+    <ul class="prose">
+      <li><code>mpsc.hz.north</code> is on north-deck ground, kind both drop-off and pick-up, and is marked as an ISO 23374 handover. Capacity 6 vehicles, maximum dwell 180 seconds. The accessibility record includes a 2.7 m kerbside transfer space, a kerb ramp, a step-free route, shelter, seating, an assistance point, tactile marking, good lighting, and a 300 second wait allowance.</li>
+      <li><code>mpsc.hz.east</code> is on the east lot, also kind both, and is not an ISO 23374 handover. Capacity 4, dwell 120 seconds. It has a kerb ramp and a step-free flag, a 1.2 m transfer space, partial lighting, no shelter, no seating and no assistance point.</li>
+      <li><code>mpsc.hz.rideshare</code> is on the fictional Wattle Avenue kerb segment <code>cs.wattle-ave.n.0-40</code>. Capacity 3, dwell 120 seconds. It is not an ISO 23374 handover.</li>
+    </ul>
+    <p class="prose">Destination access from the north handover zone to the cinema records a 150 second, 160 metre walk, step-free and covered. The linked accessible path <code>mpsc.path.hz-north-cinema</code> records the same 160 metre distance, a 260 second walk time, a 4% maximum gradient, a 1.5 m minimum width, tactile indicators, full shelter, two rest points and three seating points. The specification’s lifecycle uses the 150 second figure. Both numbers are in the example. They are illustrative.</p>
+    <p class="prose">The supermarket is 90 seconds and 80 metres from the east handover zone, and 60 seconds and 45 metres from Zone A on B1. That second route has an accessible path of 45 metres through lift <code>mpsc.lift.p2-a</code>, with one vehicle crossing called out as a hazard.</p>
+
+    <h2>How the specification uses this site</h2>
+    <p class="prose">Section 11 of the specification is an informative sequence, not a manufacturer’s design. A passenger app asks the vehicle to go to the cinema. The vehicle fetches the <code>static-rules</code> dataset and the change feed, checks the quality tier, and chooses the north handover zone and entry <code>mpsc.ap1</code>. The passenger walks from that handover zone. The car parks using anchors and zone order. The sequence says the map can be prefetched and that no live data is required. On summon, the car refreshes the change feed, picks an exit, and may contribute redacted, pseudonymous observations of features that changed.</p>
+    <p class="prose">Publication terms on the dataset allow non-automated-vehicle use, bulk download, JSON and GeoJSON, and name an example accessibility contact. The public URL is on <code>opms.example.org</code>, which the repository treats as a placeholder.</p>
+    <p class="prose"><a href="https://github.com/vtml/open-parking-map-schema/blob/main/examples/merriwa-park-dataset.json">Read the JSON</a> · <a href="https://github.com/vtml/open-parking-map-schema/blob/main/SPEC.md#11-example-lifecycle-informative">Specification section 11</a></p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+      <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

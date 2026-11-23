@@ -4,6 +4,8 @@ A vendor-neutral data model for cars that **drop you off, park themselves and co
 
 > Status: **v0.2 draft for discussion.** Not published, not endorsed by any vehicle maker, authority or standards body. All example data (Merriwa Park Shopping Centre, roads, organisations, prices, coordinates) is **fictional**.
 
+**Project site:** <https://vtml.github.io/open-parking-map-schema/> (static pages in `docs/`).
+
 ## Why
 
 Standards for parking are fragmented. ISO 23374 covers automated valet parking systems, ASAM OpenDRIVE and Lanelet2 describe lanes and parking spaces, APDS covers facility data, the Curb Data Specification covers kerb rules, and OpenStreetMap has parking tags. Nothing joins them into a description of a whole **precinct** (a mall with several car parks, each with several entries and exits), of **level-by-level indoor topology**, or of **how many vehicle makers can survey car parks together** and send the results to the repository that the local jurisdiction requires.
@@ -62,6 +64,7 @@ Profiles are cumulative and enforced by `schema/dataset.schema.json`. A consumer
 ```
 README.md  SPEC.md  HUMAN_CENTRED_DESIGN.md  CONTRIBUTING.md  CHANGELOG.md
 LICENSE  LICENSE-CC-BY-4.0  LICENSE-APACHE-2.0  NOTICE
+docs/       project site (GitHub Pages, plain HTML)
 schema/     JSON Schema (draft 2020-12): one file per object, plus dataset, contribution bundle and registry roots
 examples/   fictional examples that validate against the schemas
 tools/      validate.py

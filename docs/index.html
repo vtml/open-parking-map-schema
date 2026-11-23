@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OPMS: Open Parking Map Schema (v0.2 draft)</title>
+  <meta name="description" content="A vendor-neutral draft data model for cars that drop you off, park themselves and come back, and for the crowdsourced surveys that keep those maps accurate.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("opms-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">OPMS</span>
+        <span class="brand-text">
+          <span class="brand-name">Open Parking Map Schema</span>
+          <span class="brand-version">v0.2 draft</span>
+        </span>
+      </a>
+      <div class="header-tools">
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html" aria-current="page">Home</a></li>
+            <li><a href="spec.html">Spec</a></li>
+            <li><a href="example.html">Example</a></li>
+            <li><a href="get-involved.html">Get involved</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle>Theme</button>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    <p class="kicker">Draft for discussion</p>
+    <h1>A shared static map of car parks</h1>
+    <p class="lede">OPMS is a vendor-neutral data model for cars that drop you off, park themselves and come back, and for the crowdsourced surveying that keeps those parking maps accurate.</p>
+    <aside class="status">
+      <p><strong>This is a v0.2 draft.</strong> It is not a published standard. No organisation has endorsed it: not a vehicle maker, an authority, or a standards body. All example data, including Merriwa Park Shopping Centre, is fictional. Nothing here describes a manufacturer’s internal systems.</p>
+    </aside>
+
+    <h2>The problem</h2>
+    <p class="prose">Vehicles that drop a passenger at a destination, find a space on their own and later return need a shared, machine-readable description of parking. The specification’s example lifecycle calls that kind of trip a Banish-style mission. It is a generic illustration. It does not describe any manufacturer’s implementation.</p>
+    <p class="prose">Parking standards are fragmented. ISO 23374 covers automated valet parking systems. ASAM OpenDRIVE and Lanelet2 describe lanes and parking spaces. APDS covers facility data. The Curb Data Specification covers kerb rules. OpenStreetMap has parking tags. Nothing joins those into a description of a whole precinct, such as a mall with several car parks and many entries and exits, of level-by-level indoor topology, or of how several vehicle makers can survey car parks together and send the results to the repository the local jurisdiction requires.</p>
+
+    <h2>The idea</h2>
+    <p class="prose">OPMS is a glue layer. It links to Lanelet2, OpenDRIVE, OpenStreetMap, the Curb Data Specification, APDS and IndoorGML by identifier instead of copying them, and it adds what those formats do not carry.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>Static layout</h3>
+        <p>The core is levels, ramps, aisles, bays, pillars, entries, exits and gates. A consumer must work with the <code>static-core</code> profile alone.</p>
+      </article>
+      <article class="card">
+        <h3>Crowdsourced, across makers</h3>
+        <p>Contributions, observations, evidence, conflicts and change sets stay separate from the consolidated map. Raw observations are not published. Makers, survey firms, operators and authorities can contribute static layout only.</p>
+      </article>
+      <article class="card">
+        <h3>A repository per jurisdiction</h3>
+        <p>Each site points at the jurisdiction whose repository and rules govern it, including a licensed-unit mode for countries that require one. The draft’s jurisdiction examples are illustrations, not legal advice.</p>
+      </article>
+      <article class="card">
+        <h3>Privacy-stripped</h3>
+        <p>Maps do not carry plates, VINs, faces or trajectories. Passenger needs stay on the device. Only minimal derived handover requirements may leave, and only with revocable consent.</p>
+      </article>
+      <article class="card">
+        <h3>Live occupancy is optional</h3>
+        <p>Occupancy and closures exist only as an optional extension. A car can search a car park without a live feed, using zone order, bay-type hints and its own sensing.</p>
+      </article>
+    </div>
+
+    <h2>Who it is meant to help</h2>
+    <p class="prose">The draft treats this as a human problem, not only a vehicle problem. People who gain most are those for whom parking is hardest, and the people the system forgets lose most. The same data is meant to help people who drive themselves, are driven by someone else, use taxis, community transport or buses, or walk. The personas below are composites used to test the schema. They are not research findings.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>People with disabilities</h3>
+        <p>Wheelchair users, people with vision, hearing, cognitive or neurodivergent needs, and people with ambulant limits. Accessible bays, step-free paths, lifts, handover zones, wayfinding and safety features are part of the core model. An absent field means unknown, never accessible.</p>
+      </article>
+      <article class="card">
+        <h3>Older people</h3>
+        <p>Short walks, seating, lighting and limits on gradient matter when circling and long transfers are the barrier. Planning uses needs, such as a step-free door-to-door trip, not diagnoses.</p>
+      </article>
+      <article class="card">
+        <h3>Families</h3>
+        <p>Parents with prams and small children need space to load, and a route that does not mix them with moving cars. The model has family bays, wider bays, crossings and help points.</p>
+      </article>
+      <article class="card">
+        <h3>Community and patient transport</h3>
+        <p>Community transport, NDIS transport and patient transport need a legal place to stand, ramp or hoist space, and a known wait allowance. The schema has bay classes and handover fields for that.</p>
+      </article>
+      <article class="card">
+        <h3>Taxis and rideshare</h3>
+        <p>Kerb rules and bays can name taxis and rideshare, including a handover zone whose kind is rideshare. The rules themselves have to come from the authority.</p>
+      </article>
+      <article class="card">
+        <h3>Couriers</h3>
+        <p>Loading and courier bays, a maximum dwell, and kerb rules are how the model describes a short legal stop near a door. Tradies with large vans and emergency crews are in the same design lens.</p>
+      </article>
+      <article class="card">
+        <h3>Councils</h3>
+        <p>Publication terms are there so councils, disability organisations and apps that are not automated vehicles can use the data. Locality class and equity-gap campaigns are how coverage of suburban and regional places is measured.</p>
+      </article>
+    </div>
+    <p class="prose">The principles in the human-centred design note are co-design with lived experience, accessibility by default, dignity and independence, inclusion of people who are not in an automated vehicle, privacy, equity across suburbs and regions, evidence over assumption, and do no harm. A wrong “step-free” flag strands a person. OPMS can carry accessibility information. It cannot make a place accessible or guarantee how a vehicle behaves. Read <a href="https://github.com/vtml/open-parking-map-schema/blob/main/HUMAN_CENTRED_DESIGN.md">HUMAN_CENTRED_DESIGN.md</a>.</p>
+
+    <h2>How it sits next to other work</h2>
+    <p class="prose">OPMS is meant to be a complementary open profile, not a rival. It does not claim a partnership with any of the efforts below, and none of them has endorsed this draft.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>EAVP</h3>
+        <p>Enhancing Automated Valet Parking is an ERTICO innovation platform started in 2022. ERTICO lists 10 partners and describes three pillars: standardised parking data through APDS, connected parking with traffic circulation planning, and indoor guidance. It describes shared facility maps in Valeo’s MAZE format, opened to EAVP and the European Parking Association, with a target of 3,000 or more mapped facilities and a Salzburg proof of concept planned for late 2026.</p>
+      </article>
+      <article class="card">
+        <h3>APDS</h3>
+        <p>The Alliance for Parking Data Standards, version 4.1, defines a place hierarchy: Campus (optional), Place, SubplaceElement, IdentifiedArea and, optionally, Space. ERTICO reports that APDS v5 has been finalised. The public API specification the draft could verify is 4.1. OPMS does not build a parallel hierarchy. It links with <code>apds_place_id</code>, <code>apds_subplace_id</code>, <code>apds_identified_area_id</code> and <code>apds_space_id</code>.</p>
+      </article>
+      <article class="card">
+        <h3>ISO/TS 5206-1</h3>
+        <p>ISO/TS 5206-1:2023 is a separate published technical specification, Parking Part 1: Core data model, for on-street and off-street parking in business-to-business exchange and end-user services. OPMS links to it with <code>external_refs.iso5206_id</code>. It is not the same document as APDS.</p>
+      </article>
+      <article class="card">
+        <h3>Valeo MAZE</h3>
+        <p>The draft treats MAZE facility maps as complementary. Whether and how the MAZE specification is available to non-members is not known in the draft. Interoperability is an open question, not a completed mapping. A <code>maze_id</code> field is reserved.</p>
+      </article>
+    </div>
+    <h3>What the draft says it adds</h3>
+    <ol class="prose">
+      <li>An open multi-maker contribution and merge layer: contributions, observations, evidence, conflict handling and change sets that work no matter which maker collected the data.</li>
+      <li>A static-only core profile. Nothing requires live availability.</li>
+      <li>Quality tiers for driverless use, with certification and operator consent.</li>
+      <li>Jurisdiction routing outside Europe, including Australia and a licensed-unit mode for countries that require it.</li>
+      <li>A human-centred design lens: accessibility, wayfinding, personal safety and open data as first-class parts of the model.</li>
+    </ol>
+    <p class="prose">Open questions in the draft include how to interoperate with MAZE, which APDS v5 classes to reference once that specification is public, how OPMS maps to China’s draft parking HD map model, and whether OPMS should become an APDS extension or stay a separate profile that references it.</p>
+    <p class="prose">Sources named in the draft: <a href="https://eavp.eu/">eavp.eu</a>, <a href="https://www.ertico.com/what-we-do/platforms-mobility-spaces/eavp">ERTICO’s EAVP page</a>, <a href="https://www.ertico.com/eavp-at-intertraffic-amsterdam-standardising-connected-parking-services-for-next-generation-cities">ERTICO on EAVP at Intertraffic</a>, the <a href="https://allianceforparkingdatastandards.org/wp-content/uploads/2026/03/APDS-Information-Model-v4.1-final.pdf">APDS Information Model v4.1</a>, and <a href="https://www.iso.org/standard/80997.html">ISO/TS 5206-1:2023</a>.</p>
+
+    <h2>Read on</h2>
+    <ul>
+      <li><a href="spec.html">Spec overview</a>, with links to each JSON Schema file.</li>
+      <li><a href="example.html">Merriwa Park</a>, a fictional mall with three car parks and seven entrances and exits.</li>
+      <li><a href="get-involved.html">Get involved</a>: issues, contributions, and the two licences.</li>
+    </ul>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+      <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

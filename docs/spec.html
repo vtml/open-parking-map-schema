@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spec overview · OPMS v0.2 draft</title>
+  <meta name="description" content="Overview of the Open Parking Map Schema v0.2 draft: profiles, entities, crowdsourcing, governance, and links to the JSON Schema files.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("opms-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">OPMS</span>
+        <span class="brand-text">
+          <span class="brand-name">Open Parking Map Schema</span>
+          <span class="brand-version">v0.2 draft</span>
+        </span>
+      </a>
+      <div class="header-tools">
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="spec.html" aria-current="page">Spec</a></li>
+            <li><a href="example.html">Example</a></li>
+            <li><a href="get-involved.html">Get involved</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle>Theme</button>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    <p class="kicker">Specification</p>
+    <h1>What v0.2 defines</h1>
+    <p class="lede">This page is an overview of <a href="https://github.com/vtml/open-parking-map-schema/blob/main/SPEC.md">SPEC.md</a>. The JSON Schemas are normative. The text of the specification is CC BY 4.0. The schemas and tools are Apache-2.0. Schema <code>$id</code> URLs use <code>opms.example.org</code> until a permanent home exists.</p>
+    <aside class="status">
+      <p><strong>Draft for discussion, version 0.2.0, dated 2026-11-23.</strong> Not published as a standard. No company or standards body has endorsed it. Breaking changes are expected before 1.0.</p>
+    </aside>
+
+    <h2>Purpose and non-goals</h2>
+    <p class="prose">OPMS describes the static structure of parking places and the records that let many parties build and maintain that structure by crowdsourcing. Places include street kerbs, surface lots, multi-storey and underground garages, mechanical parking, private garages, and large sites such as shopping centres, airports and hospitals.</p>
+    <p class="prose">It is a glue layer. It does not replace HD map formats or facility-data standards. It links to them by identifier.</p>
+    <p class="prose">Out of scope in v0.2: live space availability, except as an optional extension; wire protocols between a vehicle and a facility; vehicle control; and payment processing.</p>
+
+    <h2>Profiles</h2>
+    <p class="prose">A dataset declares one cumulative profile. <code>schema/dataset.schema.json</code> enforces it. A conforming consumer must work with <code>static-core</code> alone. Live occupancy is never required.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Profiles from section 3 of the specification. Each row adds to the rows above it.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Profile</th>
+            <th scope="col">What it adds</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>static-core</code></td>
+            <td>Frames, facilities, levels, zones, bays, the drive graph, access points, gates, links, anchors and pillars.</td>
+            <td>Default. No rules, destinations or live data. Enough for a car to localise, route and search.</td>
+          </tr>
+          <tr>
+            <td><code>static-rules</code></td>
+            <td>Destinations, portals, handover zones, kerb segments, rules and rates.</td>
+            <td>Site semantics and regulations.</td>
+          </tr>
+          <tr>
+            <td><code>dynamic</code></td>
+            <td>An optional live feed.</td>
+            <td>Not required by anything else.</td>
+          </tr>
+          <tr>
+            <td><code>services</code></td>
+            <td>Reservations, sessions and missions.</td>
+            <td>Reserved. Not schematised in v0.2.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Conventions</h2>
+    <ul class="prose">
+      <li>Each facility has a local Cartesian frame in metres, x east, y north, z up, anchored to WGS84. Indoor geometry is local. Road links and site outlines are WGS84. Level ordinal 0 is ground. Negative ordinals are below ground.</li>
+      <li>Units are SI, with km/h for signed speed limits. Money is a decimal string plus an ISO 4217 currency.</li>
+      <li>Times are RFC 3339 with an offset. Time windows are local to the site’s IANA timezone. <code>24:00</code> is allowed as an end.</li>
+      <li>Identifiers are lower-case dotted strings, stable, and never reused. External identifiers live in <code>external_refs</code>.</li>
+      <li>Unknown means not allowed. A missing rule is not permission. A missing clearance blocks oversize vehicles. Unverified features are not used for driverless operation.</li>
+      <li>Objects may carry extension properties prefixed <code>x_</code>. Other unknown properties are rejected.</li>
+    </ul>
+
+    <h2>Schema files</h2>
+    <p class="prose">One file per object, plus the dataset, contribution-bundle and registry roots, and shared definitions in <code>common.schema.json</code>. All are JSON Schema draft 2020-12. Field tables are generated in the specification from these files.</p>
+
+    <h3>Static geometry and topology</h3>
+    <div class="table-wrap">
+      <table>
+        <caption>Layer 1 objects. Schema links open the file on GitHub.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Object</th>
+            <th scope="col">Role in the draft</th>
+            <th scope="col">Schema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Site</td>
+            <td>A precinct of facilities, destinations and handover zones.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/site.schema.json">site.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Frame</td>
+            <td>Local Cartesian frame anchored to WGS84.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/frame.schema.json">frame.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Facility</td>
+            <td>One parking complex, with its levels, consent, quality tier and licence.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/facility.schema.json">facility.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Level</td>
+            <td>A floor: ordinal, label, elevation, clearance and GNSS quality.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/level.schema.json">level.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Zone</td>
+            <td>A painted area of bays.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/zone.schema.json">zone.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Bay</td>
+            <td>A single parking space, including accessibility attributes.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/bay.schema.json">bay.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>DriveNode</td>
+            <td>A node of the directed drivable graph.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/drive-node.schema.json">drive-node.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>DriveEdge</td>
+            <td>A directed aisle, ramp, level transition or internal road.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/drive-edge.schema.json">drive-edge.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>AccessPoint</td>
+            <td>A vehicle entry, exit, or both, tied to a public road.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/access-point.schema.json">access-point.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Gate</td>
+            <td>Boom gate, roller door, bollard or open lane, on an access point or inter-facility link.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/gate.schema.json">gate.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>InterFacilityLink</td>
+            <td>A connection between complexes, with ticket-transfer rules.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/inter-facility-link.schema.json">inter-facility-link.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>LocalizationAid</td>
+            <td>Fiducial, beacon or landmark for GNSS-denied localisation.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/localization-aid.schema.json">localization-aid.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>AnchorFeature</td>
+            <td>A distinctive feature used to align contributions and tie levels to the global frame.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/anchor-feature.schema.json">anchor-feature.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>PillarGrid</td>
+            <td>A regular pillar grid, useful as a strong alignment constraint.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/pillar-grid.schema.json">pillar-grid.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Pillar</td>
+            <td>A structural pillar: obstacle and alignment landmark.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/pillar.schema.json">pillar.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Lift</td>
+            <td>A lift on an accessible route.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/lift.schema.json">lift.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>WayfindingAid</td>
+            <td>Signs, level colours and landmarks people use to find their car and the way out.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/wayfinding-aid.schema.json">wayfinding-aid.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>SafetyFeature</td>
+            <td>Help points, lighting, CCTV presence, booths, fire lanes, emergency exits.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/safety-feature.schema.json">safety-feature.schema.json</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Site semantics (<code>static-rules</code>)</h3>
+    <div class="table-wrap">
+      <table>
+        <caption>Layer 2 objects.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Object</th>
+            <th scope="col">Role in the draft</th>
+            <th scope="col">Schema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PedestrianPortal</td>
+            <td>A door, lift lobby or stair a person walks through.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/pedestrian-portal.schema.json">pedestrian-portal.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Destination</td>
+            <td>Where passengers are going.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/destination.schema.json">destination.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>DestinationAccess</td>
+            <td>Walking time from a handover zone, zone or portal to a destination.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/destination-access.schema.json">destination-access.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>HandoverZone</td>
+            <td>Drop-off, pick-up, valet, rideshare or taxi zone.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/handover-zone.schema.json">handover-zone.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>CurbSegment</td>
+            <td>A length of kerb with rules, in the manner of the Curb Data Specification.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/curb-segment.schema.json">curb-segment.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Rule</td>
+            <td>A time-conditioned regulation on a bay or kerb segment.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/rule.schema.json">rule.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Rate</td>
+            <td>A static tariff.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/rate.schema.json">rate.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>AccessiblePath</td>
+            <td>A step-free or other pedestrian route, with gradient, width, shelter and lifts.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/accessible-path.schema.json">accessible-path.schema.json</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Crowdsourcing, governance and optional feeds</h3>
+    <div class="table-wrap">
+      <table>
+        <caption>Records that are not the map itself, plus the three document roots and shared definitions.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Object</th>
+            <th scope="col">Role in the draft</th>
+            <th scope="col">Schema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contributor</td>
+            <td>An organisation that submits data. Not a person.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/contributor.schema.json">contributor.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Campaign</td>
+            <td>A request to survey a place that is missing, stale, disputed or below its target tier.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/campaign.schema.json">campaign.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Contribution</td>
+            <td>One submission. Kept out of the published map.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/contribution.schema.json">contribution.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>FeatureObservation</td>
+            <td>One observed feature inside a contribution.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/feature-observation.schema.json">feature-observation.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>AlignmentRecord</td>
+            <td>How observations were aligned into the facility frame.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/alignment-record.schema.json">alignment-record.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>ConflictCase</td>
+            <td>Competing observations that need a recorded outcome.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/conflict-case.schema.json">conflict-case.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>ResolutionPolicy</td>
+            <td>Who may resolve a conflict, and which feature types always need a person.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/resolution-policy.schema.json">resolution-policy.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>ChangeSet</td>
+            <td>The difference between snapshots, including tombstones for removals.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/change-set.schema.json">change-set.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Certification</td>
+            <td>An audit record supporting a quality tier.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/certification.schema.json">certification.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Jurisdiction</td>
+            <td>Routing, residency and who may submit.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/jurisdiction.schema.json">jurisdiction.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Repository</td>
+            <td>The store a jurisdiction routes data to.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/repository.schema.json">repository.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>RedactionPolicy</td>
+            <td>What must be stripped before data is stored or published.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/redaction-policy.schema.json">redaction-policy.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>OccupancyUpdate</td>
+            <td>Optional live state of a bay, zone, level or facility. Unknown after its time to live.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/occupancy-update.schema.json">occupancy-update.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Closure</td>
+            <td>Optional temporary change to edges, levels, access points or links.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/closure.schema.json">closure.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>DynamicFeed</td>
+            <td>Optional feed of occupancy and closures.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/dynamic-feed.schema.json">dynamic-feed.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>PassengerNeeds</td>
+            <td>On-device needs for a trip. Never part of a map dataset.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/passenger-needs.schema.json">passenger-needs.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>HandoverRequirements</td>
+            <td>The only derived requirements that may leave the device, and only with consent.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/handover-requirements.schema.json">handover-requirements.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Dataset</td>
+            <td>Root document for a site snapshot.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/dataset.schema.json">dataset.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Contribution bundle</td>
+            <td>Root document for one crowdsourced submission.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/contribution-bundle.schema.json">contribution-bundle.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Registry</td>
+            <td>Root document for jurisdictions and repositories.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/registry.schema.json">registry.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>Common definitions</td>
+            <td>Shared types, including bay and handover accessibility.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/common.schema.json">common.schema.json</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Crowdsourcing</h2>
+    <p class="prose">Several vehicle makers, survey firms, operators and authorities may contribute static layout only. Contributions stay separate from the consolidated map. The pipeline in the specification is:</p>
+    <ol class="prose">
+      <li>A repository or authority publishes a campaign for a facility that is missing, stale, disputed or below its target tier.</li>
+      <li>A contributor submits a bundle: a contribution, feature observations and alignment records, and attests what was redacted. In a licensed-unit jurisdiction the bundle goes to the licensed unit first.</li>
+      <li>The repository aligns observations, updates evidence, resolves conflicts, applies quality-tier rules and publishes a change set.</li>
+      <li>Consumers read the consolidated dataset and the change feed. They never need the raw contributions.</li>
+    </ol>
+    <p class="prose">Quality tiers run from 0 (<code>indicative</code>, display and planning) to 3 (<code>driverless</code>). The numeric accuracy targets are proposals for discussion, not requirements of any regulator. Driverless use in the draft expects an audit, a certification on file, and operator consent that covers <code>driverless_use</code>.</p>
+
+    <h2>Governance and privacy</h2>
+    <p class="prose">A jurisdiction names the repository, who may submit, residency (<code>unrestricted</code>, <code>in_country_only</code>, or <code>cross_border_with_approval</code>) and the approval regime. Operator consent is a separate approval on the facility. Redaction policy is what keeps plates, identities and trajectories out. The registry example shows an Australian-style direct jurisdiction and a China-style licensed-unit jurisdiction. Both are illustrative, not legal advice.</p>
+    <p class="prose">Passenger needs are stored and processed on the device only. Consent is explicit, scoped and revocable. Neither passenger needs nor handover requirements contain a diagnosis, a condition name or an identity, and neither appears in a map dataset.</p>
+
+    <h2>Conformance</h2>
+    <ul class="prose">
+      <li>A static-core producer emits a dataset that validates against <code>dataset.schema.json</code> with <code>profile: static-core</code>.</li>
+      <li>A static-core consumer accepts any valid static-core dataset and ignores <code>x_</code> properties.</li>
+      <li>A repository also publishes change sets with tombstones, enforces its jurisdiction’s routing and redaction policy, and keeps raw contributions out of published datasets.</li>
+      <li><code>tools/validate.py</code> checks schema validity, example validity and reference integrity.</li>
+    </ul>
+
+    <h2>Open questions in the draft</h2>
+    <ol class="prose">
+      <li>Who hosts and signs site datasets: operator, council, neutral registry or consortium.</li>
+      <li>A small common facility API for mission, gate and payment calls beyond ISO 23374.</li>
+      <li>Accuracy targets per tier, and how audits are done.</li>
+      <li>Mapping to ISO/TS 22726-1:2025, NDS.Live and OpenDRIVE 1.9.</li>
+      <li>Public holidays, event days, permit areas, and signs that conflict on the ground.</li>
+      <li>Liability when map data is wrong, and how a car proves it parked legally.</li>
+      <li>Schemas for the services layer.</li>
+      <li>Whether SENSORIS should gain a parking-facility campaign type.</li>
+      <li>Interoperability with MAZE, and which APDS v5 classes to reference.</li>
+      <li>How OPMS maps to the Chinese draft standard plan 20243535-T-466.</li>
+      <li>Which accessibility fields people with lived experience consider essential, missing or harmful.</li>
+      <li>How to verify accessibility claims at scale without exposing people.</li>
+    </ol>
+    <p class="prose">The full text, including the entity-relationship diagram and the informative drop-off lifecycle, is in <a href="https://github.com/vtml/open-parking-map-schema/blob/main/SPEC.md">SPEC.md</a>.</p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+      <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

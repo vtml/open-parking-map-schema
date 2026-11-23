@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get involved · OPMS v0.2 draft</title>
+  <meta name="description" content="How to review the OPMS v0.2 draft: issues, the contributing guide, and what the draft asks of carmakers, researchers, disability advocates, operators and standards bodies.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("opms-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">OPMS</span>
+        <span class="brand-text">
+          <span class="brand-name">Open Parking Map Schema</span>
+          <span class="brand-version">v0.2 draft</span>
+        </span>
+      </a>
+      <div class="header-tools">
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="spec.html">Spec</a></li>
+            <li><a href="example.html">Example</a></li>
+            <li><a href="get-involved.html" aria-current="page">Get involved</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle>Theme</button>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    <p class="kicker">Contribution</p>
+    <h1>Get involved</h1>
+    <p class="lede">OPMS is a draft, so questions and critiques are as valuable as pull requests. Nothing on this site is a claim that a company, a research group, an advocacy organisation, an operator or a standards body has agreed to take part.</p>
+    <aside class="status">
+      <p><strong>v0.2 draft.</strong> No organisation has endorsed it. Review is welcome. Endorsement is not implied by being named here.</p>
+    </aside>
+
+    <h2>Open an issue or a pull request</h2>
+    <p class="prose">Use <a href="https://github.com/vtml/open-parking-map-schema/issues">GitHub issues</a> for a missing scenario, an unclear field, a conflict with another standard, or a jurisdiction the model should cover. <a href="https://github.com/vtml/open-parking-map-schema/issues/new">Open an issue</a>.</p>
+    <p class="prose">Pull requests should be small. Change the schema in <code>schema/</code>, update or add an example in <code>examples/</code>, update <code>SPEC.md</code> and <code>CHANGELOG.md</code>, and run <code>python tools/validate.py</code> until it prints <code>RESULT: PASS</code>. The guide is <a href="https://github.com/vtml/open-parking-map-schema/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+    <p class="prose">The repository also asks for mappings of OPMS entities to ISO/TS 22726-1, NDS.Live, OpenDRIVE, Lanelet2, IndoorGML, the Curb Data Specification, APDS and SENSORIS, and for jurisdiction profiles that include citations and say whether a lawyer reviewed them.</p>
+
+    <h2>Rules that apply to every contribution</h2>
+    <ul class="prose">
+      <li>No personal data. No real number plates, VINs, faces, driver or passenger identities, or real vehicle traces.</li>
+      <li>Examples stay fictional and labelled with a <code>_note</code>, unless the facility operator has agreed in writing to publication.</li>
+      <li>Do not speculate about a company’s internal systems. Describe public standards and your own work.</li>
+      <li>Changes that affect accessibility fields should cite input from people with lived experience, or an accessibility audit. Do not invent needs on behalf of other people.</li>
+      <li>Identifiers are lower-case, dotted, stable, and never reused. Prefer <code>external_refs</code> to copying another standard’s geometry.</li>
+      <li>Unknown means not allowed.</li>
+      <li>While the version is 0.x, breaking changes are allowed and must be listed in the changelog.</li>
+      <li>Add a <code>Signed-off-by</code> line (Developer Certificate of Origin) to confirm you have the right to submit the work.</li>
+    </ul>
+
+    <h2>What the draft is asking people to look at</h2>
+    <p class="prose">These are the reviews the text itself says would be useful. They are not formal requests already sent, and they are not a list of partners.</p>
+
+    <article class="panel">
+      <h3>Carmakers</h3>
+      <p>The distinct claim of the draft is an open contribution and merge layer that works no matter which maker collected a static survey: contributions, observations, evidence, conflicts and change sets. A useful review is whether that envelope is enough to exchange static layout, and where it fails. The draft does not ask makers to describe internal systems, and it does not claim to know them. Makers are one <code>org_type</code> (<code>oem</code>) that a jurisdiction may accept as a direct contributor. That is a field in the schema, not a statement that any maker will submit data.</p>
+    </article>
+
+    <article class="panel">
+      <h3>Researchers</h3>
+      <p>The draft does not specify a mapping algorithm. It points to work such as Jiang et al. (2024) on crowdsourced indoor mapping without a prior map, and says OPMS is the data envelope around such methods: contributions, evidence and alignment records. Research organisations are a contributor type. Open questions aimed at this review include the accuracy targets behind each quality tier, how audits are done, and how to check accessibility claims at scale without exposing people.</p>
+    </article>
+
+    <article class="panel">
+      <h3>Disability advocates</h3>
+      <p>The human-centred design note asks for a paid advisory group with lived experience across disability types, and for older people, parents, carers, transport providers and emergency services to stay involved. It asks that people be paid for their time, and that the project publish what changed because of their input. The specification leaves open which accessibility fields people with lived experience consider essential, missing or harmful. The contributing guide says not to invent those needs. An absent accessibility field means unknown, not accessible.</p>
+    </article>
+
+    <article class="panel">
+      <h3>Operators</h3>
+      <p>Checks against a real car park need the operator’s consent, and publication of a real site needs that agreement in writing. The draft records operator consent on each facility, and higher quality tiers depend on it: driverless use in the proposal needs consent that covers <code>driverless_use</code>, plus a certification. Operators are also one of the roles that may resolve a conflict or override consensus. Who hosts and signs a site dataset, the operator or someone else, is an open question. OPMS describes places. It does not change planning rules.</p>
+    </article>
+
+    <article class="panel">
+      <h3>Standards bodies</h3>
+      <p>The draft asks for mappings, not a replacement. It links by identifier to APDS, ISO/TS 5206-1, OpenDRIVE, Lanelet2, IndoorGML, the Curb Data Specification and ISO 23374, and it leaves mappings to ISO/TS 22726-1, NDS.Live and OpenDRIVE 1.9 as future work. A proposed APDS mapping is explicitly “to be validated with APDS”. Whether OPMS should become an APDS extension or stay a separate profile is open. Interoperability with Valeo’s MAZE format, the facility maps described by EAVP, is also open: the draft says it does not know whether the MAZE specification is available to non-members. No standards body has endorsed this work.</p>
+    </article>
+
+    <h2>Other reviews named in the README</h2>
+    <ul class="prose">
+      <li>Review of the entity model.</li>
+      <li>Jurisdiction profiles written with local legal advice.</li>
+      <li>Schemas for the services layer, which is reserved and not yet specified: reservations, sessions, payments, missions, fallback policies and remote assist.</li>
+    </ul>
+    <p class="prose">Councils and other authorities appear in the model as a source of kerb rules and as one host that might publish data. Publication terms exist so councils, disability organisations and apps that are not automated vehicles can use a dataset. That is a design aim of the draft, not a statement that any council has adopted it.</p>
+
+    <h2>Licences</h2>
+    <p class="prose">The repository uses two licences. By contributing, you agree to the same split.</p>
+    <div class="grid">
+      <article class="card">
+        <h3>Text: CC BY 4.0</h3>
+        <p>Specification text and documentation, including <code>README.md</code>, <code>SPEC.md</code>, <code>HUMAN_CENTRED_DESIGN.md</code>, <code>CONTRIBUTING.md</code> and <code>CHANGELOG.md</code>. This website is documentation under the same licence. <a href="https://github.com/vtml/open-parking-map-schema/blob/main/LICENSE-CC-BY-4.0">Full text</a>. <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons deed</a>.</p>
+      </article>
+      <article class="card">
+        <h3>Code and schemas: Apache-2.0</h3>
+        <p>JSON Schemas, examples and code: <code>schema/</code>, <code>examples/</code> and <code>tools/</code>. <a href="https://github.com/vtml/open-parking-map-schema/blob/main/LICENSE-APACHE-2.0">Full text</a>. <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.</p>
+      </article>
+    </div>
+    <p class="prose">Copyright 2026 OPMS contributors. Example data is fictional and carries no rights claims beyond those licences. The summary file is <a href="https://github.com/vtml/open-parking-map-schema/blob/main/LICENSE">LICENSE</a>. The <code>$id</code> URLs in the schemas (<code>opms.example.org</code>) are placeholders until a permanent home exists.</p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+      <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
+    </div>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>
