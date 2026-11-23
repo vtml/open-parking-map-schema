@@ -18,3 +18,28 @@ jobs:
         run: python tools/validate.py
       - name: Check Pages copies match the spec
         run: python tools/sync_docs_data.py --check
+
+  review-app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/review-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tools/review-app/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run boundaries
+      - run: npm run test:coverage
+      - run: npm run test:bdd
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - run: npm run build
+      - name: Fail if the published app is stale
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code -- docs/review

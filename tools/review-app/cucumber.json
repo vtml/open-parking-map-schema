@@ -1,0 +1,4 @@
+{
+  "paths": ["features/**/*.feature"],
+  "import": ["test/bdd/**/*.ts"]
+}
