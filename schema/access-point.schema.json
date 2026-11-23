@@ -39,16 +39,28 @@
       "description": "Public road it connects to.",
       "properties": {
         "road_name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the public road this access joins, as it is signed.",
+          "examples": [
+            "Wattle Street"
+          ]
         },
         "intersection_id": {
           "$ref": "common.schema.json#/$defs/Id"
         },
         "approach_bearing_deg": {
-          "type": "number"
+          "type": "number",
+          "description": "Compass bearing of the vehicle approach, degrees clockwise from true north.",
+          "examples": [
+            90
+          ]
         },
         "signalised": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when the junction with the public road has traffic signals.",
+          "examples": [
+            false
+          ]
         },
         "external_refs": {
           "$ref": "common.schema.json#/$defs/ExternalRefs"
@@ -138,14 +150,26 @@
       "description": "Emergency vehicle access.",
       "properties": {
         "fire_brigade_access": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when fire appliances can use this access.",
+          "examples": [
+            true
+          ]
         },
         "ambulance_clearance_m": {
           "type": "number",
-          "exclusiveMinimum": 0
+          "exclusiveMinimum": 0,
+          "description": "Clearance kept for an ambulance, in metres.",
+          "examples": [
+            3.5
+          ]
         },
         "emergency_override": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when an emergency vehicle can override a gate or barrier here.",
+          "examples": [
+            true
+          ]
         }
       }
     },

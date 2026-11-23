@@ -27,15 +27,27 @@
         "lat": {
           "type": "number",
           "minimum": -90,
-          "maximum": 90
+          "maximum": 90,
+          "description": "Latitude of the frame origin, WGS84 degrees, from -90 to 90.",
+          "examples": [
+            -37.81
+          ]
         },
         "lon": {
           "type": "number",
           "minimum": -180,
-          "maximum": 180
+          "maximum": 180,
+          "description": "Longitude of the frame origin, WGS84 degrees, from -180 to 180.",
+          "examples": [
+            144.97
+          ]
         },
         "h_ellipsoid_m": {
-          "type": "number"
+          "type": "number",
+          "description": "Ellipsoidal height of the frame origin, WGS84, in metres.",
+          "examples": [
+            28.4
+          ]
         }
       }
     },

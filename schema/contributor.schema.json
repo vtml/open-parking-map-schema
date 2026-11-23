@@ -40,10 +40,18 @@
       "description": "Licence or qualification, e.g. a national surveying qualification.",
       "properties": {
         "scheme": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the licence or qualification scheme, for example a national surveying qualification.",
+          "examples": [
+            "example-survey-licence"
+          ]
         },
         "number": {
-          "type": "string"
+          "type": "string",
+          "description": "Licence or qualification number. Not a person's name.",
+          "examples": [
+            "EX-1000"
+          ]
         },
         "valid_to": {
           "$ref": "common.schema.json#/$defs/DateTime"

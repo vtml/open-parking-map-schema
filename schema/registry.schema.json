@@ -15,7 +15,11 @@
   },
   "properties": {
     "_note": {
-      "type": "string"
+      "type": "string",
+      "description": "Free-text note. Used to label fictional example data. Not a registry fact.",
+      "examples": [
+        "Fictional registry."
+      ]
     },
     "opms_version": {
       "type": "string",

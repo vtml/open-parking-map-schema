@@ -46,9 +46,14 @@
           "$ref": "common.schema.json#/$defs/LocalPoint"
         },
         "yaw_deg": {
-          "type": "number"
+          "type": "number",
+          "description": "Heading of the aid, degrees clockwise from the frame's north (+y) axis.",
+          "examples": [
+            180
+          ]
         }
-      }
+      },
+      "description": "Where the aid is, and which way it faces, in the facility frame."
     },
     "accuracy_m": {
       "type": "number",

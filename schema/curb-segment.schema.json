@@ -24,12 +24,17 @@
       "additionalProperties": false,
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Road name as signed.",
+          "examples": [
+            "Station Road"
+          ]
         },
         "external_refs": {
           "$ref": "common.schema.json#/$defs/ExternalRefs"
         }
-      }
+      },
+      "description": "Public road this kerb segment belongs to."
     },
     "side": {
       "enum": [
@@ -47,12 +52,21 @@
       "additionalProperties": false,
       "properties": {
         "from_m": {
-          "type": "number"
+          "type": "number",
+          "description": "Start of the segment along the road, in metres.",
+          "examples": [
+            0
+          ]
         },
         "to_m": {
-          "type": "number"
+          "type": "number",
+          "description": "End of the segment along the road, in metres. Greater than from_m when the segment has length.",
+          "examples": [
+            40
+          ]
         }
-      }
+      },
+      "description": "Where along the road the segment runs, measured in metres from an agreed origin."
     },
     "orientation": {
       "enum": [

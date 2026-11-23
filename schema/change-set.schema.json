@@ -77,13 +77,21 @@
             "$ref": "common.schema.json#/$defs/Id"
           },
           "feature_type": {
-            "type": "string"
+            "type": "string",
+            "description": "Kind of feature that was removed, such as bay or drive_edge.",
+            "examples": [
+              "bay"
+            ]
           },
           "removed_at": {
             "$ref": "common.schema.json#/$defs/DateTime"
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "Why the feature was removed from the map.",
+            "examples": [
+              "demolished"
+            ]
           },
           "superseded_by": {
             "$ref": "common.schema.json#/$defs/Id"

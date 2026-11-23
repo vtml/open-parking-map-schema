@@ -29,7 +29,11 @@
   ],
   "properties": {
     "_note": {
-      "type": "string"
+      "type": "string",
+      "description": "Free-text note. Used to label fictional example data. Not a map fact.",
+      "examples": [
+        "Fictional dataset."
+      ]
     },
     "opms_version": {
       "type": "string",

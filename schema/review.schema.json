@@ -19,7 +19,11 @@
   },
   "properties": {
     "_note": {
-      "type": "string"
+      "type": "string",
+      "description": "Free-text note. Used to label fictional example data. Not a review result.",
+      "examples": [
+        "Fictional review."
+      ]
     },
     "opms_version": {
       "type": "string",
@@ -115,7 +119,11 @@
             "description": "Result for this feature."
           },
           "note": {
-            "type": "string"
+            "type": "string",
+            "description": "Short note on this feature. No names, plates or diagnoses.",
+            "examples": [
+              "Threshold matches the painted line."
+            ]
           },
           "evidence_ref": {
             "type": "string",

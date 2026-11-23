@@ -52,10 +52,18 @@
       "description": "Whether a ticket or session carries across.",
       "properties": {
         "allowed": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when a ticket or parking session remains valid after the vehicle uses this link.",
+          "examples": [
+            true
+          ]
         },
         "conditions": {
-          "type": "string"
+          "type": "string",
+          "description": "Conditions for carrying the ticket or session across, in plain language.",
+          "examples": [
+            "Same operator, within 15 minutes."
+          ]
         },
         "gate_id": {
           "$ref": "common.schema.json#/$defs/Id"

@@ -56,7 +56,8 @@
         "end": {
           "$ref": "common.schema.json#/$defs/DateTime"
         }
-      }
+      },
+      "description": "When the closure applies. start is required. Omit end when the finish time is not yet known."
     },
     "_note": {
       "type": "string",

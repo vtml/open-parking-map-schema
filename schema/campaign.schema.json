@@ -38,7 +38,16 @@
             "type": "number"
           },
           "minItems": 4,
-          "maxItems": 4
+          "maxItems": 4,
+          "description": "Survey bounding box in WGS84 degrees: [minimum longitude, minimum latitude, maximum longitude, maximum latitude].",
+          "examples": [
+            [
+              144.96,
+              -37.82,
+              144.98,
+              -37.8
+            ]
+          ]
         }
       }
     },
@@ -65,7 +74,8 @@
         "end": {
           "$ref": "common.schema.json#/$defs/DateTime"
         }
-      }
+      },
+      "description": "When the survey is wanted. start and end are RFC 3339 instants with an offset."
     },
     "priority": {
       "type": "integer",

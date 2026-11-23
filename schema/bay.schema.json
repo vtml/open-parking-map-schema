@@ -96,13 +96,25 @@
             "type2",
             "chademo",
             "nacs"
+          ],
+          "description": "Charging connector. ccs2: Combined Charging System Type 2. type2: IEC Type 2 AC. chademo: CHAdeMO DC. nacs: North American Charging Standard.",
+          "examples": [
+            "ccs2"
           ]
         },
         "power_kw": {
-          "type": "number"
+          "type": "number",
+          "description": "Rated charging power, in kilowatts.",
+          "examples": [
+            150
+          ]
         },
         "charger_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Operator's identifier for this charger. Not a vehicle identifier.",
+          "examples": [
+            "charger-12"
+          ]
         }
       }
     },

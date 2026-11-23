@@ -35,7 +35,11 @@
     },
     "endpoint": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "URI where this repository accepts contributions or serves datasets.",
+      "examples": [
+        "https://example.org/opms"
+      ]
     },
     "storage_region": {
       "type": "string",

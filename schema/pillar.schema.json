@@ -32,12 +32,21 @@
       "additionalProperties": false,
       "properties": {
         "col": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Column index in the pillar grid.",
+          "examples": [
+            3
+          ]
         },
         "row": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Row index in the pillar grid.",
+          "examples": [
+            2
+          ]
         }
-      }
+      },
+      "description": "Column and row of this pillar in its pillar grid. Integers, origin chosen by the grid."
     },
     "position": {
       "$ref": "common.schema.json#/$defs/LocalPoint"
