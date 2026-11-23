@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/localization-aid.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/localization-aid.schema.json",
   "title": "LocalizationAid",
   "description": "Fiducial, beacon or landmark for GNSS-denied localisation.",
   "type": "object",
@@ -54,6 +54,13 @@
       "type": "number",
       "description": "1-sigma accuracy.",
       "minimum": 0
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

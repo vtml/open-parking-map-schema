@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/feature-observation.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/feature-observation.schema.json",
   "title": "FeatureObservation",
   "description": "One observed feature in one contribution. Raw observations never appear in the published map.",
   "type": "object",

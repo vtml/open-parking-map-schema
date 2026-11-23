@@ -1,6 +1,6 @@
 # Human-centred design lens for OPMS
 
-Status: v0.2 draft, 2026-11-23. Text under CC BY 4.0. All example data is fictional.
+Status: v0.3 draft, 2026-11-23. Text under CC BY 4.0. All example data is fictional.
 
 OPMS is not only a map problem. If cars start dropping people off, parking themselves and returning, the people who gain most are those for whom parking is hardest today, and those who lose most are people whom the system forgets. This document sets out how OPMS tries to put people first, and where it cannot.
 
@@ -77,6 +77,7 @@ These are composite, fictional personas used to test the schema. They are not re
 - `PassengerNeeds` is processed on the device only (`storage: on_device`). It never appears in a map dataset, contribution or change set.
 - Consent is explicit, scoped and revocable. `derived_requirements_only` allows sending the minimal `HandoverRequirements` object; `on_device_only` sends nothing.
 - No diagnosis, condition name or identity appears in either object; the schemas reject extra properties.
+- A verification `note` is the same: it must not name a person, a plate, or a diagnosis. `evidence_ref` points at an audit held elsewhere. It is not a place to store that evidence.
 - Facilities and planners should treat `HandoverRequirements` as ephemeral: use for the trip, do not retain.
 
 ## 7. Co-design and evaluation

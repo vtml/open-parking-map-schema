@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/closure.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/closure.schema.json",
   "title": "Closure",
   "description": "OPTIONAL temporary change. Not part of the static-core profile.",
   "type": "object",

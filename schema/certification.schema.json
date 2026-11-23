@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/certification.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/certification.schema.json",
   "title": "Certification",
   "description": "Certification supporting a quality tier for driverless use.",
   "type": "object",

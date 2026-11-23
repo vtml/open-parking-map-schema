@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/occupancy-update.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/occupancy-update.schema.json",
   "title": "OccupancyUpdate",
   "description": "OPTIONAL live state. Not part of the static-core profile.",
   "type": "object",

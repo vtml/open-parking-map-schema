@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/registry.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/registry.schema.json",
   "title": "OPMS registry",
   "description": "Jurisdictions, repositories, contributors and policies. Published by repositories or authorities, separate from site datasets.",
   "type": "object",
@@ -19,7 +19,8 @@
     },
     "opms_version": {
       "type": "string",
-      "pattern": "^0[.]2[.][0-9]+$"
+      "pattern": "^0[.][23][.][0-9]+$",
+      "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
     },
     "jurisdictions": {
       "type": "array",

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Explorer · OPMS v0.2 draft</title>
-  <meta name="description" content="Interactive map of the fictional OPMS v0.2 examples. Select a bay, aisle, entrance or rule to read its JSON and the schema description of each field.">
+  <title>Explorer · OPMS v0.3 draft</title>
+  <meta name="description" content="Interactive map of the fictional OPMS v0.3 examples. Select a bay, aisle, entrance or rule to read its JSON and the schema description of each field.">
   <link rel="stylesheet" href="assets/style.css">
   <script>
     (function () {
@@ -25,7 +25,7 @@
         <span class="brand-mark">OPMS</span>
         <span class="brand-text">
           <span class="brand-name">Open Parking Map Schema</span>
-          <span class="brand-version">v0.2 draft</span>
+          <span class="brand-version">v0.3 draft</span>
         </span>
       </a>
       <div class="header-tools">
@@ -45,9 +45,9 @@
   <main id="main" class="wide">
     <p class="kicker">Fictional examples</p>
     <h1>Explore a car park</h1>
-    <p class="lede">Two datasets from this draft, drawn from the coordinates stored in the files. Simple is one surface lot. Complex is Merriwa Park, the fictional mall with three car parks. This is a v0.2 draft. No organisation has endorsed it.</p>
+    <p class="lede">Two datasets from this draft, drawn from the coordinates stored in the files. Simple is one surface lot. Complex is Merriwa Park, the fictional mall with three car parks. This is a v0.3 draft. No organisation has endorsed it.</p>
     <aside class="status">
-      <p><strong>Example data only.</strong> Wattle Reserve Office and Merriwa Park Shopping Centre, their roads, prices and coordinates are invented. A missing shape usually means the object has no position or polygon in v0.2, not that the object is absent. The field text in the panel is copied from the schema descriptions.</p>
+      <p><strong>Example data only.</strong> Wattle Reserve Office and Merriwa Park Shopping Centre, their roads, prices and coordinates are invented. A missing shape means that object has no coordinates in the file. The field text in the panel is copied from the schema descriptions.</p>
     </aside>
     <p id="load-error" class="status" hidden></p>
 
@@ -71,7 +71,7 @@
           <svg id="map" class="map-svg" role="group" aria-labelledby="map-title" aria-describedby="map-desc"></svg>
         </div>
         <p id="map-title" class="visually-hidden">Coordinates for the selected level</p>
-        <p id="map-desc">Local metres, x east and y north, with north at the top. The dashed rectangle is the extent of those points. A site in v0.2 has no outline of its own.</p>
+        <p id="map-desc">Local metres, x east and y north, with north at the top. The dashed rectangle is the extent of those points. When the file has site.boundary, that polygon is the dashed outline.</p>
         <ul id="legend" class="legend"></ul>
         <details>
           <summary>Text list of what this level draws</summary>
@@ -111,7 +111,7 @@
   </main>
   <footer class="site-footer">
     <div class="footer-inner">
-      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>OPMS v0.3 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
       <p>The explorer reads copies in <code>docs/data</code>. <code>tools/sync_docs_data.py</code> refreshes them from <code>examples/</code> and <code>schema/</code>. Continuous integration checks that the copies match.</p>
       <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
       <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>

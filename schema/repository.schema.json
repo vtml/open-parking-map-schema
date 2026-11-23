@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/repository.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/repository.schema.json",
   "title": "Repository",
   "description": "Central repository (or licensed-unit gateway) for a jurisdiction.",
   "type": "object",

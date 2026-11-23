@@ -1,7 +1,7 @@
 {
   "access-point.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/access-point.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/access-point.schema.json",
     "title": "AccessPoint",
     "description": "A vehicle entry, exit or both, tied to a public road.",
     "type": "object",
@@ -150,6 +150,25 @@
           }
         }
       },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level the threshold sits on."
+      },
+      "threshold": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "description": "Gate line or threshold segment in the facility frame, at least two points."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -243,7 +262,7 @@
   },
   "accessible-path.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/accessible-path.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/accessible-path.schema.json",
     "title": "AccessiblePath",
     "description": "A step-free route from a bay or drop-off to a door or destination.",
     "type": "object",
@@ -384,6 +403,25 @@
         "type": "string",
         "description": "e.g. AS 1428.1:2021 (verify the edition in force)."
       },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level the path starts on, when it stays on one level."
+      },
+      "centreline": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "description": "Walked line in the facility frame. Optional at quality tier 0 and 1. Required, with at least two points, when the path is owner-verified or its facility tier is 2 or 3."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -423,7 +461,7 @@
   },
   "alignment-record.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/alignment-record.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/alignment-record.schema.json",
     "title": "AlignmentRecord",
     "description": "How a contribution was aligned into the facility frame in GNSS-denied areas.",
     "type": "object",
@@ -507,7 +545,7 @@
   },
   "anchor-feature.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/anchor-feature.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/anchor-feature.schema.json",
     "title": "AnchorFeature",
     "description": "A distinctive feature used to align contributions and tie levels to the global frame.",
     "type": "object",
@@ -562,6 +600,13 @@
         "$ref": "common.schema.json#/$defs/Id",
         "description": "Optional fiducial co-located with the anchor."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -601,7 +646,7 @@
   },
   "bay.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/bay.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/bay.schema.json",
     "title": "Bay",
     "description": "A single parking space.",
     "type": "object",
@@ -721,6 +766,13 @@
       "accessibility": {
         "$ref": "common.schema.json#/$defs/BayAccessibility"
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -760,7 +812,7 @@
   },
   "campaign.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/campaign.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/campaign.schema.json",
     "title": "Campaign",
     "description": "A request (SENSORIS-style) for a survey of a named facility.",
     "type": "object",
@@ -866,7 +918,7 @@
   },
   "certification.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/certification.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/certification.schema.json",
     "title": "Certification",
     "description": "Certification supporting a quality tier for driverless use.",
     "type": "object",
@@ -923,7 +975,7 @@
   },
   "change-set.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/change-set.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/change-set.schema.json",
     "title": "ChangeSet",
     "description": "A diff between two dataset versions; the unit of the change feed.",
     "type": "object",
@@ -1038,7 +1090,7 @@
   },
   "closure.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/closure.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/closure.schema.json",
     "title": "Closure",
     "description": "OPTIONAL temporary change. Not part of the static-core profile.",
     "type": "object",
@@ -1108,7 +1160,7 @@
   },
   "common.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/common.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/common.schema.json",
     "title": "OPMS common definitions",
     "description": "Shared definitions reused by every OPMS object schema.",
     "$defs": {
@@ -1144,6 +1196,14 @@
         "items": false,
         "minItems": 3,
         "description": "[x, y, z] metres in the facility frame (x east, y north, z up)."
+      },
+      "LocalPolygon": {
+        "type": "array",
+        "description": "Corners in the facility frame, counter-clockwise. At least four points. The ring need not repeat the first point. z is the elevation of the level.",
+        "minItems": 4,
+        "items": {
+          "$ref": "#/$defs/LocalPoint"
+        }
       },
       "Geometry": {
         "type": "object",
@@ -1485,7 +1545,7 @@
           "tier"
         ],
         "additionalProperties": false,
-        "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier.",
+        "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier. Tier 2 and tier 3 are owner-verified or higher: the facility must include a verification with role owner, status confirmed, and dataset_version equal to the dataset version. The verification does not raise the tier by itself. It is required before those tiers may be declared. Drive edges and accessible paths on an owner-verified facility must carry a centreline.",
         "properties": {
           "tier": {
             "type": "integer",
@@ -1794,12 +1854,59 @@
             "type": "string"
           }
         }
+      },
+      "Verification": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "One check of a feature against the real place. Stores the review, not the evidence file. No personal data.",
+        "required": [
+          "role",
+          "status",
+          "reviewed_at",
+          "dataset_version"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "operator",
+              "authority",
+              "crowd"
+            ],
+            "description": "Reviewer role. An organisation role, not a person's name."
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "incorrect",
+              "missing",
+              "not-checked"
+            ],
+            "description": "confirmed: matches the place. incorrect: the record is wrong. missing: not there on the ground. not-checked: explicitly skipped."
+          },
+          "note": {
+            "type": "string",
+            "description": "Short note. No names, plates or diagnoses."
+          },
+          "evidence_ref": {
+            "type": "string",
+            "description": "Pointer to evidence kept outside the map (audit id or URL). Not the evidence itself."
+          },
+          "reviewed_at": {
+            "$ref": "#/$defs/DateTime",
+            "description": "When the review was made."
+          },
+          "dataset_version": {
+            "$ref": "#/$defs/Version",
+            "description": "Dataset version the reviewer looked at."
+          }
+        }
       }
     }
   },
   "conflict-case.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/conflict-case.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/conflict-case.schema.json",
     "title": "ConflictCase",
     "description": "A recorded disagreement between observations and how it was resolved.",
     "type": "object",
@@ -1873,7 +1980,7 @@
   },
   "contribution-bundle.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/contribution-bundle.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/contribution-bundle.schema.json",
     "title": "OPMS contribution bundle",
     "description": "A contribution with its feature observations and alignment records, as submitted to a repository.",
     "type": "object",
@@ -1892,7 +1999,8 @@
       },
       "opms_version": {
         "type": "string",
-        "pattern": "^0[.]2[.][0-9]+$"
+        "pattern": "^0[.][23][.][0-9]+$",
+        "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
       },
       "contribution": {
         "$ref": "contribution.schema.json"
@@ -1923,7 +2031,7 @@
   },
   "contribution.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/contribution.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/contribution.schema.json",
     "title": "Contribution",
     "description": "A batch of static-feature observations from one contributor, kept separate from the consolidated map.",
     "type": "object",
@@ -2154,7 +2262,7 @@
   },
   "contributor.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/contributor.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/contributor.schema.json",
     "title": "Contributor",
     "description": "An organisation submitting contributions. Never an individual vehicle or person.",
     "type": "object",
@@ -2233,7 +2341,7 @@
   },
   "curb-segment.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/curb-segment.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/curb-segment.schema.json",
     "title": "CurbSegment",
     "description": "A length of kerb along a public road, linearly referenced.",
     "type": "object",
@@ -2307,6 +2415,13 @@
         },
         "description": "Regulations along the segment (CDS-style)."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -2346,7 +2461,7 @@
   },
   "dataset.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/dataset.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/dataset.schema.json",
     "title": "OPMS dataset (consolidated map)",
     "description": "Root of a consolidated OPMS map for one site. Raw contributions are separate (contribution-bundle).",
     "type": "object",
@@ -2379,7 +2494,8 @@
       },
       "opms_version": {
         "type": "string",
-        "pattern": "^0[.]2[.][0-9]+$"
+        "pattern": "^0[.][23][.][0-9]+$",
+        "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
       },
       "dataset_version": {
         "$ref": "common.schema.json#/$defs/Version"
@@ -2544,6 +2660,13 @@
         },
         "description": "Lifts used on accessible routes."
       },
+      "stair_cores": {
+        "type": "array",
+        "description": "Stair cores. Footprint plus the levels they connect.",
+        "items": {
+          "$ref": "stair-core.schema.json"
+        }
+      },
       "wayfinding_aids": {
         "type": "array",
         "items": {
@@ -2644,7 +2767,7 @@
   },
   "destination-access.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/destination-access.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/destination-access.schema.json",
     "title": "DestinationAccess",
     "description": "Link between a destination and where a car can leave the passenger or park.",
     "type": "object",
@@ -2709,7 +2832,7 @@
   },
   "destination.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/destination.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/destination.schema.json",
     "title": "Destination",
     "description": "Where passengers are going.",
     "type": "object",
@@ -2717,7 +2840,8 @@
       "id",
       "kind",
       "name",
-      "portal_ids"
+      "portal_ids",
+      "level_id"
     ],
     "properties": {
       "id": {
@@ -2745,7 +2869,7 @@
       },
       "level_label": {
         "type": "string",
-        "description": "Level as signed."
+        "description": "Display text only, as signed. Not a reference. The level is level_id."
       },
       "portal_ids": {
         "type": "array",
@@ -2760,6 +2884,25 @@
           "$ref": "common.schema.json#/$defs/TimeWindow"
         },
         "description": "Opening hours."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parking level that serves this destination."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint",
+        "description": "A point for the destination in the facility frame."
+      },
+      "polygon": {
+        "$ref": "common.schema.json#/$defs/LocalPolygon",
+        "description": "Optional footprint of the destination."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
       },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
@@ -2800,7 +2943,7 @@
   },
   "drive-edge.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/drive-edge.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/drive-edge.schema.json",
     "title": "DriveEdge",
     "description": "A directed drivable segment: aisle, ramp, level transition or internal road.",
     "type": "object",
@@ -2845,7 +2988,8 @@
         "items": {
           "$ref": "common.schema.json#/$defs/LocalPoint"
         },
-        "description": "Polyline in the facility frame."
+        "description": "Polyline in the facility frame. Optional at quality tier 0 and 1. Required, with at least two points, when the edge is owner-verified or its facility tier is 2 or 3.",
+        "minItems": 2
       },
       "width_m": {
         "type": "number",
@@ -2916,6 +3060,13 @@
         "type": "boolean",
         "description": "Pedestrian priority area."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -2955,7 +3106,7 @@
   },
   "drive-node.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/drive-node.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/drive-node.schema.json",
     "title": "DriveNode",
     "description": "A node of the directed drivable graph.",
     "type": "object",
@@ -2975,6 +3126,13 @@
       },
       "position": {
         "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
       },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
@@ -3015,7 +3173,7 @@
   },
   "dynamic-feed.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/dynamic-feed.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/dynamic-feed.schema.json",
     "title": "DynamicFeed",
     "description": "OPTIONAL dynamic layer feed (stream or document).",
     "type": "object",
@@ -3057,7 +3215,7 @@
   },
   "facility.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/facility.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/facility.schema.json",
     "title": "Facility",
     "description": "A parking complex.",
     "type": "object",
@@ -3207,6 +3365,13 @@
           }
         }
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -3246,7 +3411,7 @@
   },
   "feature-observation.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/feature-observation.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/feature-observation.schema.json",
     "title": "FeatureObservation",
     "description": "One observed feature in one contribution. Raw observations never appear in the published map.",
     "type": "object",
@@ -3339,7 +3504,7 @@
   },
   "frame.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/frame.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/frame.schema.json",
     "title": "Frame",
     "description": "Local Cartesian facility frame anchored to WGS84.",
     "type": "object",
@@ -3401,9 +3566,9 @@
   },
   "gate.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/gate.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/gate.schema.json",
     "title": "Gate",
-    "description": "Boom gate, roller door, bollard or open lane.",
+    "description": "Boom gate, roller door, bollard, barrier or open lane.",
     "type": "object",
     "required": [
       "id",
@@ -3425,7 +3590,8 @@
           "roller_door",
           "bollard",
           "open_lane",
-          "turnstile"
+          "turnstile",
+          "barrier"
         ],
         "description": "Gate kind."
       },
@@ -3456,6 +3622,29 @@
       },
       "limits": {
         "$ref": "common.schema.json#/$defs/VehicleLimits"
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level the gate or barrier sits on."
+      },
+      "position": {
+        "$ref": "common.schema.json#/$defs/LocalPoint",
+        "description": "A point on the gate, if a segment is not given."
+      },
+      "threshold": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "$ref": "common.schema.json#/$defs/LocalPoint"
+        },
+        "description": "Gate line or threshold segment in the facility frame, at least two points."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
       },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
@@ -3496,7 +3685,7 @@
   },
   "handover-requirements.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/handover-requirements.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/handover-requirements.schema.json",
     "title": "HandoverRequirements",
     "description": "Minimum derived requirements that MAY be sent to a facility or planner with consent. Contains no identity, diagnosis or condition.",
     "type": "object",
@@ -3541,7 +3730,7 @@
   },
   "handover-zone.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/handover-zone.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/handover-zone.schema.json",
     "title": "HandoverZone",
     "description": "Drop-off, pick-up, valet, ride-share or taxi zone.",
     "type": "object",
@@ -3595,6 +3784,21 @@
       "accessibility": {
         "$ref": "common.schema.json#/$defs/HandoverAccessibility"
       },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level of an in-facility drop-off, handover or pick-up zone. Omit for a kerbside zone whose location_id is a curb segment."
+      },
+      "polygon": {
+        "$ref": "common.schema.json#/$defs/LocalPolygon",
+        "description": "Standing area in the facility frame."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -3634,7 +3838,7 @@
   },
   "inter-facility-link.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/inter-facility-link.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/inter-facility-link.schema.json",
     "title": "InterFacilityLink",
     "description": "A tunnel, bridge, ramp or internal road between two facilities.",
     "type": "object",
@@ -3706,6 +3910,17 @@
         },
         "description": "Hours."
       },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Level at the start of the link, when a single level applies. End levels remain on the nodes."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -3745,7 +3960,7 @@
   },
   "jurisdiction.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/jurisdiction.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/jurisdiction.schema.json",
     "title": "Jurisdiction",
     "description": "Rules for where contributions go, who may handle them and where they are stored.",
     "type": "object",
@@ -3858,7 +4073,7 @@
   },
   "level.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/level.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/level.schema.json",
     "title": "Level",
     "description": "A floor of a facility.",
     "type": "object",
@@ -3910,6 +4125,13 @@
         },
         "description": "AnchorFeatures that tie this level's local geometry back to a GNSS-visible reference."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -3949,7 +4171,7 @@
   },
   "lift.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/lift.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/lift.schema.json",
     "title": "Lift",
     "description": "A lift on an accessible route.",
     "type": "object",
@@ -4014,6 +4236,17 @@
         "format": "uri",
         "description": "OPTIONAL live status feed; not required."
       },
+      "footprint": {
+        "$ref": "common.schema.json#/$defs/LocalPolygon",
+        "description": "Shaft footprint in the facility frame. The same outline applies on each served level. z is the lowest served level."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -4053,7 +4286,7 @@
   },
   "localization-aid.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/localization-aid.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/localization-aid.schema.json",
     "title": "LocalizationAid",
     "description": "Fiducial, beacon or landmark for GNSS-denied localisation.",
     "type": "object",
@@ -4108,6 +4341,13 @@
         "description": "1-sigma accuracy.",
         "minimum": 0
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -4147,7 +4387,7 @@
   },
   "occupancy-update.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/occupancy-update.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/occupancy-update.schema.json",
     "title": "OccupancyUpdate",
     "description": "OPTIONAL live state. Not part of the static-core profile.",
     "type": "object",
@@ -4231,7 +4471,7 @@
   },
   "passenger-needs.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/passenger-needs.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/passenger-needs.schema.json",
     "title": "PassengerNeeds",
     "description": "On-device passenger needs profile for a Banish-style mission. Never part of a map dataset.",
     "type": "object",
@@ -4338,14 +4578,14 @@
   },
   "pedestrian-portal.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/pedestrian-portal.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/pedestrian-portal.schema.json",
     "title": "PedestrianPortal",
     "description": "A door, lift lobby or stair a person walks through.",
     "type": "object",
     "required": [
       "id",
       "kind",
-      "level_label"
+      "level_id"
     ],
     "properties": {
       "id": {
@@ -4366,7 +4606,7 @@
       },
       "level_label": {
         "type": "string",
-        "description": "Level as signed on the pedestrian side."
+        "description": "Display text only, as signed on the pedestrian side. Not a reference. The level is level_id."
       },
       "position": {
         "$ref": "common.schema.json#/$defs/LocalPoint"
@@ -4381,6 +4621,17 @@
           "$ref": "common.schema.json#/$defs/TimeWindow"
         },
         "description": "Hours."
+      },
+      "level_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Parking level this door, lobby or stair opens onto."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
       },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
@@ -4421,7 +4672,7 @@
   },
   "pillar-grid.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/pillar-grid.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/pillar-grid.schema.json",
     "title": "PillarGrid",
     "description": "A regular pillar grid, useful as a strong alignment constraint.",
     "type": "object",
@@ -4472,6 +4723,13 @@
         },
         "description": "Painted row labels."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -4511,7 +4769,7 @@
   },
   "pillar.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/pillar.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/pillar.schema.json",
     "title": "Pillar",
     "description": "A structural pillar: obstacle and alignment landmark.",
     "type": "object",
@@ -4574,6 +4832,13 @@
         "type": "string",
         "description": "Label on the pillar."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -4613,7 +4878,7 @@
   },
   "rate.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/rate.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/rate.schema.json",
     "title": "Rate",
     "description": "Tariff (APDS-style).",
     "type": "object",
@@ -4685,6 +4950,13 @@
         "type": "boolean",
         "description": "Prices may change via a dynamic feed."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -4724,7 +4996,7 @@
   },
   "redaction-policy.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/redaction-policy.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/redaction-policy.schema.json",
     "title": "RedactionPolicy",
     "description": "Privacy redaction requirements for contributions.",
     "type": "object",
@@ -4812,7 +5084,7 @@
   },
   "registry.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/registry.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/registry.schema.json",
     "title": "OPMS registry",
     "description": "Jurisdictions, repositories, contributors and policies. Published by repositories or authorities, separate from site datasets.",
     "type": "object",
@@ -4831,7 +5103,8 @@
       },
       "opms_version": {
         "type": "string",
-        "pattern": "^0[.]2[.][0-9]+$"
+        "pattern": "^0[.][23][.][0-9]+$",
+        "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
       },
       "jurisdictions": {
         "type": "array",
@@ -4879,7 +5152,7 @@
   },
   "repository.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/repository.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/repository.schema.json",
     "title": "Repository",
     "description": "Central repository (or licensed-unit gateway) for a jurisdiction.",
     "type": "object",
@@ -4942,7 +5215,7 @@
   },
   "resolution-policy.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/resolution-policy.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/resolution-policy.schema.json",
     "title": "ResolutionPolicy",
     "description": "How a repository promotes, merges and retires crowdsourced features.",
     "type": "object",
@@ -5016,9 +5289,143 @@
     },
     "additionalProperties": false
   },
+  "review.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.3/review.schema.json",
+    "title": "Review",
+    "description": "Standalone sign-off of one dataset version. Not part of the map. A future review tool writes this document; v0.3 only defines its shape.",
+    "type": "object",
+    "required": [
+      "opms_version",
+      "id",
+      "dataset_id",
+      "dataset_version",
+      "reviewer_role",
+      "reviewed_at",
+      "entries"
+    ],
+    "additionalProperties": false,
+    "patternProperties": {
+      "^x_": {}
+    },
+    "properties": {
+      "_note": {
+        "type": "string"
+      },
+      "opms_version": {
+        "type": "string",
+        "pattern": "^0[.][23][.][0-9]+$",
+        "description": "Schema version."
+      },
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Review id."
+      },
+      "dataset_id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Site id of the dataset reviewed."
+      },
+      "dataset_version": {
+        "$ref": "common.schema.json#/$defs/Version",
+        "description": "Dataset version reviewed."
+      },
+      "reviewer_role": {
+        "enum": [
+          "owner",
+          "operator",
+          "authority",
+          "crowd"
+        ],
+        "description": "Role of the reviewing organisation."
+      },
+      "reviewer_ref": {
+        "type": "string",
+        "description": "Organisation label. Not a person's name."
+      },
+      "reviewed_at": {
+        "$ref": "common.schema.json#/$defs/DateTime",
+        "description": "When the sign-off was made."
+      },
+      "sign_off": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status"
+        ],
+        "description": "Overall result. Partial means some entries are not confirmed.",
+        "properties": {
+          "status": {
+            "enum": [
+              "accepted",
+              "rejected",
+              "partial"
+            ],
+            "description": "Overall sign-off."
+          },
+          "note": {
+            "type": "string",
+            "description": "Short note. No personal data."
+          }
+        }
+      },
+      "entries": {
+        "type": "array",
+        "minItems": 1,
+        "description": "Per-feature results. feature_id is the id in the dataset.",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "feature_id",
+            "role",
+            "status",
+            "reviewed_at",
+            "dataset_version"
+          ],
+          "properties": {
+            "feature_id": {
+              "$ref": "common.schema.json#/$defs/Id",
+              "description": "Feature reviewed."
+            },
+            "role": {
+              "enum": [
+                "owner",
+                "operator",
+                "authority",
+                "crowd"
+              ],
+              "description": "Reviewer role for this entry."
+            },
+            "status": {
+              "enum": [
+                "confirmed",
+                "incorrect",
+                "missing",
+                "not-checked"
+              ],
+              "description": "Result for this feature."
+            },
+            "note": {
+              "type": "string"
+            },
+            "evidence_ref": {
+              "type": "string",
+              "description": "Pointer to external evidence."
+            },
+            "reviewed_at": {
+              "$ref": "common.schema.json#/$defs/DateTime"
+            },
+            "dataset_version": {
+              "$ref": "common.schema.json#/$defs/Version"
+            }
+          }
+        }
+      }
+    }
+  },
   "rule.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/rule.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/rule.schema.json",
     "title": "Rule",
     "description": "Time-conditioned permission or ban (CDS-style regulation).",
     "type": "object",
@@ -5138,6 +5545,13 @@
         "type": "string",
         "description": "Council, road authority or operator."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -5177,7 +5591,7 @@
   },
   "safety-feature.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/safety-feature.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/safety-feature.schema.json",
     "title": "SafetyFeature",
     "description": "Personal-security and safety features.",
     "type": "object",
@@ -5234,6 +5648,13 @@
         "type": "string",
         "description": "How to reach help (organisation role or number reference)."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -5273,7 +5694,7 @@
   },
   "site.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/site.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/site.schema.json",
     "title": "Site",
     "description": "A precinct containing facilities, destinations and handover zones.",
     "type": "object",
@@ -5338,6 +5759,32 @@
         ],
         "description": "Used to measure equity of coverage across suburbs and regions, not only premium sites."
       },
+      "boundary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "frame_id",
+          "polygon"
+        ],
+        "description": "Precinct outline in one facility frame. Not tied to a level.",
+        "properties": {
+          "frame_id": {
+            "$ref": "common.schema.json#/$defs/Id",
+            "description": "Frame the polygon uses."
+          },
+          "polygon": {
+            "$ref": "common.schema.json#/$defs/LocalPolygon",
+            "description": "Site boundary."
+          }
+        }
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -5375,9 +5822,77 @@
     },
     "additionalProperties": false
   },
+  "stair-core.schema.json": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://opms.example.org/schema/0.3/stair-core.schema.json",
+    "title": "StairCore",
+    "description": "A stair or stair core. Footprint is in the facility frame. level_ids are the levels it connects.",
+    "type": "object",
+    "required": [
+      "id",
+      "level_ids",
+      "footprint"
+    ],
+    "properties": {
+      "id": {
+        "$ref": "common.schema.json#/$defs/Id",
+        "description": "Stair-core id."
+      },
+      "level_ids": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "description": "Levels served."
+      },
+      "kind": {
+        "enum": [
+          "stairs",
+          "stair_core"
+        ],
+        "description": "Kind."
+      },
+      "footprint": {
+        "$ref": "common.schema.json#/$defs/LocalPolygon",
+        "description": "Footprint in the facility frame. z is the lowest served level."
+      },
+      "step_free": {
+        "type": "boolean",
+        "description": "False for a stair. A stair is not an accessible route."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
+      "provenance": {
+        "$ref": "common.schema.json#/$defs/Provenance"
+      },
+      "evidence": {
+        "$ref": "common.schema.json#/$defs/Evidence"
+      },
+      "lifecycle": {
+        "$ref": "common.schema.json#/$defs/Lifecycle"
+      },
+      "external_refs": {
+        "$ref": "common.schema.json#/$defs/ExternalRefs"
+      },
+      "_note": {
+        "type": "string",
+        "description": "Free-text note; used to label fictional example data."
+      }
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "additionalProperties": false
+  },
   "wayfinding-aid.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/wayfinding-aid.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/wayfinding-aid.schema.json",
     "title": "WayfindingAid",
     "description": "Signs, level colours and landmarks people use to find their car and the way out.",
     "type": "object",
@@ -5435,6 +5950,13 @@
         "type": "boolean",
         "description": "Tactile."
       },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
+      },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"
       },
@@ -5474,7 +5996,7 @@
   },
   "zone.schema.json": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://opms.example.org/schema/0.2/zone.schema.json",
+    "$id": "https://opms.example.org/schema/0.3/zone.schema.json",
     "title": "Zone",
     "description": "A painted area of bays.",
     "type": "object",
@@ -5502,6 +6024,17 @@
           "$ref": "common.schema.json#/$defs/Id"
         },
         "description": "Optional hint of dominant bay classes (free ids such as ev, accessible)."
+      },
+      "polygon": {
+        "$ref": "common.schema.json#/$defs/LocalPolygon",
+        "description": "Painted area in the facility frame."
+      },
+      "verifications": {
+        "type": "array",
+        "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+        "items": {
+          "$ref": "common.schema.json#/$defs/Verification"
+        }
       },
       "provenance": {
         "$ref": "common.schema.json#/$defs/Provenance"

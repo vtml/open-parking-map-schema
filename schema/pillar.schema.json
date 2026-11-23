@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/pillar.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/pillar.schema.json",
   "title": "Pillar",
   "description": "A structural pillar: obstacle and alignment landmark.",
   "type": "object",
@@ -62,6 +62,13 @@
     "painted_label": {
       "type": "string",
       "description": "Label on the pillar."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

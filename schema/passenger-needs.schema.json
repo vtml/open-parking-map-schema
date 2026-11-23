@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/passenger-needs.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/passenger-needs.schema.json",
   "title": "PassengerNeeds",
   "description": "On-device passenger needs profile for a Banish-style mission. Never part of a map dataset.",
   "type": "object",

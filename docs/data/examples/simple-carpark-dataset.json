@@ -1,7 +1,7 @@
 {
   "_note": "FICTIONAL EXAMPLE DATA. Wattle Reserve Office, its road, identifiers and coordinates are invented for illustration. Not a real place.",
-  "opms_version": "0.2.0",
-  "dataset_version": "2026-11-23.1",
+  "opms_version": "0.3.0",
+  "dataset_version": "2026-11-23.2",
   "profile": "static-rules",
   "site": {
     "id": "wr",
@@ -23,7 +23,32 @@
       "observed_at": "2026-11-23T09:00:00+11:00",
       "confidence": 0.9
     },
-    "_note": "Fictional site. The external_refs values are placeholders, not real APDS or ISO records."
+    "_note": "Fictional site. The external_refs values are placeholders, not real APDS or ISO records.",
+    "boundary": {
+      "frame_id": "wr.frame",
+      "polygon": [
+        [
+          -2.0,
+          0.0,
+          0.0
+        ],
+        [
+          23.0,
+          0.0,
+          0.0
+        ],
+        [
+          23.0,
+          33.900000000000006,
+          0.0
+        ],
+        [
+          -2.0,
+          33.900000000000006,
+          0.0
+        ]
+      ]
+    }
   },
   "frames": [
     {
@@ -108,7 +133,29 @@
     {
       "id": "wr.g.main",
       "level_id": "wr.g",
-      "name": "Main"
+      "name": "Main",
+      "polygon": [
+        [
+          0.5,
+          5.5,
+          0.0
+        ],
+        [
+          18.5,
+          5.5,
+          0.0
+        ],
+        [
+          18.5,
+          28.400000000000002,
+          0.0
+        ],
+        [
+          0.5,
+          28.400000000000002,
+          0.0
+        ]
+      ]
     }
   ],
   "bays": [
@@ -144,7 +191,16 @@
         "general"
       ],
       "painted_label": "01",
-      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check."
+      "_note": "Fictional bay. Dimensions are illustrative, not a compliance check.",
+      "verifications": [
+        {
+          "role": "crowd",
+          "status": "not-checked",
+          "reviewed_at": "2026-11-20T10:00:00+11:00",
+          "dataset_version": "2026-11-23.2",
+          "note": "Fictional example, not an owner sign-off."
+        }
+      ]
     },
     {
       "id": "wr.g.b02",
@@ -849,7 +905,20 @@
         "source": "survey",
         "observed_at": "2026-11-23T09:00:00+11:00",
         "confidence": 0.9
-      }
+      },
+      "level_id": "wr.g",
+      "threshold": [
+        [
+          6.5,
+          0.4,
+          0
+        ],
+        [
+          12.5,
+          0.4,
+          0
+        ]
+      ]
     }
   ],
   "gates": [
@@ -861,6 +930,24 @@
       "actuation": [
         "ticket",
         "lpr"
+      ],
+      "level_id": "wr.g",
+      "threshold": [
+        [
+          6.5,
+          0.4,
+          0
+        ],
+        [
+          12.5,
+          0.4,
+          0
+        ]
+      ],
+      "position": [
+        9.5,
+        0.4,
+        0
       ]
     }
   ],
@@ -890,7 +977,8 @@
         0
       ],
       "step_free": true,
-      "_note": "The schema's door kinds have no generic pedestrian-exit value. mall_door is the door kind used here for a fictional pedestrian exit."
+      "_note": "The schema's door kinds have no generic pedestrian-exit value. mall_door is the door kind used here for a fictional pedestrian exit.",
+      "level_id": "wr.g"
     }
   ],
   "destinations": [
@@ -901,6 +989,12 @@
       "level_label": "G",
       "portal_ids": [
         "wr.pp.exit"
+      ],
+      "level_id": "wr.g",
+      "position": [
+        11.0,
+        33.5,
+        0
       ]
     }
   ],
@@ -922,7 +1016,30 @@
         "lighting": "good",
         "wait_time_allowance_s": 120
       },
-      "_note": "Fictional drop-off on level G. This object has no position or polygon in v0.2."
+      "_note": "Fictional drop-off on level G. This object has no position or polygon in v0.2.",
+      "level_id": "wr.g",
+      "polygon": [
+        [
+          6.0,
+          30.5,
+          0.0
+        ],
+        [
+          13.0,
+          30.5,
+          0.0
+        ],
+        [
+          13.0,
+          33.5,
+          0.0
+        ],
+        [
+          6.0,
+          33.5,
+          0.0
+        ]
+      ]
     }
   ],
   "destination_access": [
@@ -953,7 +1070,20 @@
       "sheltered": "none",
       "rest_points": 1,
       "crossings": 0,
-      "_note": "Fictional path. The record stores distance, not a centreline."
+      "_note": "Fictional path. The record stores distance, not a centreline.",
+      "level_id": "wr.g",
+      "centreline": [
+        [
+          15.3,
+          23.35,
+          0
+        ],
+        [
+          9.5,
+          33.5,
+          0
+        ]
+      ]
     }
   ],
   "wayfinding_aids": [

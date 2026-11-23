@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/pillar-grid.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/pillar-grid.schema.json",
   "title": "PillarGrid",
   "description": "A regular pillar grid, useful as a strong alignment constraint.",
   "type": "object",
@@ -50,6 +50,13 @@
         "type": "string"
       },
       "description": "Painted row labels."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/curb-segment.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/curb-segment.schema.json",
   "title": "CurbSegment",
   "description": "A length of kerb along a public road, linearly referenced.",
   "type": "object",
@@ -73,6 +73,13 @@
         "$ref": "common.schema.json#/$defs/Id"
       },
       "description": "Regulations along the segment (CDS-style)."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

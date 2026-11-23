@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/redaction-policy.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/redaction-policy.schema.json",
   "title": "RedactionPolicy",
   "description": "Privacy redaction requirements for contributions.",
   "type": "object",

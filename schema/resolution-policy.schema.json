@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/resolution-policy.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/resolution-policy.schema.json",
   "title": "ResolutionPolicy",
   "description": "How a repository promotes, merges and retires crowdsourced features.",
   "type": "object",

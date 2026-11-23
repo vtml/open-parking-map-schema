@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/campaign.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/campaign.schema.json",
   "title": "Campaign",
   "description": "A request (SENSORIS-style) for a survey of a named facility.",
   "type": "object",

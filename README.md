@@ -1,8 +1,8 @@
-# OPMS: Open Parking Map Schema (v0.2 draft)
+# OPMS: Open Parking Map Schema (v0.3 draft)
 
 A vendor-neutral data model for cars that **drop you off, park themselves and come back**, and for the **crowdsourced surveying** that keeps those parking maps accurate.
 
-> Status: **v0.2 draft for discussion.** Not published, not endorsed by any vehicle maker, authority or standards body. All example data (Merriwa Park Shopping Centre, roads, organisations, prices, coordinates) is **fictional**.
+> Status: **v0.3 draft for discussion.** Not published, not endorsed by any vehicle maker, authority or standards body. All example data (Merriwa Park Shopping Centre, Wattle Reserve Office, roads, organisations, prices, coordinates) is **fictional**. v0.3 locates physical features and can record a review of them. It does not include a review tool.
 
 **Project site:** <https://vtml.github.io/open-parking-map-schema/> (static pages in `docs/`).
 
@@ -92,7 +92,7 @@ Open an issue or a pull request; see `CONTRIBUTING.md`. Useful contributions: re
 
 ## Status and limits
 
-- v0.2 is a draft; breaking changes are expected before 1.0.
+- v0.3 is a draft; breaking changes are expected before 1.0. See `CHANGELOG.md` for what changed since 0.2, including the `$id` move and required `level_id` on portals and destinations.
 - The `services` profile is reserved, not specified.
 - Quality-tier numbers and consensus weights are proposals.
 - Jurisdiction examples are illustrations, not legal advice.

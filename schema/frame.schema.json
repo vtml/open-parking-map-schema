@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/frame.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/frame.schema.json",
   "title": "Frame",
   "description": "Local Cartesian facility frame anchored to WGS84.",
   "type": "object",

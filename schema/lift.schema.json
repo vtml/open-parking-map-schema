@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/lift.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/lift.schema.json",
   "title": "Lift",
   "description": "A lift on an accessible route.",
   "type": "object",
@@ -64,6 +64,17 @@
       "type": "string",
       "format": "uri",
       "description": "OPTIONAL live status feed; not required."
+    },
+    "footprint": {
+      "$ref": "common.schema.json#/$defs/LocalPolygon",
+      "description": "Shaft footprint in the facility frame. The same outline applies on each served level. z is the lowest served level."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

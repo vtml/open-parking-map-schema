@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/handover-requirements.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/handover-requirements.schema.json",
   "title": "HandoverRequirements",
   "description": "Minimum derived requirements that MAY be sent to a facility or planner with consent. Contains no identity, diagnosis or condition.",
   "type": "object",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/dataset.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/dataset.schema.json",
   "title": "OPMS dataset (consolidated map)",
   "description": "Root of a consolidated OPMS map for one site. Raw contributions are separate (contribution-bundle).",
   "type": "object",
@@ -33,7 +33,8 @@
     },
     "opms_version": {
       "type": "string",
-      "pattern": "^0[.]2[.][0-9]+$"
+      "pattern": "^0[.][23][.][0-9]+$",
+      "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
     },
     "dataset_version": {
       "$ref": "common.schema.json#/$defs/Version"
@@ -197,6 +198,13 @@
         "$ref": "lift.schema.json"
       },
       "description": "Lifts used on accessible routes."
+    },
+    "stair_cores": {
+      "type": "array",
+      "description": "Stair cores. Footprint plus the levels they connect.",
+      "items": {
+        "$ref": "stair-core.schema.json"
+      }
     },
     "wayfinding_aids": {
       "type": "array",

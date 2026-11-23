@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/jurisdiction.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/jurisdiction.schema.json",
   "title": "Jurisdiction",
   "description": "Rules for where contributions go, who may handle them and where they are stored.",
   "type": "object",

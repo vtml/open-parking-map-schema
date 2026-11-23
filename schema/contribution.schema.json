@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/contribution.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/contribution.schema.json",
   "title": "Contribution",
   "description": "A batch of static-feature observations from one contributor, kept separate from the consolidated map.",
   "type": "object",

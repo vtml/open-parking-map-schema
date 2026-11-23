@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/contribution-bundle.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/contribution-bundle.schema.json",
   "title": "OPMS contribution bundle",
   "description": "A contribution with its feature observations and alignment records, as submitted to a repository.",
   "type": "object",
@@ -19,7 +19,8 @@
     },
     "opms_version": {
       "type": "string",
-      "pattern": "^0[.]2[.][0-9]+$"
+      "pattern": "^0[.][23][.][0-9]+$",
+      "description": "Schema version. 0.2.x remains valid. 0.3 adds located geometry and verification."
     },
     "contribution": {
       "$ref": "contribution.schema.json"

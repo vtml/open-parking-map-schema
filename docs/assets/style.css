@@ -614,6 +614,11 @@ main.wide {
 .bay-courier { fill: #d7b59a; }
 .bay-transport { fill: #9ecfc8; }
 .bay-other { fill: #e3c1b8; }
+.zone-outline { fill: transparent; }
+.handover { fill: rgba(30, 90, 140, 0.28); }
+.lift { fill: #c9b6e0; }
+.stair { fill: #e4d3be; }
+.destination { fill: rgba(28, 74, 56, 0.2); }
 
 .legend {
   margin-top: 0.8rem;

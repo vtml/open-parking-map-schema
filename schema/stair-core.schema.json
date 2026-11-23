@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opms.example.org/schema/0.3/stair-core.schema.json",
+  "title": "StairCore",
+  "description": "A stair or stair core. Footprint is in the facility frame. level_ids are the levels it connects.",
+  "type": "object",
+  "required": [
+    "id",
+    "level_ids",
+    "footprint"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Stair-core id."
+    },
+    "level_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "common.schema.json#/$defs/Id"
+      },
+      "description": "Levels served."
+    },
+    "kind": {
+      "enum": [
+        "stairs",
+        "stair_core"
+      ],
+      "description": "Kind."
+    },
+    "footprint": {
+      "$ref": "common.schema.json#/$defs/LocalPolygon",
+      "description": "Footprint in the facility frame. z is the lowest served level."
+    },
+    "step_free": {
+      "type": "boolean",
+      "description": "False for a stair. A stair is not an accessible route."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
+    },
+    "provenance": {
+      "$ref": "common.schema.json#/$defs/Provenance"
+    },
+    "evidence": {
+      "$ref": "common.schema.json#/$defs/Evidence"
+    },
+    "lifecycle": {
+      "$ref": "common.schema.json#/$defs/Lifecycle"
+    },
+    "external_refs": {
+      "$ref": "common.schema.json#/$defs/ExternalRefs"
+    },
+    "_note": {
+      "type": "string",
+      "description": "Free-text note; used to label fictional example data."
+    }
+  },
+  "patternProperties": {
+    "^x_": {}
+  },
+  "additionalProperties": false
+}

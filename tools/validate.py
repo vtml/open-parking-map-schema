@@ -36,6 +36,7 @@ EXAMPLE_SCHEMAS = {
     "optional-dynamic-feed.json": "dynamic-feed.schema.json",
     "registry-example.json": "registry.schema.json",
     "passenger-needs-example.json": "passenger-needs.schema.json",
+    "review-example.json": "review.schema.json",
 }
 
 
@@ -183,6 +184,114 @@ def dataset_refs(d):
         acc = b.get("accessibility")
         if acc and "accessible" in b["bay_types"]:
             check(errs, "shared_zone" in acc, f"bay {b['id']}: accessible bay with accessibility data should declare shared_zone")
+    for portal in d.get("pedestrian_portals", []):
+        check(errs, portal.get("level_id") in levels, f"portal {portal['id']}: level_id is required and must be a level")
+    for dest in d.get("destinations", []):
+        check(errs, dest.get("level_id") in levels, f"destination {dest['id']}: level_id is required and must be a level")
+    errs.extend(conformance_03(d, levels))
+    return errs
+
+
+def owner_confirmed(obj, version):
+    for record in obj.get("verifications") or []:
+        if record.get("role") == "owner" and record.get("status") == "confirmed" and record.get("dataset_version") == version:
+            return True
+    return False
+
+
+def conformance_03(d, levels):
+    """Located geometry and owner verification. Applies only to opms_version 0.3."""
+    if not str(d.get("opms_version", "")).startswith("0.3"):
+        return []
+    errs = []
+    version = d.get("dataset_version")
+    frames = ids(d, "frames")
+    facility_of = {}
+    for facility in d.get("facilities", []):
+        for level in facility["levels"]:
+            facility_of[level["id"]] = facility
+    if d.get("facilities"):
+        boundary = (d.get("site") or {}).get("boundary")
+        check(errs, bool(boundary and len(boundary.get("polygon") or []) >= 4), "site.boundary polygon is required on a 0.3 dataset with facilities")
+        if boundary:
+            check(errs, boundary.get("frame_id") in frames, "site.boundary.frame_id is not a frame in this dataset")
+    for zone in d.get("zones", []):
+        check(errs, len(zone.get("polygon") or []) >= 4, f"zone {zone['id']}: polygon is required in 0.3")
+    for access in d.get("access_points", []):
+        check(errs, access.get("level_id") in levels, f"access point {access['id']}: level_id is required and must be a level")
+        check(errs, isinstance(access.get("position"), list) and len(access["position"]) == 3, f"access point {access['id']}: position is required in 0.3")
+        check(errs, isinstance(access.get("threshold"), list) and len(access["threshold"]) >= 2, f"access point {access['id']}: threshold segment is required in 0.3")
+    for gate in d.get("gates", []):
+        check(errs, gate.get("level_id") in levels, f"gate {gate['id']}: level_id is required and must be a level")
+        has_line = isinstance(gate.get("threshold"), list) and len(gate["threshold"]) >= 2
+        has_point = isinstance(gate.get("position"), list) and len(gate["position"]) == 3
+        check(errs, has_line or has_point, f"gate {gate['id']}: position or threshold is required in 0.3")
+    for lift in d.get("lifts", []):
+        check(errs, len(lift.get("footprint") or []) >= 4, f"lift {lift['id']}: footprint is required in 0.3")
+    for stair in d.get("stair_cores", []):
+        check(errs, len(stair.get("footprint") or []) >= 4, f"stair core {stair['id']}: footprint is required in 0.3")
+        for level_id in stair.get("level_ids", []):
+            check(errs, level_id in levels, f"stair core {stair['id']}: unknown level {level_id}")
+    for portal in d.get("pedestrian_portals", []):
+        check(errs, isinstance(portal.get("position"), list) and len(portal["position"]) == 3, f"portal {portal['id']}: position is required in 0.3")
+    for dest in d.get("destinations", []):
+        has_point = isinstance(dest.get("position"), list) and len(dest["position"]) == 3
+        has_poly = len(dest.get("polygon") or []) >= 4
+        check(errs, has_point or has_poly, f"destination {dest['id']}: position or polygon is required in 0.3")
+    level_ids = levels
+    for zone in d.get("handover_zones", []):
+        check(errs, len(zone.get("polygon") or []) >= 4, f"handover zone {zone['id']}: polygon is required in 0.3")
+        if zone.get("location_id") in level_ids:
+            check(errs, zone.get("level_id") in level_ids, f"handover zone {zone['id']}: in-facility zone needs level_id")
+        elif zone.get("level_id"):
+            check(errs, zone["level_id"] in level_ids, f"handover zone {zone['id']}: unknown level {zone['level_id']}")
+    for facility in d.get("facilities", []):
+        tier = facility.get("quality_tier", {}).get("tier", 0)
+        if tier >= 2:
+            check(
+                errs,
+                owner_confirmed(facility, version),
+                f"facility {facility['id']}: tier {tier} requires an owner verification with status confirmed for dataset_version {version}",
+            )
+
+    def needs_centreline(feature, facility):
+        if owner_confirmed(feature, version):
+            return True
+        return bool(facility) and facility.get("quality_tier", {}).get("tier", 0) >= 2
+
+    for edge in d.get("drive_edges", []):
+        facility = facility_of.get(edge.get("level_id"))
+        if needs_centreline(edge, facility):
+            check(errs, isinstance(edge.get("centreline"), list) and len(edge["centreline"]) >= 2, f"edge {edge['id']}: centreline is required when owner-verified or facility tier is 2 or 3")
+    for walk in d.get("accessible_paths", []):
+        facility = facility_of.get(walk.get("level_id"))
+        if needs_centreline(walk, facility):
+            check(errs, isinstance(walk.get("centreline"), list) and len(walk["centreline"]) >= 2, f"path {walk['id']}: centreline is required when owner-verified or facility tier is 2 or 3")
+    return errs
+
+
+def review_refs(review, datasets):
+    errs = []
+    by_site = {d["site"]["id"]: d for d in datasets.values()}
+    dataset = by_site.get(review.get("dataset_id"))
+    check(errs, dataset is not None, f"review {review.get('id')}: dataset_id {review.get('dataset_id')} is not a site in the loaded datasets")
+    if not dataset:
+        return errs
+    check(errs, review.get("dataset_version") == dataset.get("dataset_version"), f"review {review.get('id')}: dataset_version does not match the dataset")
+    known = {dataset["site"]["id"]}
+    for key in (
+        "frames", "facilities", "zones", "bays", "drive_nodes", "drive_edges", "access_points", "gates",
+        "inter_facility_links", "anchor_features", "pillar_grids", "pillars", "localization_aids",
+        "pedestrian_portals", "destinations", "handover_zones", "curb_segments", "rules", "rates",
+        "certifications", "lifts", "stair_cores", "wayfinding_aids", "safety_features", "accessible_paths",
+    ):
+        known |= ids(dataset, key)
+    for facility in dataset.get("facilities", []):
+        for level in facility.get("levels", []):
+            known.add(level["id"])
+    for entry in review.get("entries", []):
+        check(errs, entry.get("feature_id") in known, f"review {review.get('id')}: unknown feature {entry.get('feature_id')}")
+        check(errs, entry.get("dataset_version") == dataset.get("dataset_version"), f"review entry {entry.get('feature_id')}: dataset_version does not match the dataset")
     return errs
 
 
@@ -294,6 +403,15 @@ def main(argv):
             print("  FAIL", e)
         failures += len(es)
 
+    review = docs.get("review-example.json")
+    if review:
+        datasets = {n: d for n, (s, d) in docs.items() if s == "dataset.schema.json"}
+        es = review_refs(review[1], datasets)
+        print(f"review references: {'OK' if not es else str(len(es)) + ' problems'}")
+        for e in es:
+            print("  FAIL", e)
+        failures += len(es)
+
     # negative tests: the profile rules must actually bite
     if len(argv) == 1:
         neg = 0
@@ -311,6 +429,33 @@ def main(argv):
         neg += 0 if validate_doc(registry, schemas, "passenger-needs.schema.json", t) else 1
         t = json.loads(json.dumps(pn)); t["derived_requirements"]["diagnosis"] = "x"
         neg += 0 if validate_doc(registry, schemas, "passenger-needs.schema.json", t) else 1
+
+        simple = load(EXAMPLE_DIR / "simple-carpark-dataset.json")
+        t = json.loads(json.dumps(simple)); del t["pedestrian_portals"][0]["level_id"]
+        neg += 0 if validate_doc(registry, schemas, "dataset.schema.json", t) else 1
+        t = json.loads(json.dumps(simple)); t["pedestrian_portals"][0]["level_id"] = "missing.level"
+        neg += 0 if dataset_refs(t) else 1
+        t = json.loads(json.dumps(simple)); del t["access_points"][0]["threshold"]
+        neg += 0 if dataset_refs(t) else 1
+        t = json.loads(json.dumps(simple))
+        t["facilities"][0]["quality_tier"] = {"tier": 2, "accuracy_class": "supervised_self_park"}
+        neg += 0 if any("owner verification" in e for e in dataset_refs(t)) else 1
+        confirmed = {"role": "owner", "status": "confirmed", "reviewed_at": "2026-11-20T10:00:00+11:00", "dataset_version": simple["dataset_version"]}
+        t = json.loads(json.dumps(simple))
+        t["facilities"][0]["quality_tier"] = {"tier": 2, "accuracy_class": "supervised_self_park"}
+        t["facilities"][0]["verifications"] = [confirmed]
+        t["drive_edges"][0].pop("centreline", None)
+        neg += 0 if any("centreline is required" in e for e in dataset_refs(t)) else 1
+        t = json.loads(json.dumps(simple))
+        t["drive_edges"][0].pop("centreline", None)
+        neg += 1 if any("centreline is required" in e for e in dataset_refs(t)) else 0
+        t = json.loads(json.dumps(simple))
+        t["drive_edges"][0].pop("centreline", None)
+        t["drive_edges"][0]["verifications"] = [confirmed]
+        neg += 0 if any("centreline is required" in e for e in dataset_refs(t)) else 1
+        reviewed = load(EXAMPLE_DIR / "review-example.json")
+        t = json.loads(json.dumps(reviewed)); t["entries"][0]["feature_id"] = "missing.feature"
+        neg += 0 if review_refs(t, {"simple-carpark-dataset.json": simple}) else 1
         print(f"negative tests (profile and role rules reject bad data): {'OK' if neg == 0 else str(neg) + ' did not behave'}")
         failures += neg
 

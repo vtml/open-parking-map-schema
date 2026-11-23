@@ -1,6 +1,6 @@
-# OPMS: Open Parking Map Schema, v0.2 (draft)
+# OPMS: Open Parking Map Schema, v0.3 (draft)
 
-Status: **draft for discussion, not published, not endorsed by any company or standards body.** Version 0.2.0, 2026-11-23.
+Status: **draft for discussion, not published, not endorsed by any company or standards body.** Version 0.3.0, 2026-11-23.
 Licence: this text is CC BY 4.0; the JSON Schemas and tools are Apache-2.0 (see `LICENSE`).
 
 All example organisations, roads, IDs, prices and coordinates in this repository are **fictional**. Nothing here describes the internal workings of any vehicle manufacturer. Jurisdiction examples are illustrations, not legal advice.
@@ -13,7 +13,7 @@ OPMS describes the **static** structure of those places (levels, ramps, aisles, 
 
 OPMS is a **glue layer**. It does not replace HD map formats or facility-data standards; it links to them by identifier (section 2).
 
-Non-goals in v0.2: live space availability (optional extension only, section 9), wire protocols between a vehicle and a facility (ISO 23374 leaves them open), vehicle control, and payment processing.
+Non-goals in v0.3: live space availability (optional extension only, section 9), wire protocols between a vehicle and a facility (ISO 23374 leaves them open), vehicle control, and payment processing. v0.3 records reviews of features; it does not include the review tool.
 
 ## 2. Relationship to existing work
 
@@ -75,7 +75,7 @@ A dataset declares one cumulative **profile**:
 | `static-core` (default) | layer 1 | No rules, destinations or live data. Enough for localisation, routing and search by a car. |
 | `static-rules` | layer 2 | Adds destinations, portals, handover zones, kerb segments, rules and rates. |
 | `dynamic` | layer 4 | Adds an optional live feed (`dynamic`). Not required by anything else. |
-| `services` | layer 5 | Adds optional `services`. Not yet schematised in v0.2. |
+| `services` | layer 5 | Adds optional `services`. Not yet schematised in v0.3. |
 
 The root schema enforces this: a `static-core` dataset may not contain layer 2 keys, and a `static-core` or `static-rules` dataset may not contain `dynamic` or `services`. **A conforming consumer MUST work with `static-core` alone.** Live occupancy is never required; a car searching a car park without it uses zone ordering, bay-type hints and its own sensing.
 
@@ -143,6 +143,26 @@ erDiagram
   OCCUPANCY_UPDATE }o--o| BAY : "OPTIONAL state of"
   CLOSURE }o--o{ DRIVE_EDGE : "OPTIONAL affects"
 ```
+
+## 4.1 Located geometry and verification (v0.3)
+
+Physical features that a later review tool must be able to check against the ground carry coordinates in the facility frame, and a level id where the object sits on one floor.
+
+- **Site** `boundary`: a polygon and `frame_id`. It is not a level.
+- **Zone, handover zone, destination**: `polygon` and, for an in-facility handover or a destination, `level_id`. A kerbside handover keeps `location_id` as the curb segment and may also set `level_id` for the parking level beside it.
+- **Access point**: `position`, `level_id` of the threshold, and `threshold` (a segment of at least two points, the gate line).
+- **Gate or barrier**: `level_id` and either `position` or `threshold`. `kind` includes `barrier`.
+- **Lift and stair core**: `footprint` polygon and `level_ids`. Stair cores are `stair_cores` on the dataset. A stair is not an accessible route.
+- **Pedestrian portal and destination**: `level_id` is required. `level_label` is display text only and is not a reference.
+- **Drive edge and accessible path**: `centreline` is optional at quality tier 0 and 1. It is required, with at least two points, when the feature has an owner verification with status `confirmed` for this `dataset_version`, or when its facility tier is 2 or 3.
+
+A feature may carry `verifications`. Each record has `role` (`owner`, `operator`, `authority`, `crowd`), `status` (`confirmed`, `incorrect`, `missing`, `not-checked`), optional `note`, optional `evidence_ref` (a pointer, not the file), `reviewed_at`, and `dataset_version`. Absent means not checked. Notes must not name a person or a diagnosis.
+
+**Owner-verified** means a verification with `role: owner`, `status: confirmed`, and `dataset_version` equal to the dataset. Declaring facility tier 2 or 3 requires that record on the facility. The record does not raise the tier by itself. Tier 2 and 3 are the "owner-verified or higher" tiers for the centreline rule.
+
+A **review document** (`schema/review.schema.json`) is not part of the map. It references `dataset_id` (the site id) and `dataset_version`, and lists per-feature entries in the same shape. A future tool can write that file; v0.3 does not implement the tool.
+
+On a dataset with `opms_version` 0.3, `tools/validate.py` requires the geometry above and the tier rule. A 0.2 dataset still validates against this schema when it does not use removed requirements.
 
 ## 5. Static entities
 
@@ -497,8 +517,9 @@ Schema: `schema/pedestrian-portal.schema.json`
 |---|---|---|---|
 | `id` | Id | yes | Portal id. |
 | `kind` | enum | yes | Portal kind. Values: `mall_door`, `lift_lobby`, `stairs`, `escalator`, `bridge`, `terminal_door`, `ward_entrance`. |
-| `level_label` | string | yes | Level as signed on the pedestrian side. |
-| `position` | LocalPoint |  |  |
+| `level_id` | Id | yes | Parking level this opening is on. |
+| `level_label` | string |  | Display text only, as signed. Not a reference. |
+| `position` | LocalPoint |  | Point in the facility frame. Required on a 0.3 dataset. |
 | `step_free` | boolean |  | Step-free. |
 | `hours` | TimeWindow[] |  | Hours. |
 
@@ -514,7 +535,9 @@ Schema: `schema/destination.schema.json`
 | `id` | Id | yes | Destination id. |
 | `kind` | enum | yes | Destination kind. Values: `store`, `cinema`, `food_court`, `supermarket`, `mall_door`, `lift_lobby`, `terminal`, `hospital_entrance`, `emergency_dept`, `residence`. |
 | `name` | string | yes | Display name. |
-| `level_label` | string |  | Level as signed. |
+| `level_id` | Id | yes | Parking level that serves the destination. |
+| `level_label` | string |  | Display text only. Not a reference. |
+| `position` | LocalPoint |  | Point in the facility frame. A 0.3 dataset needs this or `polygon`. |
 | `portal_ids` | Id[] | yes | Doors people use to reach it. |
 | `hours` | TimeWindow[] |  | Opening hours. |
 

@@ -146,13 +146,16 @@
       if (kind === "access") return (obj.served_level_ids && obj.served_level_ids.length) ? obj.served_level_ids.slice() : ["*"];
       if (kind === "gate") {
         var host = access[obj.host_id] || links[obj.host_id];
-        if (!host) return ["*"];
-        return levelsFor(access[obj.host_id] ? "access" : "link", host);
+        var fromHost = host ? levelsFor(access[obj.host_id] ? "access" : "link", host) : [];
+        if (obj.level_id) return fromHost.concat([obj.level_id]).filter(function (id, i, all) { return all.indexOf(id) === i; });
+        return fromHost.length ? fromHost : ["*"];
       }
       if (kind === "handover") {
+        if (obj.level_id) return [obj.level_id];
         return levelById[obj.location_id] ? [obj.location_id] : [];
       }
       if (kind === "portal" || kind === "destination") {
+        if (obj.level_id) return [obj.level_id];
         return levelInfo.filter(function (item) { return item.level.label === obj.level_label; }).map(function (item) { return item.level.id; });
       }
       if (kind === "path") {
@@ -224,16 +227,20 @@
       drawable: false
     });
     if (data.site) {
+      var boundary = data.site.boundary && data.site.boundary.polygon;
       push({
         id: data.site.id,
         group: "Site",
         label: data.site.name || data.site.id,
-        summary: "Site " + data.site.id + ". The dashed box on the map is only the extent of recorded coordinates.",
+        summary: boundary
+          ? "Site " + data.site.id + ". The outline is site.boundary."
+          : "Site " + data.site.id + ". No boundary polygon, so the dashed box is only the extent of recorded coordinates.",
         obj: data.site,
         schemaFile: "site.schema.json",
         levels: ["*"],
         drawable: true,
-        shape: "extent"
+        shape: boundary ? "boundary" : "extent",
+        points: boundary || null
       });
     }
     (data.frames || []).forEach(function (frame) {
@@ -295,11 +302,14 @@
         id: zone.id,
         group: "Zones",
         label: zone.name || zone.id,
-        summary: "Zone " + zone.id + ". Zones have no polygon in v0.2.",
+        summary: "Zone " + zone.id + (zone.polygon ? "." : ". No polygon, so it is not drawn."),
         obj: zone,
         schemaFile: "zone.schema.json",
         levels: prepared.levelsFor("zone", zone),
-        drawable: false
+        drawable: !!(zone.polygon && zone.polygon.length >= 4),
+        shape: "zone",
+        points: zone.polygon,
+        cls: "zone-outline"
       });
     });
     (data.bays || []).forEach(function (bay) {
@@ -384,25 +394,27 @@
         obj: ap,
         schemaFile: "access-point.schema.json",
         levels: prepared.levelsFor("access", ap),
-        drawable: !!ap.position,
+        drawable: !!(ap.position || (ap.threshold && ap.threshold.length >= 2)),
         shape: "access",
         at: ap.position,
+        line: ap.threshold,
         role: ap.role
       });
     });
     (data.gates || []).forEach(function (gate) {
       var host = prepared.access[gate.host_id];
-      var at = host && host.position;
+      var at = gate.position || (host && host.position);
+      var line = gate.threshold;
       var derived = "";
-      if (!at && prepared.links[gate.host_id]) {
+      if (!at && !line && prepared.links[gate.host_id]) {
         var link = prepared.links[gate.host_id];
         var a = prepared.nodes[link.from];
         var b = prepared.nodes[link.to];
         if (a && b) {
-          at = [(a.position[0] + b.position[0]) / 2, (a.position[1] + b.position[1]) / 2, 0];
+          at = [(a.position[0] + b.position[0]) / 2, (a.position[1] + b.position[1]) / 2, a.position[2] || 0];
           derived = " Placed at the midpoint of the link it belongs to, because the gate has no coordinates.";
         }
-      } else if (at) {
+      } else if (!line && at && host && host.position && !gate.position) {
         derived = " Placed beside its access point, because the gate has no coordinates.";
       }
       push({
@@ -410,14 +422,15 @@
         group: "Access",
         parent: gate.host_id,
         label: gate.kind + " " + gate.id,
-        summary: "Gate " + gate.id + " (" + gate.kind + ")." + (at ? derived : " No host position, so it is not drawn."),
+        summary: "Gate " + gate.id + " (" + gate.kind + ")." + (line ? " Threshold is in the file." : (at ? derived : " No coordinates, so it is not drawn.")),
         obj: gate,
         schemaFile: "gate.schema.json",
         levels: prepared.levelsFor("gate", gate),
-        drawable: !!at,
+        drawable: !!(at || (line && line.length >= 2)),
         shape: "gate",
         at: at,
-        beside: !!(host && host.position)
+        line: line,
+        beside: !!(host && host.position && !line && !gate.position)
       });
     });
     (data.anchor_features || []).forEach(function (anchor) {
@@ -484,11 +497,17 @@
         id: dest.id,
         group: "People",
         label: dest.name || dest.id,
-        summary: "Destination " + dest.id + ". Destinations have no coordinates in v0.2.",
+        summary: "Destination " + (dest.name || dest.id) + (dest.position || dest.polygon ? "." : ". No coordinates, so it is not drawn."),
         obj: dest,
         schemaFile: "destination.schema.json",
         levels: prepared.levelsFor("destination", dest),
-        drawable: false
+        drawable: !!(dest.position || (dest.polygon && dest.polygon.length >= 4)),
+        shape: dest.polygon ? "polygon" : "point",
+        points: dest.polygon,
+        at: dest.position,
+        cls: "destination",
+        letter: "To",
+        kind: "destination"
       });
     });
     (data.handover_zones || []).forEach(function (zone) {
@@ -496,11 +515,15 @@
         id: zone.id,
         group: "People",
         label: "Drop-off " + zone.id,
-        summary: "Handover zone " + zone.id + " (" + zone.kind + "). v0.2 gives it no position or polygon, so it is not drawn.",
+        summary: "Handover zone " + zone.id + " (" + zone.kind + ")." + (zone.polygon ? "" : " No polygon, so it is not drawn."),
         obj: zone,
         schemaFile: "handover-zone.schema.json",
         levels: prepared.levelsFor("handover", zone),
-        drawable: false
+        drawable: !!(zone.polygon && zone.polygon.length >= 4),
+        shape: "handover",
+        points: zone.polygon,
+        cls: "handover",
+        letter: "Drop"
       });
     });
     (data.accessible_paths || []).forEach(function (path) {
@@ -510,15 +533,15 @@
         id: path.id,
         group: "People",
         label: path.id,
-        summary: "Accessible path " + path.id + ". " + ((a && b) ? "The file stores a distance, not a centreline. The dashed line joins the recorded ends." : "One end has no coordinates, so it is not drawn."),
+        summary: "Accessible path " + path.id + ". " + (path.centreline ? "Centreline is in the file." : ((a && b) ? "No centreline, so the dashed line joins the recorded ends." : "No coordinates, so it is not drawn.")),
         obj: path,
         schemaFile: "accessible-path.schema.json",
         levels: prepared.levelsFor("path", path),
-        drawable: !!(a && b),
+        drawable: !!(path.centreline || (a && b)),
         shape: "line",
-        line: (a && b) ? [a, b] : null,
+        line: path.centreline || ((a && b) ? [a, b] : null),
         kind: "path",
-        derived: true
+        derived: !path.centreline
       });
     });
     (data.wayfinding_aids || []).forEach(function (aid) {
@@ -556,11 +579,31 @@
         id: lift.id,
         group: "People",
         label: "Lift " + lift.id,
-        summary: "Lift " + lift.id + ". v0.2 gives a lift no position, so it is not drawn.",
+        summary: "Lift " + lift.id + (lift.footprint ? "." : ". No footprint, so it is not drawn."),
         obj: lift,
         schemaFile: "lift.schema.json",
         levels: lift.level_ids && lift.level_ids.length ? lift.level_ids.slice() : ["*"],
-        drawable: false
+        drawable: !!(lift.footprint && lift.footprint.length >= 4),
+        shape: "lift",
+        points: lift.footprint,
+        cls: "lift",
+        letter: "Lift"
+      });
+    });
+    (data.stair_cores || []).forEach(function (stair) {
+      push({
+        id: stair.id,
+        group: "People",
+        label: "Stairs " + stair.id,
+        summary: "Stair core " + stair.id + ".",
+        obj: stair,
+        schemaFile: "stair-core.schema.json",
+        levels: stair.level_ids && stair.level_ids.length ? stair.level_ids.slice() : ["*"],
+        drawable: !!(stair.footprint && stair.footprint.length >= 4),
+        shape: "stair",
+        points: stair.footprint,
+        cls: "stair",
+        letter: "Stair"
       });
     });
     (data.rules || []).forEach(function (rule) {
@@ -695,11 +738,40 @@
       if (rec.drawable) visible.push(rec);
       else hidden.push(rec);
     });
-    var geomPts = collectPoints(visible.filter(function (rec) { return rec.shape !== "extent" && rec.shape !== "label"; }));
+    var content = visible.filter(function (rec) { return rec.shape !== "extent" && rec.shape !== "label" && rec.shape !== "boundary"; });
+    var geomPts = collectPoints(content);
+    var boundaryPts = collectPoints(visible.filter(function (rec) { return rec.shape === "boundary"; }));
+    if (boundaryPts.length && geomPts.length) {
+      var spanC = projectFactory(geomPts).span;
+      var spanB = projectFactory(boundaryPts).span;
+      if (spanB < spanC * 3) geomPts = geomPts.concat(boundaryPts);
+    } else if (!geomPts.length) {
+      geomPts = boundaryPts;
+    }
     var geom = projectFactory(geomPts);
     mapSvg.setAttribute("viewBox", "0 0 " + geom.width + " " + geom.height);
     var stroke = geom.span / 160;
     var font = geom.span / 42;
+
+    function polygonOf(rec, parent) {
+      var pts = rec.points.map(function (p) { var s = geom.xy(p[0], p[1]); return s[0] + "," + s[1]; }).join(" ");
+      el("polygon", { points: pts, class: rec.cls || "", fill: rec.cls ? null : "none", stroke: "currentColor", "stroke-width": stroke * (rec.shape === "zone" || rec.shape === "boundary" ? 1.1 : 0.7), "stroke-dasharray": (rec.shape === "zone" || rec.shape === "boundary") ? String(stroke * 2) + " " + String(stroke * 1.4) : null }, parent);
+      if (rec.letter) {
+        var c = rec.points.reduce(function (acc, p) { return [acc[0] + p[0], acc[1] + p[1]]; }, [0, 0]);
+        var s = geom.xy(c[0] / rec.points.length, c[1] / rec.points.length);
+        var text = el("text", {
+          x: s[0], y: s[1], "text-anchor": "middle", "dominant-baseline": "middle",
+          "font-size": Math.min(font, geom.span / 28), "pointer-events": "none", class: "bay-label"
+        }, parent);
+        text.textContent = rec.letter;
+      }
+    }
+
+    visible.filter(function (rec) { return rec.shape === "boundary" && rec.points; }).forEach(function (rec) {
+      var g = el("g", {}, mapSvg);
+      hit(g, rec);
+      polygonOf(rec, g);
+    });
 
     var extent = visible.filter(function (rec) { return rec.shape === "extent"; })[0];
     if (extent && geomPts.length) {
@@ -728,6 +800,14 @@
       return el("polyline", attrs, parent);
     }
 
+    ["zone", "handover", "lift", "stair"].forEach(function (shape) {
+      visible.filter(function (rec) { return rec.shape === shape && rec.points; }).forEach(function (rec) {
+        var g = el("g", {}, mapSvg);
+        hit(g, rec);
+        polygonOf(rec, g);
+      });
+    });
+
     visible.filter(function (rec) { return rec.shape === "line"; }).forEach(function (rec) {
       var g = el("g", {}, mapSvg);
       hit(g, rec);
@@ -735,26 +815,24 @@
       lineEl(g, rec.line, { "stroke-dasharray": dash, "stroke-width": rec.kind === "path" ? stroke * 1.3 : stroke * 2.2 });
     });
 
-    visible.filter(function (rec) { return rec.shape === "polygon"; }).forEach(function (rec) {
+    visible.filter(function (rec) { return rec.shape === "polygon" && rec.points; }).forEach(function (rec) {
       var g = el("g", {}, mapSvg);
       hit(g, rec);
-      var pts = rec.points.map(function (p) { var s = geom.xy(p[0], p[1]); return s[0] + "," + s[1]; }).join(" ");
-      el("polygon", { points: pts, class: rec.cls, stroke: "currentColor", "stroke-width": stroke * 0.7 }, g);
-      if (rec.letter) {
-        var c = rec.points.reduce(function (acc, p) { return [acc[0] + p[0], acc[1] + p[1]]; }, [0, 0]);
-        var s = geom.xy(c[0] / rec.points.length, c[1] / rec.points.length);
-        var text = el("text", {
-          x: s[0], y: s[1], "text-anchor": "middle", "dominant-baseline": "middle",
-          "font-size": Math.min(font, geom.span / 28), "pointer-events": "none", class: "bay-label"
-        }, g);
-        text.textContent = rec.letter;
-      }
+      polygonOf(rec, g);
     });
 
     visible.filter(function (rec) { return rec.shape === "point" || rec.shape === "anchor" || rec.shape === "portal" || rec.shape === "access" || rec.shape === "gate"; }).forEach(function (rec) {
       var g = el("g", {}, mapSvg);
       hit(g, rec);
+      if (rec.line && rec.line.length >= 2) {
+        lineEl(g, rec.line, { "stroke-width": stroke * 2.4 });
+      }
       var at = rec.at;
+      if (!at && rec.line && rec.line.length) {
+        var mid = rec.line[Math.floor(rec.line.length / 2)];
+        at = mid;
+      }
+      if (!at) return;
       if (rec.shape === "gate" && rec.beside) at = [rec.at[0] + geom.span * 0.03, rec.at[1], rec.at[2] || 0];
       var s = geom.xy(at[0], at[1]);
       var r = geom.span * 0.018;
@@ -819,13 +897,18 @@
     }
     if (extent) legendItem("", "Dashed box: extent of recorded coordinates");
     visible.forEach(function (rec) {
-      if (rec.shape === "polygon") legendItem("", rec.letter + " " + (bayMark(rec.obj.bay_types).name));
+      if (rec.shape === "boundary") legendItem("", "Dashed outline: site boundary");
+      if (rec.shape === "zone") legendItem("", "Dashed outline: zone");
+      if (rec.shape === "handover") legendItem("", "Drop: drop-off, handover or pick-up zone");
+      if (rec.shape === "lift") legendItem("", "Lift footprint");
+      if (rec.shape === "stair") legendItem("", "Stair core");
+      if (rec.shape === "polygon" && rec.obj && rec.obj.bay_types) legendItem("", rec.letter + " " + bayMark(rec.obj.bay_types).name);
       if (rec.kind === "aisle" || rec.kind === "access_lane") legendItem("", "Solid line: aisle or access lane");
       if (rec.kind === "ramp") legendItem("", "Dashed line: ramp");
       if (rec.kind === "link") legendItem("", "Dashed line: link between car parks");
-      if (rec.kind === "path") legendItem("", "Dashed line: accessible path between recorded ends");
-      if (rec.shape === "access") legendItem("", "Circle: entrance, exit, or both");
-      if (rec.shape === "gate") legendItem("", "Bar: gate, placed beside its host");
+      if (rec.kind === "path") legendItem("", "Dashed line: accessible or pedestrian path");
+      if (rec.shape === "access") legendItem("", "Circle and segment: entrance, exit, or both");
+      if (rec.shape === "gate") legendItem("", "Gate or barrier threshold");
       if (rec.shape === "anchor") legendItem("", "Cross: anchor");
       if (rec.shape === "portal") legendItem("", "Square: pedestrian portal");
     });

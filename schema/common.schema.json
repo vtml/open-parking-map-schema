@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/common.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/common.schema.json",
   "title": "OPMS common definitions",
   "description": "Shared definitions reused by every OPMS object schema.",
   "$defs": {
@@ -36,6 +36,14 @@
       "items": false,
       "minItems": 3,
       "description": "[x, y, z] metres in the facility frame (x east, y north, z up)."
+    },
+    "LocalPolygon": {
+      "type": "array",
+      "description": "Corners in the facility frame, counter-clockwise. At least four points. The ring need not repeat the first point. z is the elevation of the level.",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/$defs/LocalPoint"
+      }
     },
     "Geometry": {
       "type": "object",
@@ -377,7 +385,7 @@
         "tier"
       ],
       "additionalProperties": false,
-      "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier.",
+      "description": "Declared quality for a facility or feature. Cars map their ODD to a minimum tier. Tier 2 and tier 3 are owner-verified or higher: the facility must include a verification with role owner, status confirmed, and dataset_version equal to the dataset version. The verification does not raise the tier by itself. It is required before those tiers may be declared. Drive edges and accessible paths on an owner-verified facility must carry a centreline.",
       "properties": {
         "tier": {
           "type": "integer",
@@ -684,6 +692,53 @@
         },
         "accessibility_contact": {
           "type": "string"
+        }
+      }
+    },
+    "Verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One check of a feature against the real place. Stores the review, not the evidence file. No personal data.",
+      "required": [
+        "role",
+        "status",
+        "reviewed_at",
+        "dataset_version"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "owner",
+            "operator",
+            "authority",
+            "crowd"
+          ],
+          "description": "Reviewer role. An organisation role, not a person's name."
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "incorrect",
+            "missing",
+            "not-checked"
+          ],
+          "description": "confirmed: matches the place. incorrect: the record is wrong. missing: not there on the ground. not-checked: explicitly skipped."
+        },
+        "note": {
+          "type": "string",
+          "description": "Short note. No names, plates or diagnoses."
+        },
+        "evidence_ref": {
+          "type": "string",
+          "description": "Pointer to evidence kept outside the map (audit id or URL). Not the evidence itself."
+        },
+        "reviewed_at": {
+          "$ref": "#/$defs/DateTime",
+          "description": "When the review was made."
+        },
+        "dataset_version": {
+          "$ref": "#/$defs/Version",
+          "description": "Dataset version the reviewer looked at."
         }
       }
     }

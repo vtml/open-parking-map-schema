@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/gate.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/gate.schema.json",
   "title": "Gate",
-  "description": "Boom gate, roller door, bollard or open lane.",
+  "description": "Boom gate, roller door, bollard, barrier or open lane.",
   "type": "object",
   "required": [
     "id",
@@ -24,7 +24,8 @@
         "roller_door",
         "bollard",
         "open_lane",
-        "turnstile"
+        "turnstile",
+        "barrier"
       ],
       "description": "Gate kind."
     },
@@ -55,6 +56,29 @@
     },
     "limits": {
       "$ref": "common.schema.json#/$defs/VehicleLimits"
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Level the gate or barrier sits on."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint",
+      "description": "A point on the gate, if a segment is not given."
+    },
+    "threshold": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "common.schema.json#/$defs/LocalPoint"
+      },
+      "description": "Gate line or threshold segment in the facility frame, at least two points."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

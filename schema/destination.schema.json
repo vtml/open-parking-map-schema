@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/destination.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/destination.schema.json",
   "title": "Destination",
   "description": "Where passengers are going.",
   "type": "object",
@@ -8,7 +8,8 @@
     "id",
     "kind",
     "name",
-    "portal_ids"
+    "portal_ids",
+    "level_id"
   ],
   "properties": {
     "id": {
@@ -36,7 +37,7 @@
     },
     "level_label": {
       "type": "string",
-      "description": "Level as signed."
+      "description": "Display text only, as signed. Not a reference. The level is level_id."
     },
     "portal_ids": {
       "type": "array",
@@ -51,6 +52,25 @@
         "$ref": "common.schema.json#/$defs/TimeWindow"
       },
       "description": "Opening hours."
+    },
+    "level_id": {
+      "$ref": "common.schema.json#/$defs/Id",
+      "description": "Parking level that serves this destination."
+    },
+    "position": {
+      "$ref": "common.schema.json#/$defs/LocalPoint",
+      "description": "A point for the destination in the facility frame."
+    },
+    "polygon": {
+      "$ref": "common.schema.json#/$defs/LocalPolygon",
+      "description": "Optional footprint of the destination."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

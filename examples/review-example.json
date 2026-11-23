@@ -1,0 +1,33 @@
+{
+  "_note": "FICTIONAL review document. Not a real sign-off and not an endorsement.",
+  "opms_version": "0.3.0",
+  "id": "wr.review.1",
+  "dataset_id": "wr",
+  "dataset_version": "2026-11-23.2",
+  "reviewer_role": "owner",
+  "reviewer_ref": "Fictional Reserve Office (example)",
+  "reviewed_at": "2026-11-20T10:00:00+11:00",
+  "sign_off": {
+    "status": "partial",
+    "note": "Fictional partial review of the representative bays."
+  },
+  "entries": [
+    {
+      "feature_id": "wr.ap1",
+      "role": "owner",
+      "status": "confirmed",
+      "note": "Fictional: the entrance threshold matches the made-up plan.",
+      "evidence_ref": "audit:fictional:wr-ap1",
+      "reviewed_at": "2026-11-20T10:00:00+11:00",
+      "dataset_version": "2026-11-23.2"
+    },
+    {
+      "feature_id": "wr.g.b13",
+      "role": "owner",
+      "status": "not-checked",
+      "note": "Fictional: accessible bay not walked for this draft.",
+      "reviewed_at": "2026-11-20T10:00:00+11:00",
+      "dataset_version": "2026-11-23.2"
+    }
+  ]
+}

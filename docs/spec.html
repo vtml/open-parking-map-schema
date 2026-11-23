@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spec overview · OPMS v0.2 draft</title>
-  <meta name="description" content="Overview of the Open Parking Map Schema v0.2 draft: profiles, entities, crowdsourcing, governance, and links to the JSON Schema files.">
+  <title>Spec overview · OPMS v0.3 draft</title>
+  <meta name="description" content="Overview of the Open Parking Map Schema v0.3 draft: profiles, entities, crowdsourcing, governance, and links to the JSON Schema files.">
   <link rel="stylesheet" href="assets/style.css">
   <script>
     (function () {
@@ -25,7 +25,7 @@
         <span class="brand-mark">OPMS</span>
         <span class="brand-text">
           <span class="brand-name">Open Parking Map Schema</span>
-          <span class="brand-version">v0.2 draft</span>
+          <span class="brand-version">v0.3 draft</span>
         </span>
       </a>
       <div class="header-tools">
@@ -44,16 +44,18 @@
   </header>
   <main id="main">
     <p class="kicker">Specification</p>
-    <h1>What v0.2 defines</h1>
+    <h1>What v0.3 defines</h1>
     <p class="lede">This page is an overview of <a href="https://github.com/vtml/open-parking-map-schema/blob/main/SPEC.md">SPEC.md</a>. The JSON Schemas are normative. The text of the specification is CC BY 4.0. The schemas and tools are Apache-2.0. Schema <code>$id</code> URLs use <code>opms.example.org</code> until a permanent home exists.</p>
     <aside class="status">
-      <p><strong>Draft for discussion, version 0.2.0, dated 2026-11-23.</strong> Not published as a standard. No company or standards body has endorsed it. Breaking changes are expected before 1.0.</p>
+      <p><strong>Draft for discussion, version 0.3.0, dated 2026-11-23.</strong> Not published as a standard. No company or standards body has endorsed it. Breaking changes are expected before 1.0.</p>
     </aside>
 
+    <h2>What v0.3 adds</h2>
+    <p class="prose">v0.3 gives physical features coordinates in the facility frame and a level id, including entrances, gates, lifts, stair cores, drop-off zones, destinations, zones and the site boundary. Paths and drive edges can carry a centreline, required when the facility tier is 2 or 3 or the feature is owner-verified. Portals and destinations reference <code>level_id</code>. Each feature can store verification records, and <a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/review.schema.json">review.schema.json</a> is a standalone sign-off. The review tool is not part of this draft. See the specification section on located geometry.</p>
     <h2>Purpose and non-goals</h2>
     <p class="prose">OPMS describes the static structure of parking places and the records that let many parties build and maintain that structure by crowdsourcing. Places include street kerbs, surface lots, multi-storey and underground garages, mechanical parking, private garages, and large sites such as shopping centres, airports and hospitals.</p>
     <p class="prose">It is a glue layer. It does not replace HD map formats or facility-data standards. It links to them by identifier.</p>
-    <p class="prose">Out of scope in v0.2: live space availability, except as an optional extension; wire protocols between a vehicle and a facility; vehicle control; and payment processing.</p>
+    <p class="prose">Out of scope in v0.3: live space availability, except as an optional extension; wire protocols between a vehicle and a facility; vehicle control; and payment processing.</p>
 
     <h2>Profiles</h2>
     <p class="prose">A dataset declares one cumulative profile. <code>schema/dataset.schema.json</code> enforces it. A conforming consumer must work with <code>static-core</code> alone. Live occupancy is never required.</p>
@@ -86,7 +88,7 @@
           <tr>
             <td><code>services</code></td>
             <td>Reservations, sessions and missions.</td>
-            <td>Reserved. Not schematised in v0.2.</td>
+            <td>Reserved. Not schematised in v0.3.</td>
           </tr>
         </tbody>
       </table>
@@ -194,8 +196,13 @@
           </tr>
           <tr>
             <td>Lift</td>
-            <td>A lift on an accessible route.</td>
+            <td>A lift on an accessible route, with a footprint.</td>
             <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/lift.schema.json">lift.schema.json</a></td>
+          </tr>
+          <tr>
+            <td>StairCore</td>
+            <td>A stair core: footprint and the levels it connects.</td>
+            <td><a href="https://github.com/vtml/open-parking-map-schema/blob/main/schema/stair-core.schema.json">stair-core.schema.json</a></td>
           </tr>
           <tr>
             <td>WayfindingAid</td>
@@ -429,7 +436,7 @@
   </main>
   <footer class="site-footer">
     <div class="footer-inner">
-      <p>OPMS v0.2 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
+      <p>OPMS v0.3 is a draft for discussion. No organisation has endorsed it. Example places, roads and organisations are fictional.</p>
       <p>Text and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Schemas, examples and code: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
       <p><a href="https://github.com/vtml/open-parking-map-schema">Repository on GitHub</a></p>
     </div>

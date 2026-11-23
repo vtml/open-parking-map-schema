@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/zone.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/zone.schema.json",
   "title": "Zone",
   "description": "A painted area of bays.",
   "type": "object",
@@ -28,6 +28,17 @@
         "$ref": "common.schema.json#/$defs/Id"
       },
       "description": "Optional hint of dominant bay classes (free ids such as ev, accessible)."
+    },
+    "polygon": {
+      "$ref": "common.schema.json#/$defs/LocalPolygon",
+      "description": "Painted area in the facility frame."
+    },
+    "verifications": {
+      "type": "array",
+      "description": "Reviews of this feature against the real place. Absent means not checked. A later review tool writes these; the schema only stores them.",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Verification"
+      }
     },
     "provenance": {
       "$ref": "common.schema.json#/$defs/Provenance"

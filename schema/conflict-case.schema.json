@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/conflict-case.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/conflict-case.schema.json",
   "title": "ConflictCase",
   "description": "A recorded disagreement between observations and how it was resolved.",
   "type": "object",

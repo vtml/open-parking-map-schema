@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://opms.example.org/schema/0.2/contributor.schema.json",
+  "$id": "https://opms.example.org/schema/0.3/contributor.schema.json",
   "title": "Contributor",
   "description": "An organisation submitting contributions. Never an individual vehicle or person.",
   "type": "object",
